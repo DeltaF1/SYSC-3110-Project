@@ -13,14 +13,14 @@ public class ASCIIView {
 		int height = tiles.length;
 		
 		for (int i = 0; i < height; i++) {
-			out += repeat("+-", width) + "+\n";
+			out += repeat("+--", width) + "+\n";
 			for (int j = 0; j < width; j++) {
 				out += "|";
 				
 				Tile tile = tiles[i][j];
 				
 				if (tile.getOccupant() == null) {
-					out += " ";
+					out += "  ";
 				} else {
 					out += entityRepr(tile.getOccupant());
 				}
@@ -32,7 +32,7 @@ public class ASCIIView {
 	}
 	
 	public static String entityRepr(Entity entity) {
-		return "X";
+		return ")(";
 	}
 	
 	public static void main(String[] args) {
