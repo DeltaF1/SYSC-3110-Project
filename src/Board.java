@@ -6,11 +6,26 @@ public class Board {
 	public static final int HEIGHT = 20;
 	
 	public Board() {
-		tiles = new Tile[WIDTH][HEIGHT];
+		tiles = new Tile[HEIGHT][WIDTH];
+		for (int y = 0; y < HEIGHT; y++) {
+			for (int x = 0; x < WIDTH; x++) {
+				tiles[y][x] = new Tile();
+			}
+		}
 	}
 	
 	public Board(Tile[][] tiles) {
-		this.tiles = tiles;
+		this();
+		setTiles(tiles);
+	}
+	
+	public void setTiles(Tile[][] tiles) {
+		checkCoords(tiles[0].length - 1, tiles.length - 1);
+		for (int y = 0; y < tiles.length; y++) {
+			for (int x = 0; x < tiles[0].length; x++) {
+				this.tiles[y][x] = tiles[y][x];
+			}
+		}
 	}
 	
 	public Tile[][] getTiles() {
@@ -22,8 +37,8 @@ public class Board {
 	 */
 	public boolean placeEntity(int x, int y, Entity e) {
 		checkCoords(x, y);
-		if (tiles[x][y].getOccupant() == null) {
-			tiles[x][y].setOccupant(e);
+		if (tiles[y][x].getOccupant() == null) {
+			tiles[y][x].setOccupant(e);
 			return true;
 		}
 		return false;
@@ -31,7 +46,7 @@ public class Board {
 	
 	public void removeEntity(int x, int y) {
 		checkCoords(x, y);
-		tiles[x][y].setOccupant(null);
+		tiles[y][x].setOccupant(null);
 	}
 	
 	/**
@@ -39,7 +54,7 @@ public class Board {
 	 */
 	private void checkCoords(int x, int y) {
 		if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) {
-			String err = String.format("invalid board coordinates (x = %d, y = %d)", x, y);
+			String err = String.format("invalid board coordinates: (x = %d, y = %d)", x, y);
 			throw new IllegalArgumentException(err);
 		}
 	}

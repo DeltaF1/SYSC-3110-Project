@@ -48,11 +48,11 @@ public class ASCIIView {
 		
 		Board board = new Board(tiles);
 		
-		board.placeEntity(1, 1, new Entity("test", 0, 0));
+		board.placeEntity(1, 19, new Entity("test", 0, 0));
 		
 		drawBoard(board);
 		
-		board.removeEntity(1, 1);
+		board.removeEntity(1, 19);
 		
 		drawBoard(board);
 	}
