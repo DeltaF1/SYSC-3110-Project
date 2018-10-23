@@ -1,5 +1,5 @@
 
-public class Tile extends Sprite {
+public class Tile {
 	private Entity occupant;
 	
 	public Entity getOccupant() {

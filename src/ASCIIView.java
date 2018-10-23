@@ -41,12 +41,18 @@ public class ASCIIView {
 		tiles[0][0] = new Tile();
 		tiles[0][1] = new Tile();
 		tiles[1][0] = new Tile();
-		tiles[1][0].setOccupant(new Entity());
+		tiles[1][0].setOccupant(new Entity("test", 0, 0));
 		
 		
 		tiles[1][1] = new Tile();
 		
 		Board board = new Board(tiles);
+		
+		board.placeEntity(1, 1, new Entity("test", 0, 0));
+		
+		drawBoard(board);
+		
+		board.removeEntity(1, 1);
 		
 		drawBoard(board);
 	}

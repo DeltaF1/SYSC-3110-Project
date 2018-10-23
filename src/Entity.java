@@ -1,10 +1,12 @@
 
-public class Entity extends Sprite {
-	private int hp;
-	private int damage;
-	private String name;
+public class Entity {
+	protected int hp;
+	protected int damage;
+	protected String name;
 	
-	public Entity() {
-		
+	public Entity(String name, int hp, int damage) {
+		this.name = name;
+		this.hp = hp;
+		this.damage = damage;
 	}
 }
