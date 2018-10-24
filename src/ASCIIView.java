@@ -1,10 +1,18 @@
+import java.util.Scanner;
 
 public class ASCIIView {
+	
+	private Board board;
+	
 	public static String repeat(String str, int times) {
         return new String(new char[times]).replace("\0", str);
     }
 	
-	public static void drawBoard(Board board) {
+	private static String rowDivider(int width) {
+		return repeat("+-", width) + "+\n";
+	}
+	
+	private String drawBoard(Board board) {
 		Tile[][] tiles = board.getTiles();
 		
 		String out = "";
@@ -13,7 +21,7 @@ public class ASCIIView {
 		int height = tiles.length;
 		
 		for (int i = 0; i < height; i++) {
-			out += repeat("+-", width) + "+\n";
+			out += rowDivider(width);
 			for (int j = 0; j < width; j++) {
 				out += "|";
 				
@@ -27,27 +35,59 @@ public class ASCIIView {
 			}
 			out += "|\n";
 		}
+		out += rowDivider(width);
+		return out;
+	}
+	
+	public int draw()
+	{
+		String s = drawBoard(board);
 		
-		System.out.println(out);
+		System.out.println(s);
+		System.out.print("> ");
+		
+		return s.length() + 2;
 	}
 	
 	public static String entityRepr(Entity entity) {
+		if (entity instanceof Zombie) {
+			return "Z";
+		}
 		return "X";
 	}
 	
+	
+	
 	public static void main(String[] args) {
+		
+		ASCIIView view = new ASCIIView();
+		
 		Tile[][] tiles = new Tile[2][2];
 		
 		tiles[0][0] = new Tile();
 		tiles[0][1] = new Tile();
 		tiles[1][0] = new Tile();
-		tiles[1][0].setOccupant(new Entity());
+		tiles[1][0].setOccupant(new Zombie());
 		
 		
 		tiles[1][1] = new Tile();
 		
 		Board board = new Board(tiles);
 		
-		drawBoard(board);
+		view.board = board;
+		
+		// Move this to a different method? Or should this be in the controller loop?
+		
+		Scanner scanner = new Scanner(System.in);
+		String input;
+		while (true) {
+			view.draw();
+			
+			input = scanner.next();
+			
+			if (input.equals("quit")) { break; }
+		}
+		
+		scanner.close();
 	}
 }
