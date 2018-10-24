@@ -94,10 +94,10 @@ public class ASCIIView {
 
 		board.placeEntity(1, 19, new Entity("test", 0, 0));
 		
-		view.drawBoard(board);
+		System.out.println(view.drawBoard(board));
 		
 		board.removeEntity(1, 19);
 		
-		view.drawBoard(board);
+		System.out.println(view.drawBoard(board));
 	}
 }
