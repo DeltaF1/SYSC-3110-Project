@@ -64,6 +64,12 @@ public class ASCIIView {
 		frame.setVisible(true);
 	}
 	
+<<<<<<< HEAD
+	public ASCIIView(Board board) {
+		this.board = board;
+	}
+	
+=======
 	protected void handleTextInput() {
 		String text = textInput.getText();
 		textInput.setText(null);
@@ -72,6 +78,7 @@ public class ASCIIView {
 		//textOutput.append(output);
 	}
 
+>>>>>>> bed0b0826d05aa0c428430e7634f134b35ac985d
 	public static String repeat(String str, int times) {
         return new String(new char[times]).replace("\0", str);
     }
@@ -125,7 +132,14 @@ public class ASCIIView {
 
 	}
 	
+<<<<<<< HEAD
+	
+	
+/*	old main replaced with Controller's Main
+  public static void main(String[] args) {
+=======
 	public static void main(String[] args) {
+>>>>>>> bed0b0826d05aa0c428430e7634f134b35ac985d
 		
 		ASCIIView view = new ASCIIView();
 		
@@ -165,5 +179,5 @@ public class ASCIIView {
 		board.removeEntity(1, 19);
 		//view.draw();
 		System.out.println(view.drawBoard(board));
-	}
+	}*/
 }
