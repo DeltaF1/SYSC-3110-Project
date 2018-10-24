@@ -20,6 +20,32 @@ public class ASCIIView {
 		textOutput = new JTextArea();
 		textOutput.setEditable(false);
 		textOutput.setFont(monoFont);
+		textOutput.setText("\r\n" + 
+				"          ___    __                          _                           \r\n" + 
+				"         F _ \",  LJ     ___ _     _ ___     FJ_       ____               \r\n" + 
+				"        J `-' |  FJ    F __` L   J '__ J   J  _|     F ___J              \r\n" + 
+				"        |  __/F J  L  | |--| |   | |__| |  | |-'    | '----_             \r\n" + 
+				"        F |__/  J  L  F L__J J   F L  J J  F |__-.  )-____  L            \r\n" + 
+				"       J__|     J__L J\\____,__L J__L  J__L \\_____/ J\\______/F            \r\n" + 
+				"       |__L     |__|  J____,__F |__L  J__| J_____F  J______F             \r\n" + 
+				"                                                                         \r\n" + 
+				"                                                                         \r\n" + 
+				"                          _    _     ____                                \r\n" + 
+				"                         J |  | L   F ___J                               \r\n" + 
+				"                         J J  F L  | '----_                              \r\n" + 
+				"                         J\\ \\/ /F  )-____  L  __                         \r\n" + 
+				"                          \\\\__//  J\\______/F J__L                        \r\n" + 
+				"                           \\__/    J______F  |__|                        \r\n" + 
+				"                                                                         \r\n" + 
+				"    ____                               _        __                       \r\n" + 
+				"   [__  '.     ____      _ _____      FJ___     LJ     ____       ____   \r\n" + 
+				"   `--7 .'    F __ J    J '_  _ `,   J  __ J          F __ J     F ___J  \r\n" + 
+				"    .'.'.'   | |--| |   | |_||_| |   | |--| |   FJ   | _____J   | '----_ \r\n" + 
+				"  .' (_(__   F L__J J   F L LJ J J   F L__J J  J  L  F L___--.  )-____  L\r\n" + 
+				" J________L J\\______/F J__L LJ J__L J__,____/L J__L J\\______/F J\\______/F\r\n" + 
+				" |________|  J______F  |__L LJ J__| J__,____F  |__|  J______F   J______F \r\n" + 
+				"                                                                         \r\n" + 
+				"");
 		
 		textInput = new JTextField();
 		textInput.setFont(monoFont);
@@ -32,7 +58,8 @@ public class ASCIIView {
 		frame.add(textOutput, BorderLayout.NORTH);
 		frame.add(textInput, BorderLayout.SOUTH);
 		
-		frame.setSize(500, 500);
+		//frame.setSize(500, 500);
+		frame.pack();
 		
 		frame.setVisible(true);
 	}
@@ -133,10 +160,10 @@ public class ASCIIView {
 		board.placeEntity(1, 19, new Entity("test", 0, 0));
 		
 		System.out.println(view.drawBoard(board));
-		view.draw();
+		//view.draw();
 		
 		board.removeEntity(1, 19);
-		view.draw();
+		//view.draw();
 		System.out.println(view.drawBoard(board));
 	}
 }
