@@ -12,7 +12,9 @@ public class ASCIIView {
 	private JTextArea textOutput;
 	private JTextField textInput;
 	
-	public ASCIIView () {
+	public ASCIIView (Board board) {
+		this.board = board;
+		
 		JFrame frame = new JFrame("PVZ - ASCII");
 		
 		Font monoFont = new Font("Courier New", Font.PLAIN, 16);
@@ -64,12 +66,6 @@ public class ASCIIView {
 		frame.setVisible(true);
 	}
 	
-<<<<<<< HEAD
-	public ASCIIView(Board board) {
-		this.board = board;
-	}
-	
-=======
 	protected void handleTextInput() {
 		String text = textInput.getText();
 		textInput.setText(null);
@@ -78,7 +74,6 @@ public class ASCIIView {
 		//textOutput.append(output);
 	}
 
->>>>>>> bed0b0826d05aa0c428430e7634f134b35ac985d
 	public static String repeat(String str, int times) {
         return new String(new char[times]).replace("\0", str);
     }
@@ -132,14 +127,9 @@ public class ASCIIView {
 
 	}
 	
-<<<<<<< HEAD
-	
 	
 /*	old main replaced with Controller's Main
   public static void main(String[] args) {
-=======
-	public static void main(String[] args) {
->>>>>>> bed0b0826d05aa0c428430e7634f134b35ac985d
 		
 		ASCIIView view = new ASCIIView();
 		
