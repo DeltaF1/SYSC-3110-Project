@@ -3,13 +3,13 @@ public class Board {
 	
 	private Tile[][] tiles;
 	public static final int WIDTH = 20;
-	public static final int HEIGHT = 20;
+	public static final int HEIGHT = 10;
 	
 	public Board() {
-		tiles = new Tile[HEIGHT][WIDTH];
+		this.tiles = new Tile[HEIGHT][WIDTH];
 		for (int y = 0; y < HEIGHT; y++) {
 			for (int x = 0; x < WIDTH; x++) {
-				tiles[y][x] = new Tile();
+				this.tiles[y][x] = new Tile();
 			}
 		}
 	}

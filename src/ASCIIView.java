@@ -2,7 +2,6 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
 
 import javax.swing.*;
 
@@ -98,7 +97,12 @@ public class ASCIIView {
 
 	}
 	
+	
+/*	old main replaced with Controller's Main
+  public static void main(String[] args) {
+=======
 	public static void main(String[] args) {
+>>>>>>> bed0b0826d05aa0c428430e7634f134b35ac985d
 		
 		ASCIIView view = new ASCIIView();
 		
@@ -138,5 +142,5 @@ public class ASCIIView {
 		board.removeEntity(1, 19);
 		view.draw();
 		System.out.println(view.drawBoard(board));
-	}
+	}*/
 }

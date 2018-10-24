@@ -1,19 +1,40 @@
+import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.HashMap;
 
 public class Controller {
-	private Board board;
-	private HashMap<String, Plant> plantTypes;
-	private HashMap<String, Zombie> zombieTypes;
+	private static Board board;
+	private static HashMap<String, Plant> plantTypes;
+	private static HashMap<String, Zombie> zombieTypes;
+	private static ASCIIView view;
+	public static final int PLACE_AREA_WIDTH = 5;
+	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when sold
 	
-	public Controller() {
+	
+	public static void main(String[] args) {
+		
+		board = new Board();
+		view = new ASCIIView(board);
 		plantTypes = createPlantTypes();
 		zombieTypes = createZombieTypes();
+
+		Scanner scanner = new Scanner(System.in);
+		String input;
+		System.out.println("cmd> ");
+		while (true) {
+			view.draw();
+			input = scanner.nextLine();
+			parseText(input);
+			advancePlants();
+			advanceZombies();
+			spawnZombies();
+		}
 	}
 	
 	/**
 	 * register all plant types here
 	 */
-	private HashMap<String, Plant> createPlantTypes() {
+	private static HashMap<String, Plant> createPlantTypes() {
 		HashMap<String, Plant> plants = new HashMap<String, Plant>();
 		plants.put("basic", new Plant("basic", 1, 1, 1, 1));
 		return plants;
@@ -22,14 +43,14 @@ public class Controller {
 	/**
 	 * register all zombie types here
 	 */
-	private HashMap<String, Zombie> createZombieTypes() {
+	private static HashMap<String, Zombie> createZombieTypes() {
 		return new HashMap<String, Zombie>();
 	}
 	
 	/**
 	 * register all command types here
 	 */
-	public String parseText(String commandStr) {
+	public static String parseText(String commandStr) {
 		if (commandStr == null || commandStr.length() == 0) {
 			return "Try actually typing something next time";
 		}
@@ -49,7 +70,7 @@ public class Controller {
 		}
 	}
 	
-	private String placePlant(String[] args) {
+	private static String placePlant(String[] args) {
 		if (args.length < 3) {
 			return "To place a plant you need to specify plant name, x coordinate, and y coordinate";
 		}
@@ -71,7 +92,7 @@ public class Controller {
 		}
 	}
 	
-	private String tileInfo(String[] args) {
+	private static String tileInfo(String[] args) {
 		if (args.length < 2) {
 			return "To see tile info you need to specify an x coordinate and a y coordinate";
 		}
@@ -98,7 +119,7 @@ public class Controller {
 		return "The entity on that tile isn't a plant or a zombie, who knows what it is.";
 	}
 	
-	private int[] strCoordsToInt(String strx, String stry) {
+	private static int[] strCoordsToInt(String strx, String stry) {
 		int x, y;
 		try {
 			x = Integer.parseInt(strx);
@@ -110,7 +131,150 @@ public class Controller {
 		return new int[] {x, y};
 	}
 	
-	private String endTurn(String[] args) {
-		return "I think Trevor implemented this";
+	private static String endTurn(String[] args) {
+		return "put code here to end the turn somehow";
+	}
+	
+	
+	
+	/**
+	 * Determine the X position of the closest zombie on the Y row (this must be the zombie hit by plant projectile)
+	 */
+	private static Integer getHitZombieX(int y) {
+		for (int x = 0; x < board.getTiles()[y].length; x++) {
+			if( board.getTiles()[y][x].getOccupant() instanceof Zombie) {
+				return new Integer(x);
+			}
+		}
+		return null;
+	}
+	
+	private static void advancePlants() {
+
+		for (int y = 0; y < board.getTiles().length; y++) {
+			for (int x = 0; x < PLACE_AREA_WIDTH; x++) {
+				if( board.getTiles()[y][x].getOccupant() instanceof Plant) {
+					Plant plant = (Plant)board.getTiles()[y][x].getOccupant();
+					
+					if (plant.getCoolDown() > 0) {
+						plant.setCoolDown(plant.getCoolDown()-1);
+					}else if (plant.getCoolDown() > -1){
+						plant.setCoolDown(plant.getAtkSpd());
+						
+						System.out.println("TEMP MSG: plant at " + Integer.toString(x) + "," + Integer.toString(y) + " shot");
+						Integer bulletHit = getHitZombieX(y);
+						if (bulletHit != null) {
+							Zombie shotZombie = (Zombie) board.getTiles()[y][bulletHit].getOccupant();
+							int newHP = shotZombie.getHp() - ((Plant)board.getTiles()[y][x].getOccupant()).getDamage();
+							System.out.println("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(shotZombie.getHp()));
+							if (newHP <= 0) {
+								board.removeEntity(bulletHit, y);
+							}else {
+								shotZombie.setHp(newHP);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Complete a turn for an individual zombie
+	 */
+	private static void advanceZombie(int x, int y) {
+		int newX = x;
+		Zombie zombie = (Zombie)board.getTiles()[y][x].getOccupant();
+		for (int i = 1; i < zombie.getMovSpd() + 1; i ++) {
+			//wait in line behind zombie ahead
+			if (newX > 0 && board.getTiles()[y][newX-1].getOccupant() instanceof Zombie ) {
+				break;
+			//attack plant
+			}else if  (newX > 0 && board.getTiles()[y][newX-1].getOccupant() instanceof Plant ) {
+				Plant attacking = (Plant) board.getTiles()[y][newX-1].getOccupant();
+				int newHP = attacking.getHp() - zombie.getDamage();
+				System.out.println("TMP MSG: The plant at " + Integer.toString(newX-1) + "," + Integer.toString(y) +" had its health reduced to " + Integer.toString(newHP));
+				if (newHP <= 0) {
+					board.removeEntity(newX-1, y);
+				}else {
+					attacking.setHp(newHP);
+				}
+				break;
+			//walk forward
+			}else {
+				newX = x - 1;
+			}
+		}
+		if (newX != x) {
+			if (newX >= 0) {
+				board.placeEntity(newX,y,new Zombie( zombie.getName(), zombie.getHp(), zombie.getDamage(), zombie.getMovSpd()));
+			}else {
+				System.out.println("TEMP MSG: a zombie broke through on row " + Integer.toString(y));
+			}
+			board.removeEntity(x, y);
+		}
+	}
+	
+	/**
+	 * Complete the turn for all currently placed zombies
+	 */
+	private static void advanceZombies() {		
+		
+		for (int y = 0; y < board.getTiles().length; y++) {
+			for (int x = 0; x <  board.getTiles()[y].length; x++) {
+				if( board.getTiles()[y][x].getOccupant() instanceof Zombie) {
+					advanceZombie(x,y);				}
+			}
+		}
+	}
+	
+	/**
+	 * Handle new zombies spawned this turn
+	 */
+	private static void spawnZombies() {
+		int newPosY = ThreadLocalRandom.current().nextInt(0, board.getTiles().length);
+		board.placeEntity(board.getTiles()[0].length-1,newPosY, new Zombie("a zombie", 60,20,2));
 	}
 }
+	
+
+
+
+
+
+
+
+/*	
+	public static void inputPlacePlant(int x, int y, String name, int hp, int damage, int atkSpd, int cost) {
+		board.placeEntity(x, y, new Plant(name, hp, damage, atkSpd, cost));
+	}
+	
+	
+	public static void inputPlacePlant(String name, int x, int y) {
+		name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase(); //handle any case
+		////inputPlacePlant(x,y, name, HP, DMG, ATTKSPEED, COST );
+		if (name.equals("Peashooter")) {
+			inputPlacePlant(x,y, name, 50, 20, 2, 200 );
+		}else if (name.equals("Melon-pult")) {
+			inputPlacePlant(x,y, name, 50, 150, 8, 250 );
+		}else if (name.equals("Chestnut")) {
+			inputPlacePlant(x,y, name, 400, -1, -1, 300 );
+		}else {
+			System.out.println("ERROR: unknown name given to inputPlacePlant, " + name);
+			inputSkipTurn();
+		}
+	}
+	
+	
+	public static void inputRemovePlant(int x, int y) {
+		Plant toDelete = (Plant) board.getTiles()[y][x].getOccupant();
+		int reclaimed = (int) (toDelete.getCost() * SELL_PERCENT);
+		System.out.println("TEMP MSG: player should receive " + reclaimed + " cash for selling plant");
+		board.removeEntity(x, y);
+	}
+	
+	
+	public static void inputSkipTurn() {
+		
+	}
+*/

@@ -5,9 +5,9 @@ public class Zombie extends Entity {
 		super(name, hp, damage);
 		this.movSpd = movSpd;
 	}
-
+	
 	public int getMovSpd() {
 		return movSpd;
 	}
-	
+
 }
