@@ -42,6 +42,8 @@ public class Controller {
 			return placePlant(cmdArgs);
 		case "done":
 			return endTurn(cmdArgs);
+		case "info":
+			return tileInfo(cmdArgs);
 		default:
 			return "\"" + cmdName + "\"" + " isn't even a real command";
 		}
@@ -56,14 +58,12 @@ public class Controller {
 		if (selectedPlant == null) {
 			return "\"" + plantName + "\"" + " is not a valid plant name";
 		}
-		int x, y;
-		try {
-			x = Integer.parseInt(args[1]);
-			y = Integer.parseInt(args[2]);
-			board.checkCoords(x, y);
-		} catch (IllegalArgumentException err) { //parseInt and checkCoords throw the same type of error
+		int[] coords = strCoordsToInt(args[1], args[2]);
+		if (coords == null) {
 			return String.format("invalid board coordinates: (x = %s, y = %s)", args[1], args[2]);
 		}
+		int x = coords[0]; 
+		int y = coords[1];
 		if (board.placeEntity(x, y, selectedPlant)) {
 			return String.format("%s placed successfully at (%d, %d)", plantName, x, y);
 		} else {
@@ -72,7 +72,42 @@ public class Controller {
 	}
 	
 	private String tileInfo(String[] args) {
-		
+		if (args.length < 2) {
+			return "To see tile info you need to specify an x coordinate and a y coordinate";
+		}
+		int[] coords = strCoordsToInt(args[1], args[2]);
+		if (coords == null) {
+			return String.format("invalid board coordinates: (x = %s, y = %s)", args[1], args[2]);
+		}
+		int x = coords[0]; 
+		int y = coords[1];
+		Entity tileEntity = board.getTile(x, y).getOccupant();
+		if (tileEntity == null) {
+			return "There's nothing on that tile";
+		}
+		if (tileEntity instanceof Plant) {
+			Plant p = (Plant) tileEntity;
+			String desc = "That tile contains a %s Plant with an hp of %d, damage of %d, and attack speed of %d";
+			return String.format(desc, p.getName(), p.getHp(), p.getDamage(), p.getAtkSpd());
+		}
+		if (tileEntity instanceof Zombie) {
+			Zombie z = (Zombie) tileEntity;
+			String desc = "That tile contains a %s Zombie with an hp of %d, damage of %d, and movement speed of %d";
+			return String.format(desc, z.getName(), z.getHp(), z.getDamage(), z.getMovSpd());
+		}
+		return "The entity on that tile isn't a plant or a zombie, who knows what it is.";
+	}
+	
+	private int[] strCoordsToInt(String strx, String stry) {
+		int x, y;
+		try {
+			x = Integer.parseInt(strx);
+			y = Integer.parseInt(stry);
+			board.checkCoords(x, y);
+		} catch (IllegalArgumentException err) { //parseInt and checkCoords throw the same type of error
+			return null;
+		}
+		return new int[] {x, y};
 	}
 	
 	private String endTurn(String[] args) {

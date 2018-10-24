@@ -32,6 +32,11 @@ public class Board {
 		return tiles;
 	}
 	
+	public Tile getTile(int x, int y) {
+		checkCoords(x, y);
+		return tiles[y][x];
+	}
+	
 	/**
 	 * Returns true if entity was placed successfully, false otherwise
 	 */
