@@ -1,9 +1,50 @@
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Scanner;
+
+import javax.swing.*;
 
 public class ASCIIView {
 	
 	private Board board;
+	private JTextArea textOutput;
+	private JTextField textInput;
 	
+	public ASCIIView () {
+		JFrame frame = new JFrame("PVZ - ASCII");
+		
+		Font monoFont = new Font("Courier New", Font.PLAIN, 16);
+		
+		textOutput = new JTextArea();
+		textOutput.setEditable(false);
+		textOutput.setFont(monoFont);
+		
+		textInput = new JTextField();
+		textInput.setFont(monoFont);
+		textInput.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				handleTextInput();
+			}
+		});
+		
+		frame.add(textOutput, BorderLayout.NORTH);
+		frame.add(textInput, BorderLayout.SOUTH);
+		
+		frame.setSize(500, 500);
+		
+		frame.setVisible(true);
+	}
+	
+	protected void handleTextInput() {
+		String text = textInput.getText();
+		textInput.setText(null);
+		
+		//output = Controller.parseText(text);
+		//textOutput.append(output);
+	}
+
 	public static String repeat(String str, int times) {
         return new String(new char[times]).replace("\0", str);
     }
@@ -44,10 +85,9 @@ public class ASCIIView {
 	{
 		String s = drawBoard(board);
 		
-		System.out.println(s);
-		System.out.print("> ");
+		textOutput.setText(s);
 		
-		return s.length() + 2;
+		return s.length();
 	}
 	
 	public static String entityRepr(Entity entity) {
@@ -57,8 +97,6 @@ public class ASCIIView {
 		return "[X]";
 
 	}
-	
-	
 	
 	public static void main(String[] args) {
 		
@@ -95,9 +133,10 @@ public class ASCIIView {
 		board.placeEntity(1, 19, new Entity("test", 0, 0));
 		
 		System.out.println(view.drawBoard(board));
+		view.draw();
 		
 		board.removeEntity(1, 19);
-		
+		view.draw();
 		System.out.println(view.drawBoard(board));
 	}
 }
