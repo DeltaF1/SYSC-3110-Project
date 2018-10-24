@@ -9,7 +9,7 @@ public class ASCIIView {
     }
 	
 	private static String rowDivider(int width) {
-		return repeat("+-", width) + "+\n";
+		return repeat("+---", width) + "+\n";
 	}
 	
 	private String drawBoard(Board board) {
@@ -22,13 +22,14 @@ public class ASCIIView {
 		
 		for (int i = 0; i < height; i++) {
 			out += rowDivider(width);
+
 			for (int j = 0; j < width; j++) {
 				out += "|";
 				
 				Tile tile = tiles[i][j];
 				
 				if (tile.getOccupant() == null) {
-					out += " ";
+					out += "   ";
 				} else {
 					out += entityRepr(tile.getOccupant());
 				}
@@ -51,9 +52,10 @@ public class ASCIIView {
 	
 	public static String entityRepr(Entity entity) {
 		if (entity instanceof Zombie) {
-			return "Z";
+			return "[Z]";
 		}
-		return "X";
+		return "[X]";
+
 	}
 	
 	
@@ -67,27 +69,35 @@ public class ASCIIView {
 		tiles[0][0] = new Tile();
 		tiles[0][1] = new Tile();
 		tiles[1][0] = new Tile();
-		tiles[1][0].setOccupant(new Zombie());
-		
+		tiles[1][0].setOccupant(new Entity("test", 0, 0));
+
 		
 		tiles[1][1] = new Tile();
 		
 		Board board = new Board(tiles);
 		
 		view.board = board;
+//		
+//		// Move this to a different method? Or should this be in the controller loop?
+//		
+//		Scanner scanner = new Scanner(System.in);
+//		String input;
+//		while (true) {
+//			view.draw();
+//			
+//			input = scanner.next();
+//			
+//			if (input.equals("quit")) { break; }
+//		}
+//		
+//		scanner.close();
+
+		board.placeEntity(1, 19, new Entity("test", 0, 0));
 		
-		// Move this to a different method? Or should this be in the controller loop?
+		view.drawBoard(board);
 		
-		Scanner scanner = new Scanner(System.in);
-		String input;
-		while (true) {
-			view.draw();
-			
-			input = scanner.next();
-			
-			if (input.equals("quit")) { break; }
-		}
+		board.removeEntity(1, 19);
 		
-		scanner.close();
+		view.drawBoard(board);
 	}
 }
