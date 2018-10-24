@@ -52,7 +52,7 @@ public class Board {
 	/**
 	 * ensures that x and y are valid coords, throws an error if they're not
 	 */
-	private void checkCoords(int x, int y) {
+	public void checkCoords(int x, int y) {
 		if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) {
 			String err = String.format("invalid board coordinates: (x = %d, y = %d)", x, y);
 			throw new IllegalArgumentException(err);
