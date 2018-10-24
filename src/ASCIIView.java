@@ -4,6 +4,10 @@ public class ASCIIView {
 	
 	private Board board;
 	
+	public ASCIIView(Board board) {
+		this.board = board;
+	}
+	
 	public static String repeat(String str, int times) {
         return new String(new char[times]).replace("\0", str);
     }
@@ -60,7 +64,8 @@ public class ASCIIView {
 	
 	
 	
-	public static void main(String[] args) {
+/*	old main replaced with Controller's Main
+  public static void main(String[] args) {
 		
 		ASCIIView view = new ASCIIView();
 		
@@ -99,5 +104,5 @@ public class ASCIIView {
 		board.removeEntity(1, 19);
 		
 		System.out.println(view.drawBoard(board));
-	}
+	}*/
 }
