@@ -119,7 +119,7 @@ public class Controller {
 		advanceZombies();
 		spawnZombies();
 		view.draw();
-		return "";
+		return null;
 	}
 	
 	

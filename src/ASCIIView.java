@@ -142,6 +142,9 @@ public class ASCIIView {
 	}
 	
 	public void announce(String message) {
+		if (message == null) {
+			return;
+		}
 		eventLog.append(message + "\r\n");
 		eventLog.setCaretPosition(eventLog.getText().length());
 	}
