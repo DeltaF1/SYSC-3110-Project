@@ -40,7 +40,7 @@ public class Controller {
 		}else if (name.equals("Chestnut")) {
 			inputPlacePlant(x,y, name, 400, -1, -1, 300 );
 		}else {
-			System.out.println("ERROR: unknown name given to inputPlacePlant, " + name);
+			view.announce("ERROR: unknown name given to inputPlacePlant, " + name);
 			inputSkipTurn();
 		}
 	}
@@ -55,7 +55,7 @@ public class Controller {
 	public static void inputRemovePlant(int x, int y) {
 		Plant toDelete = (Plant) model.getTiles()[y][x].getOccupant();
 		int reclaimed = (int) (toDelete.getCost() * SELL_PERCENT);
-		System.out.println("TEMP MSG: player should receive " + reclaimed + " cash for selling plant");
+		view.announce("TEMP MSG: player should receive " + reclaimed + " cash for selling plant");
 		model.removeEntity(x, y);
 	}
 	
@@ -95,12 +95,12 @@ public class Controller {
 					}else if (plant.getCoolDown() > -1){
 						plant.setCoolDown(plant.getAtkSpd());
 						
-						System.out.println("TEMP MSG: plant at " + Integer.toString(x) + "," + Integer.toString(y) + " shot");
+						view.announce("TEMP MSG: plant at " + Integer.toString(x) + "," + Integer.toString(y) + " shot");
 						Integer bulletHit = getHitZombieX(y);
 						if (bulletHit != null) {
 							Zombie shotZombie = (Zombie) model.getTiles()[y][bulletHit].getOccupant();
 							int newHP = shotZombie.getHP() - ((Plant)model.getTiles()[y][x].getOccupant()).getDamage();
-							System.out.println("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(shotZombie.getHP()));
+							view.announce("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(shotZombie.getHP()));
 							if (newHP <= 0) {
 								model.removeEntity(bulletHit, y);
 							}else {
@@ -120,16 +120,16 @@ public class Controller {
 	 */
 	private static void advanceZombie(int x, int y) {
 		int newX = x;
-		Zombie zombie = (Zombie)model.getTiles()[y][x].getOccupant();
+		Zombie zombie = (Zombie)model.getEntity(x,y);
 		for (int i = 1; i < zombie.getMovSpd() + 1; i ++) {
 			//wait in line behind zombie ahead
 			if (newX > 0 && model.getTiles()[y][newX-1].getOccupant() instanceof Zombie ) {
 				break;
 			//attack plant
-			}else if  (newX > 0 && model.getTiles()[y][newX-1].getOccupant() instanceof Plant ) {
+			} else if  (newX > 0 && model.getTiles()[y][newX-1].getOccupant() instanceof Plant ) {
 				Plant attacking = (Plant) model.getTiles()[y][newX-1].getOccupant();
 				int newHP = attacking.getHP() - zombie.getDamage();
-				System.out.println("TMP MSG: The plant at " + Integer.toString(newX-1) + "," + Integer.toString(y) +" had its health reduced to " + Integer.toString(newHP));
+				view.announce("TMP MSG: The plant at " + Integer.toString(newX-1) + "," + Integer.toString(y) +" had its health reduced to " + Integer.toString(newHP));
 				if (newHP <= 0) {
 					model.removeEntity(newX-1, y);
 				}else {
@@ -137,15 +137,15 @@ public class Controller {
 				}
 				break;
 			//walk forward
-			}else {
+			} else {
 				newX = x - 1;
 			}
 		}
 		if (newX != x) {
 			if (newX >= 0) {
-				model.placeEntity(newX,y,new Zombie( zombie.getName(), zombie.getHP(), zombie.getDamage(), zombie.getMovSpd()));
+				model.placeEntity(newX, y, new Zombie(zombie.getName(), zombie.getHP(), zombie.getDamage(), zombie.getMovSpd()));
 			}else {
-				System.out.println("TEMP MSG: a zombie broke through on row " + Integer.toString(y));
+				view.announce("TEMP MSG: a zombie broke through on row " + Integer.toString(y));
 			}
 			model.removeEntity(x, y);
 		}
@@ -158,7 +158,7 @@ public class Controller {
 		
 		for (int y = 0; y < model.getTiles().length; y++) {
 			for (int x = 0; x <  model.getTiles()[y].length; x++) {
-				if( model.getTiles()[y][x].getOccupant() instanceof Zombie) {
+				if( model.getEntity(x, y) instanceof Zombie) {
 					advanceZombie(x,y);				}
 			}
 		}
@@ -168,8 +168,8 @@ public class Controller {
 	 * Handle new zombies spawned this turn
 	 */
 	private static void spawnZombies() {
-		int newPosY = ThreadLocalRandom.current().nextInt(0, model.getTiles().length);
-		model.placeEntity(model.getTiles()[0].length-1,newPosY, new Zombie("a zombie", 60,20,2));
+		int newPosY = ThreadLocalRandom.current().nextInt(0, model.HEIGHT);
+		model.placeEntity(model.WIDTH-1,newPosY, new Zombie("a zombie", 60,20,2));
 	}
 	
 	public static String parseText(String input) {
@@ -205,6 +205,6 @@ public class Controller {
 	public static void main(String[] args) {
 		model = new Board();
 		view = new ASCIIView(model);
-		System.out.println("TEMP MSG: Move options...\n\tplace <name> <x> <y>\n\t\twhere name is either Peashooter, Melon-pult, or Chestnut\n\tremove <x> <y>\n\tskip\n\t\ttyping nothing and just hitting enter should work too");
+		view.announce("TEMP MSG: Move options...\n\tplace <name> <x> <y>\n\t\twhere name is either Peashooter, Melon-pult, or Chestnut\n\tremove <x> <y>\n\tskip\n\t\ttyping nothing and just hitting enter should work too");
 	}
 }

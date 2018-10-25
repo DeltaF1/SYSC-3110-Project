@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,13 +10,15 @@ import javax.swing.*;
 public class ASCIIView {
 	
 	private Board board;
+	private JFrame frame;
 	private JTextArea textOutput;
 	private JTextField textInput;
+	private JTextArea eventLog;
 	
 	public ASCIIView (Board board) {
 		this.board = board;
 		
-		JFrame frame = new JFrame("PVZ - ASCII");
+		frame = new JFrame("PVZ - ASCII");
 		
 		Font monoFont = new Font("Courier New", Font.PLAIN, 16);
 		
@@ -49,6 +52,15 @@ public class ASCIIView {
 				"                                                                         \r\n" + 
 				"");
 		
+		eventLog = new JTextArea();
+		eventLog.setEditable(false);
+		eventLog.setFont(monoFont);
+		JScrollPane eventLogPane = new JScrollPane(eventLog);
+		
+		// Trick to keep the scrollpane at a max height from Alexander @ https://stackoverflow.com/questions/41629778/fix-height-of-jscrollpane
+		eventLogPane.setMaximumSize(new Dimension(1000, 100));
+		eventLogPane.setPreferredSize(new Dimension(0, 100));
+		
 		textInput = new JTextField();
 		textInput.setFont(monoFont);
 		textInput.addActionListener(new ActionListener() {
@@ -59,6 +71,7 @@ public class ASCIIView {
 		
 		frame.add(textOutput, BorderLayout.NORTH);
 		frame.add(textInput, BorderLayout.SOUTH);
+		frame.add(eventLogPane, BorderLayout.CENTER);
 		
 		//frame.setSize(500, 500);
 		frame.pack();
@@ -116,6 +129,8 @@ public class ASCIIView {
 		
 		textOutput.setText(s);
 		
+		frame.pack();
+		
 		return s.length();
 	}
 	
@@ -125,6 +140,11 @@ public class ASCIIView {
 		}
 		return "[X]";
 
+	}
+	
+	public void announce(String message) {
+		eventLog.append(message + "\r\n");
+		eventLog.setCaretPosition(eventLog.getText().length());
 	}
 	
 	
