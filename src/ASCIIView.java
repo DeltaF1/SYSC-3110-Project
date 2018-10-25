@@ -83,7 +83,7 @@ public class ASCIIView {
 		textInput.setText(null);
 		
 		String output = Controller.parseText(text);
-		textOutput.append(output);
+		announce(output);
 	}
 
 	public static String repeat(String str, int times) {
@@ -141,14 +141,11 @@ public class ASCIIView {
 
 	}
 	
-<<<<<<< HEAD
 	public void announce(String message) {
 		eventLog.append(message + "\r\n");
 		eventLog.setCaretPosition(eventLog.getText().length());
 	}
 	
-=======
->>>>>>> mergeWithTrevor
 	
 /*	old main replaced with Controller's Main
   public static void main(String[] args) {

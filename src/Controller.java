@@ -11,64 +11,20 @@ public class Controller {
 	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when sold
 	
 	
-	public static void main(String[] args) {
-		
-		board = new Board();
-		view = new ASCIIView(board);
-		plantTypes = createPlantTypes();
-		zombieTypes = createZombieTypes();
-
-		Scanner scanner = new Scanner(System.in);
-		String input;
-		System.out.println("cmd> ");
-		while (true) {
-			view.draw();
-			input = scanner.nextLine();
-			parseText(input);
-			advancePlants();
-			advanceZombies();
-			spawnZombies();
-		}
-	}
-	
 	/**
 	 * register all plant types here
 	 */
-<<<<<<< HEAD
-	public static void inputPlacePlant(String name, int x, int y) {
-		name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase(); //handle any case
-		////inputPlacePlant(x,y, name, HP, DMG, ATTKSPEED, COST );
-		if (name.equals("Peashooter")) {
-			inputPlacePlant(x,y, name, 50, 20, 2, 200 );
-		}else if (name.equals("Melon-pult")) {
-			inputPlacePlant(x,y, name, 50, 150, 8, 250 );
-		}else if (name.equals("Chestnut")) {
-			inputPlacePlant(x,y, name, 400, -1, -1, 300 );
-		}else {
-			view.announce("ERROR: unknown name given to inputPlacePlant, " + name);
-			inputSkipTurn();
-		}
-=======
 	private static HashMap<String, Plant> createPlantTypes() {
 		HashMap<String, Plant> plants = new HashMap<String, Plant>();
 		plants.put("basic", new Plant("basic", 1, 1, 1, 1));
 		return plants;
->>>>>>> mergeWithTrevor
 	}
 	
 	/**
 	 * register all zombie types here
 	 */
-<<<<<<< HEAD
-	public static void inputRemovePlant(int x, int y) {
-		Plant toDelete = (Plant) model.getTiles()[y][x].getOccupant();
-		int reclaimed = (int) (toDelete.getCost() * SELL_PERCENT);
-		view.announce("TEMP MSG: player should receive " + reclaimed + " cash for selling plant");
-		model.removeEntity(x, y);
-=======
 	private static HashMap<String, Zombie> createZombieTypes() {
 		return new HashMap<String, Zombie>();
->>>>>>> mergeWithTrevor
 	}
 	
 	/**
@@ -188,15 +144,9 @@ public class Controller {
 						view.announce("TEMP MSG: plant at " + Integer.toString(x) + "," + Integer.toString(y) + " shot");
 						Integer bulletHit = getHitZombieX(y);
 						if (bulletHit != null) {
-<<<<<<< HEAD
-							Zombie shotZombie = (Zombie) model.getTiles()[y][bulletHit].getOccupant();
-							int newHP = shotZombie.getHP() - ((Plant)model.getTiles()[y][x].getOccupant()).getDamage();
-							view.announce("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(shotZombie.getHP()));
-=======
 							Zombie shotZombie = (Zombie) board.getTiles()[y][bulletHit].getOccupant();
 							int newHP = shotZombie.getHp() - ((Plant)board.getTiles()[y][x].getOccupant()).getDamage();
-							System.out.println("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(shotZombie.getHp()));
->>>>>>> mergeWithTrevor
+							view.announce("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(shotZombie.getHp()));
 							if (newHP <= 0) {
 								board.removeEntity(bulletHit, y);
 							}else {
@@ -214,27 +164,16 @@ public class Controller {
 	 */
 	private static void advanceZombie(int x, int y) {
 		int newX = x;
-<<<<<<< HEAD
-		Zombie zombie = (Zombie)model.getEntity(x,y);
-=======
-		Zombie zombie = (Zombie)board.getTiles()[y][x].getOccupant();
->>>>>>> mergeWithTrevor
+		Zombie zombie = (Zombie)board.getEntity(x,y);
 		for (int i = 1; i < zombie.getMovSpd() + 1; i ++) {
 			//wait in line behind zombie ahead
 			if (newX > 0 && board.getTiles()[y][newX-1].getOccupant() instanceof Zombie ) {
 				break;
 			//attack plant
-<<<<<<< HEAD
-			} else if  (newX > 0 && model.getTiles()[y][newX-1].getOccupant() instanceof Plant ) {
-				Plant attacking = (Plant) model.getTiles()[y][newX-1].getOccupant();
-				int newHP = attacking.getHP() - zombie.getDamage();
-				view.announce("TMP MSG: The plant at " + Integer.toString(newX-1) + "," + Integer.toString(y) +" had its health reduced to " + Integer.toString(newHP));
-=======
-			}else if  (newX > 0 && board.getTiles()[y][newX-1].getOccupant() instanceof Plant ) {
+			} else if  (newX > 0 && board.getTiles()[y][newX-1].getOccupant() instanceof Plant ) {
 				Plant attacking = (Plant) board.getTiles()[y][newX-1].getOccupant();
 				int newHP = attacking.getHp() - zombie.getDamage();
-				System.out.println("TMP MSG: The plant at " + Integer.toString(newX-1) + "," + Integer.toString(y) +" had its health reduced to " + Integer.toString(newHP));
->>>>>>> mergeWithTrevor
+				view.announce("TMP MSG: The plant at " + Integer.toString(newX-1) + "," + Integer.toString(y) +" had its health reduced to " + Integer.toString(newHP));
 				if (newHP <= 0) {
 					board.removeEntity(newX-1, y);
 				}else {
@@ -248,11 +187,7 @@ public class Controller {
 		}
 		if (newX != x) {
 			if (newX >= 0) {
-<<<<<<< HEAD
-				model.placeEntity(newX, y, new Zombie(zombie.getName(), zombie.getHP(), zombie.getDamage(), zombie.getMovSpd()));
-=======
 				board.placeEntity(newX,y,new Zombie( zombie.getName(), zombie.getHp(), zombie.getDamage(), zombie.getMovSpd()));
->>>>>>> mergeWithTrevor
 			}else {
 				view.announce("TEMP MSG: a zombie broke through on row " + Integer.toString(y));
 			}
@@ -265,15 +200,9 @@ public class Controller {
 	 */
 	private static void advanceZombies() {		
 		
-<<<<<<< HEAD
-		for (int y = 0; y < model.getTiles().length; y++) {
-			for (int x = 0; x <  model.getTiles()[y].length; x++) {
-				if( model.getEntity(x, y) instanceof Zombie) {
-=======
 		for (int y = 0; y < board.getTiles().length; y++) {
 			for (int x = 0; x <  board.getTiles()[y].length; x++) {
-				if( board.getTiles()[y][x].getOccupant() instanceof Zombie) {
->>>>>>> mergeWithTrevor
+				if( board.getEntity(x, y) instanceof Zombie) {
 					advanceZombie(x,y);				}
 			}
 		}
@@ -283,58 +212,22 @@ public class Controller {
 	 * Handle new zombies spawned this turn
 	 */
 	private static void spawnZombies() {
-<<<<<<< HEAD
-		int newPosY = ThreadLocalRandom.current().nextInt(0, model.HEIGHT);
-		model.placeEntity(model.WIDTH-1,newPosY, new Zombie("a zombie", 60,20,2));
-=======
-		int newPosY = ThreadLocalRandom.current().nextInt(0, board.getTiles().length);
-		board.placeEntity(board.getTiles()[0].length-1,newPosY, new Zombie("a zombie", 60,20,2));
->>>>>>> mergeWithTrevor
+		int newPosY = ThreadLocalRandom.current().nextInt(0, board.HEIGHT);
+		board.placeEntity(board.WIDTH-1,newPosY, new Zombie("a zombie", 60,20,2));
 	}
-}
-	
-<<<<<<< HEAD
-	public static String parseText(String input) {
-		String[] words = input.split("\\s");
-		String out = "";
-		
-		if (words[0].toLowerCase().equals("place")) 
-		{
-			inputPlacePlant(words[1],Integer.parseInt(words[2]),Integer.parseInt(words[3])  );
-		}
-		else if (words[0].toLowerCase().equals("remove")) 
-		{
-			inputRemovePlant(Integer.parseInt(words[1]),Integer.parseInt(words[2]) );
-		}
-		else if (words[0].toLowerCase().equals("skip") || input.equals("")) 
-		{
-			inputSkipTurn();
-		}
-		else if(words[0].equals("quit"))
-		{
-			System.exit(0);
-		}
-		else {
-			return "ERROR: Unknown move type " + words[0];
-		}
-		advancePlants();
-		advanceZombies();
-		spawnZombies();
-		view.draw();
-		return out;
-	}
+
 	
 	public static void main(String[] args) {
-		model = new Board();
-		view = new ASCIIView(model);
+		
+		board = new Board();
+		view = new ASCIIView(board);
+		plantTypes = createPlantTypes();
+		zombieTypes = createZombieTypes();
 		view.announce("TEMP MSG: Move options...\n\tplace <name> <x> <y>\n\t\twhere name is either Peashooter, Melon-pult, or Chestnut\n\tremove <x> <y>\n\tskip\n\t\ttyping nothing and just hitting enter should work too");
-=======
+	}
 
 
-
-
-
-
+}
 
 /*	
 	public static void inputPlacePlant(int x, int y, String name, int hp, int damage, int atkSpd, int cost) {
