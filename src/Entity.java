@@ -10,20 +10,20 @@ public class Entity {
 		this.damage = damage;
 	}
 	
-	public int getHP() {
+	public String getName() {
+		return name;
+	}
+	
+	public int getHp() {
 		return hp;
 	}
 	
-	public void setHP(int hp) {
+	public void setHp(int hp) {
 		this.hp = hp;
 	}
 	
 	public int getDamage() {
 		return damage;
 	}
-	
-	public String getName() {
-		return name;
-	}
-	
+
 }

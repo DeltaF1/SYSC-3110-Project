@@ -3,7 +3,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
 
 import javax.swing.*;
 
@@ -142,11 +141,14 @@ public class ASCIIView {
 
 	}
 	
+<<<<<<< HEAD
 	public void announce(String message) {
 		eventLog.append(message + "\r\n");
 		eventLog.setCaretPosition(eventLog.getText().length());
 	}
 	
+=======
+>>>>>>> mergeWithTrevor
 	
 /*	old main replaced with Controller's Main
   public static void main(String[] args) {
