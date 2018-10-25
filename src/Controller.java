@@ -172,42 +172,39 @@ public class Controller {
 		model.placeEntity(model.getTiles()[0].length-1,newPosY, new Zombie("a zombie", 60,20,2));
 	}
 	
-	public static void main(String[] args) {
+	public static String parseText(String input) {
+		String[] words = input.split("\\s");
+		String out = "";
 		
+		if (words[0].toLowerCase().equals("place")) 
+		{
+			inputPlacePlant(words[1],Integer.parseInt(words[2]),Integer.parseInt(words[3])  );
+		}
+		else if (words[0].toLowerCase().equals("remove")) 
+		{
+			inputRemovePlant(Integer.parseInt(words[1]),Integer.parseInt(words[2]) );
+		}
+		else if (words[0].toLowerCase().equals("skip") || input.equals("")) 
+		{
+			inputSkipTurn();
+		}
+		else if(words[0].equals("quit"))
+		{
+			System.exit(0);
+		}
+		else {
+			return "ERROR: Unknown move type " + words[0];
+		}
+		advancePlants();
+		advanceZombies();
+		spawnZombies();
+		view.draw();
+		return out;
+	}
+	
+	public static void main(String[] args) {
 		model = new Board();
 		view = new ASCIIView(model);
-
-		Scanner scanner = new Scanner(System.in);
-		String input;
 		System.out.println("TEMP MSG: Move options...\n\tplace <name> <x> <y>\n\t\twhere name is either Peashooter, Melon-pult, or Chestnut\n\tremove <x> <y>\n\tskip\n\t\ttyping nothing and just hitting enter should work too");
-		while (true) {
-			view.draw();
-			input = scanner.nextLine();
-			String[] words = input.split("\\s");
-			System.out.println(input);
-			if (words[0].toLowerCase().equals("place")) 
-			{
-				inputPlacePlant(words[1],Integer.parseInt(words[2]),Integer.parseInt(words[3])  );
-			}
-			else if (words[0].toLowerCase().equals("remove")) 
-			{
-				inputRemovePlant(Integer.parseInt(words[1]),Integer.parseInt(words[2]) );
-			}
-			else if (words[0].toLowerCase().equals("skip") || input.equals("")) 
-			{
-				inputSkipTurn();
-			}
-			else if(words[0] =="quit")
-			{
-				break;
-			}
-			else {
-				System.out.println("ERROR: Unknown move type" + words[0]);
-			}
-			advancePlants();
-			advanceZombies();
-			spawnZombies();
-		}
-		scanner.close();
 	}
 }

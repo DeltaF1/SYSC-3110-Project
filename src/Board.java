@@ -49,6 +49,11 @@ public class Board {
 		tiles[y][x].setOccupant(null);
 	}
 	
+	public Entity getEntity(int x, int y) {
+		checkCoords(x, y);
+		return tiles[y][x].getOccupant();
+	}
+	
 	/**
 	 * ensures that x and y are valid coords, throws an error if they're not
 	 */
