@@ -36,7 +36,10 @@ public class Controller {
 		}
 		String[] cmdNameAndArgs = commandStr.split(" ", 2);
 		String cmdName = cmdNameAndArgs[0];
-		String[] cmdArgs = cmdNameAndArgs[1].split(" ");
+		String[] cmdArgs = new String[1];
+		if (cmdNameAndArgs.length > 1) {
+			cmdArgs = cmdNameAndArgs[1].split(" ");
+		}
 		
 		switch (cmdName) {
 		case "place":
@@ -112,7 +115,11 @@ public class Controller {
 	}
 	
 	private static String endTurn(String[] args) {
-		return "put code here to end the turn somehow";
+		advancePlants();
+		advanceZombies();
+		spawnZombies();
+		view.draw();
+		return "";
 	}
 	
 	
