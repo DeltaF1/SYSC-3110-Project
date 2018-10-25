@@ -194,11 +194,13 @@ public class Controller {
 		}
 		if (newX != x) {
 			if (newX >= 0) {
-				board.placeEntity(newX,y,new Zombie( zombie.getName(), zombie.getHp(), zombie.getDamage(), zombie.getMovSpd()));
+				board.moveEntity(newX,y,zombie);
+			
 			}else {
 				view.announce("TEMP MSG: a zombie broke through on row " + Integer.toString(y));
+				board.removeEntity(x, y);
 			}
-			board.removeEntity(x, y);
+			
 		}
 	}
 	

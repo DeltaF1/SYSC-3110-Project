@@ -1,3 +1,4 @@
+import java.awt.Point;
 
 public class Board {
 	
@@ -46,6 +47,30 @@ public class Board {
 			tiles[y][x].setOccupant(e);
 			return true;
 		}
+		return false;
+	}
+	
+	public Tile getEntityTile(Entity e) {
+		for (int x = 0; x < WIDTH; x++) {
+			for (int y = 0; y < HEIGHT; y++) {
+				if (tiles[y][x].getOccupant() == e) {
+					return tiles[y][x];
+				}
+			}
+		}
+		return null;
+	}
+	
+	public boolean moveEntity(int x, int y, Entity e) {
+		checkCoords(x, y);
+		Tile startTile = getEntityTile(e);
+		if (startTile != null && tiles[y][x].getOccupant() == null) {
+			startTile.setOccupant(null);
+			tiles[y][x].setOccupant(e);
+			System.out.println("moved zomb to "+ Integer.toString(x));
+			return true;
+		}
+		System.out.println("failed move");
 		return false;
 	}
 	
