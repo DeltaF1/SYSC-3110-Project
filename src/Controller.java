@@ -4,8 +4,9 @@ public class Controller {
 	private static Board board;
 	private static EntityFactory entityFactory;
 	private static ASCIIView view;
-	public static final int PLACE_AREA_WIDTH = 5;
-	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when sold
+	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
+	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when selling a plant
+	public static int sunPoints; //total sun points for the current player
 	enum GameState {
 		MAINMENU,
 		PRELEVEL,
@@ -34,8 +35,8 @@ public class Controller {
 		case MAINMENU:
 			if (cmdName.equals("start")) {
 				startGame();
-				break;
 			}
+			break;
 		case INLEVEL:	
 			switch (cmdName) {
 			case "place":
@@ -75,14 +76,20 @@ public class Controller {
 			return;
 		}
 		int[] coords = strCoordsToInt(args[1], args[2]);
-		if (coords == null) {
-			view.announce(String.format("invalid board coordinates: (x = %s, y = %s)", args[1], args[2]));
+		if (coords == null)
 			return;
-		}
 		int x = coords[0]; 
 		int y = coords[1];
-		if (board.placeEntity(x, y, selectedPlant)) {
-			view.announce(String.format("%s placed successfully at (%d, %d)", plantName, x, y));
+		if (board.getEntity(x, y) == null) {
+			int plantCost = selectedPlant.getCost();
+			if (sunPoints >= selectedPlant.getCost()) {
+				board.placeEntity(x, y, selectedPlant);
+				sunPoints -= plantCost;
+				view.announce(String.format("%s placed successfully at (%d, %d)", plantName, x, y));
+			} else {
+				view.announce(String.format("You can't afford a %s. It costs %d sun points and you have %d!", 
+					plantName, plantCost, sunPoints));
+			}
 		} else {
 			view.announce("There's already something there, put your plant somewhere else.");
 		}
@@ -94,10 +101,8 @@ public class Controller {
 			return;
 		}
 		int[] coords = strCoordsToInt(args[0], args[1]);
-		if (coords == null) {
-			view.announce(String.format("invalid board coordinates: (x = %s, y = %s)", args[0], args[1]));
+		if (coords == null)
 			return;
-		}
 		int x = coords[0]; 
 		int y = coords[1];
 		Entity tileEntity = board.getEntity(x, y);
@@ -123,6 +128,7 @@ public class Controller {
 			y = Integer.parseInt(stry);
 			board.checkCoords(x, y);
 		} catch (IllegalArgumentException err) { //parseInt and checkCoords throw the same type of error
+			view.announce(String.format("invalid board coordinates: (x = %s, y = %s)", strx, stry));
 			return null;
 		}
 		return new int[] {x, y};
@@ -132,6 +138,7 @@ public class Controller {
 		advancePlants();
 		advanceZombies();
 		spawnZombies();
+		view.announce(String.format("Turn complete, you now have %d sunpoints", sunPoints));
 	}
 	
 	
@@ -155,10 +162,12 @@ public class Controller {
 				Entity occupant = board.getEntity(x,y);
 				if( occupant instanceof Plant) {
 					Plant plant = (Plant)occupant;
-					
-					if (plant.getCoolDown() > 0) {
+					if (plant instanceof Sunflower) { //pretty trash logic, should have this in the Plant.update() method somehow
+						sunPoints += 50;
+					}
+					if (plant.getCoolDown() >= 1) {
 						plant.setCoolDown(plant.getCoolDown()-1);
-					}else if (plant.getCoolDown() > -1){
+					}else if (plant.getCoolDown() >= 0){
 						plant.setCoolDown(plant.getAtkSpd());
 						
 						view.announce("TEMP MSG: plant at " + Integer.toString(x) + "," + Integer.toString(y) + " shot");
@@ -236,12 +245,12 @@ public class Controller {
 	 */
 	private static void spawnZombies() {
 		int newPosY = ThreadLocalRandom.current().nextInt(0, board.HEIGHT);
-		board.placeEntity(board.WIDTH-1,newPosY, new Zombie("a zombie", 60,20,2));
+		board.placeEntity(board.WIDTH-1,newPosY, new BasicZombie());
 	}
 
 	
 	public static void main(String[] args) {
-		
+		sunPoints = 150;
 		board = new Board();
 		view = new ASCIIView(board);
 		view.drawMenu();
