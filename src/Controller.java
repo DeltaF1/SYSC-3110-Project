@@ -1,5 +1,4 @@
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.HashMap;
 
 public class Controller {
 	private static Board board;
@@ -70,9 +69,9 @@ public class Controller {
 			view.announce("To see tile info you need to specify an x coordinate and a y coordinate");
 			return;
 		}
-		int[] coords = strCoordsToInt(args[1], args[2]);
+		int[] coords = strCoordsToInt(args[0], args[1]);
 		if (coords == null) {
-			view.announce(String.format("invalid board coordinates: (x = %s, y = %s)", args[1], args[2]));
+			view.announce(String.format("invalid board coordinates: (x = %s, y = %s)", args[0], args[1]));
 			return;
 		}
 		int x = coords[0]; 
@@ -228,39 +227,3 @@ public class Controller {
 
 
 }
-
-/*	
-	public static void inputPlacePlant(int x, int y, String name, int hp, int damage, int atkSpd, int cost) {
-		board.placeEntity(x, y, new Plant(name, hp, damage, atkSpd, cost));
-	}
-	
-	
-	public static void inputPlacePlant(String name, int x, int y) {
-		name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase(); //handle any case
-		////inputPlacePlant(x,y, name, HP, DMG, ATTKSPEED, COST );
-		if (name.equals("Peashooter")) {
-			inputPlacePlant(x,y, name, 50, 20, 2, 200 );
-		}else if (name.equals("Melon-pult")) {
-			inputPlacePlant(x,y, name, 50, 150, 8, 250 );
-		}else if (name.equals("Chestnut")) {
-			inputPlacePlant(x,y, name, 400, -1, -1, 300 );
-		}else {
-			System.out.println("ERROR: unknown name given to inputPlacePlant, " + name);
-			inputSkipTurn();
-		}
->>>>>>> mergeWithTrevor
-	}
-	
-	
-	public static void inputRemovePlant(int x, int y) {
-		Plant toDelete = (Plant) board.getTiles()[y][x].getOccupant();
-		int reclaimed = (int) (toDelete.getCost() * SELL_PERCENT);
-		System.out.println("TEMP MSG: player should receive " + reclaimed + " cash for selling plant");
-		board.removeEntity(x, y);
-	}
-	
-	
-	public static void inputSkipTurn() {
-		
-	}
-*/

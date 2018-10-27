@@ -9,6 +9,7 @@ public class EntityFactory {
 	//register all plant types here
 	private static void registerPlants() {
 		plantTypes.put("proj", ProjectilePlant.class);
+		plantTypes.put("sunflower", Sunflower.class);
 	}
 	
 	//register all zombie types here
@@ -30,11 +31,14 @@ public class EntityFactory {
 	}
 	
 	private Entity makeEntity(EntityType t, String type) {
+		Class<? extends Entity> entitySubclass = plantTypes.get(type);
+		if (entitySubclass == null)
+			return null;
 		try {
 			if (t == EntityType.PLANT)
-				return plantTypes.get(type).getConstructor().newInstance();
+				return entitySubclass.getConstructor().newInstance();
 			if (t == EntityType.ZOMBIE) 
-				return plantTypes.get(type).getConstructor().newInstance();
+				return entitySubclass.getConstructor().newInstance();
 		} catch (InvocationTargetException | InstantiationException | IllegalAccessException 
 				| IllegalArgumentException | NoSuchMethodException | SecurityException err) {
 			throw new RuntimeException("One of your registered entity subclasses doesn't exist, or doesn't have an empty constructor");

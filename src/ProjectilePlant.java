@@ -1,7 +1,7 @@
 public class ProjectilePlant extends Plant{
 	
-	public ProjectilePlant(String name, int hp, int damage, int atkSpd, int cost) {
-		super(name, hp, damage, atkSpd, cost);
+	public ProjectilePlant() {
+		super("Projectile", 100, 10, 1, 50);
 	}
 	
 	public void update() {
