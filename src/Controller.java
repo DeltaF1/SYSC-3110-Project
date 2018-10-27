@@ -11,7 +11,7 @@ public class Controller {
 		MAINMENU,
 		PRELEVEL,
 		INLEVEL;
-	}
+	} //test comment, remove later
 	
 	static GameState state = GameState.MAINMENU;
 	
