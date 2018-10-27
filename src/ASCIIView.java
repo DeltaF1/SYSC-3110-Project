@@ -82,8 +82,7 @@ public class ASCIIView {
 		String text = textInput.getText();
 		textInput.setText(null);
 		
-		String output = Controller.parseText(text);
-		announce(output);
+		Controller.parseText(text);
 	}
 
 	public static String repeat(String str, int times) {
