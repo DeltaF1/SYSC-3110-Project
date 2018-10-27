@@ -1,31 +1,12 @@
-import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.HashMap;
 
 public class Controller {
 	private static Board board;
-	private static HashMap<String, Plant> plantTypes;
-	private static HashMap<String, Zombie> zombieTypes;
+	private static EntityFactory entityFactory;
 	private static ASCIIView view;
 	public static final int PLACE_AREA_WIDTH = 5;
 	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when sold
-	
-	
-	/**
-	 * register all plant types here
-	 */
-	private static HashMap<String, Plant> createPlantTypes() {
-		HashMap<String, Plant> plants = new HashMap<String, Plant>();
-		plants.put("basic", new Plant("basic", 1, 1, 1, 1));
-		return plants;
-	}
-	
-	/**
-	 * register all zombie types here
-	 */
-	private static HashMap<String, Zombie> createZombieTypes() {
-		return new HashMap<String, Zombie>();
-	}
 	
 	/**
 	 * register all command types here
@@ -58,7 +39,7 @@ public class Controller {
 			return "To place a plant you need to specify plant name, x coordinate, and y coordinate";
 		}
 		String plantName = args[0];
-		Plant selectedPlant = plantTypes.get(plantName);
+		Plant selectedPlant = entityFactory.makePlant(plantName);
 		if (selectedPlant == null) {
 			return "\"" + plantName + "\"" + " is not a valid plant name";
 		}
@@ -85,7 +66,7 @@ public class Controller {
 		}
 		int x = coords[0]; 
 		int y = coords[1];
-		Entity tileEntity = board.getTile(x, y).getOccupant();
+		Entity tileEntity = board.getEntity(x, y);
 		if (tileEntity == null) {
 			return "There's nothing on that tile";
 		}
@@ -128,8 +109,8 @@ public class Controller {
 	 * Determine the X position of the closest zombie on the Y row (this must be the zombie hit by plant projectile)
 	 */
 	private static Integer getHitZombieX(int y) {
-		for (int x = 0; x < board.getTiles()[y].length; x++) {
-			if( board.getTiles()[y][x].getOccupant() instanceof Zombie) {
+		for (int x = 0; x < Board.WIDTH; x++) {
+			if(board.getEntity(x,y) instanceof Zombie) {
 				return new Integer(x);
 			}
 		}
@@ -138,10 +119,11 @@ public class Controller {
 	
 	private static void advancePlants() {
 
-		for (int y = 0; y < board.getTiles().length; y++) {
+		for (int y = 0; y < Board.HEIGHT; y++) {
 			for (int x = 0; x < PLACE_AREA_WIDTH; x++) {
-				if( board.getTiles()[y][x].getOccupant() instanceof Plant) {
-					Plant plant = (Plant)board.getTiles()[y][x].getOccupant();
+				Entity occupant = board.getEntity(x,y);
+				if( occupant instanceof Plant) {
+					Plant plant = (Plant)occupant;
 					
 					if (plant.getCoolDown() > 0) {
 						plant.setCoolDown(plant.getCoolDown()-1);
@@ -151,8 +133,8 @@ public class Controller {
 						view.announce("TEMP MSG: plant at " + Integer.toString(x) + "," + Integer.toString(y) + " shot");
 						Integer bulletHit = getHitZombieX(y);
 						if (bulletHit != null) {
-							Zombie shotZombie = (Zombie) board.getTiles()[y][bulletHit].getOccupant();
-							int newHP = shotZombie.getHp() - ((Plant)board.getTiles()[y][x].getOccupant()).getDamage();
+							Zombie shotZombie = (Zombie) board.getEntity(bulletHit, y);
+							int newHP = shotZombie.getHp() - ((Plant)board.getEntity(x,y)).getDamage();
 							view.announce("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(shotZombie.getHp()));
 							if (newHP <= 0) {
 								board.removeEntity(bulletHit, y);
@@ -173,12 +155,13 @@ public class Controller {
 		int newX = x;
 		Zombie zombie = (Zombie)board.getEntity(x,y);
 		for (int i = 1; i < zombie.getMovSpd() + 1; i ++) {
+			Entity encounteredEntity = board.getEntity(newX-1, y);
 			//wait in line behind zombie ahead
-			if (newX > 0 && board.getTiles()[y][newX-1].getOccupant() instanceof Zombie ) {
+			if (newX > 0 && encounteredEntity instanceof Zombie ) {
 				break;
 			//attack plant
-			} else if  (newX > 0 && board.getTiles()[y][newX-1].getOccupant() instanceof Plant ) {
-				Plant attacking = (Plant) board.getTiles()[y][newX-1].getOccupant();
+			} else if  (newX > 0 && encounteredEntity instanceof Plant ) {
+				Plant attacking = (Plant) encounteredEntity;
 				int newHP = attacking.getHp() - zombie.getDamage();
 				view.announce("TMP MSG: The plant at " + Integer.toString(newX-1) + "," + Integer.toString(y) +" had its health reduced to " + Integer.toString(newHP));
 				if (newHP <= 0) {
@@ -230,8 +213,7 @@ public class Controller {
 		
 		board = new Board();
 		view = new ASCIIView(board);
-		plantTypes = createPlantTypes();
-		zombieTypes = createZombieTypes();
+		entityFactory = new EntityFactory();
 		view.announce("TEMP MSG: Move options...\n\tplace <name> <x> <y>\n\t\twhere name is either Peashooter, Melon-pult, or Chestnut\n\tremove <x> <y>\n\tskip\n\t\ttyping nothing and just hitting enter should work too");
 	}
 

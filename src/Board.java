@@ -80,8 +80,7 @@ public class Board {
 	}
 	
 	public Entity getEntity(int x, int y) {
-		checkCoords(x, y);
-		return tiles[y][x].getOccupant();
+		return getTile(x,y).getOccupant();
 	}
 	
 	/**
