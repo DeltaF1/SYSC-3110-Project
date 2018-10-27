@@ -56,6 +56,7 @@ public class Controller {
 		default:
 			view.announce("\"" + cmdName + "\"" + " isn't even a real command");
 		}
+		view.draw();
 	}
 	
 	private static void placePlant(String[] args) {
