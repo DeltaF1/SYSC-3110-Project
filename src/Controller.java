@@ -6,6 +6,13 @@ public class Controller {
 	private static ASCIIView view;
 	public static final int PLACE_AREA_WIDTH = 5;
 	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when sold
+	enum GameState {
+		MAINMENU,
+		PRELEVEL,
+		INLEVEL;
+	}
+	
+	static GameState state = GameState.MAINMENU;
 	
 	/**
 	 * register all command types here
@@ -22,21 +29,38 @@ public class Controller {
 			cmdArgs = cmdNameAndArgs[1].split(" ");
 		}
 		
-		switch (cmdName) {
-		case "place":
-			placePlant(cmdArgs);
-			break;
-		case "": //Flows over into the next case
-		case "done":
-			endTurn(cmdArgs);
-			break;
-		case "info":
-			tileInfo(cmdArgs);
-			break;
-		default:
-			view.announce("\"" + cmdName + "\"" + " isn't even a real command");
+		// Move this into more sub-methods?
+		switch (state) {
+		case MAINMENU:
+			if (cmdName.equals("start")) {
+				startGame();
+				break;
+			}
+		case INLEVEL:	
+			switch (cmdName) {
+			case "place":
+				placePlant(cmdArgs);
+				break;
+			case "done":
+				endTurn(cmdArgs);
+				break;
+			case "info":
+				tileInfo(cmdArgs);
+				break;
+			default:
+				view.announce("\"" + cmdName + "\"" + " isn't even a real command");
+			}
+			view.drawBoard();
 		}
-		view.draw();
+	}
+	
+	/*
+	 * TODO: call loadLevel first to go to PRELEVEL state and show the player which zombies will be in the level
+	 */
+	public static void startGame() {
+		state = GameState.INLEVEL;
+		view.announce("Level start!");
+		view.drawBoard();
 	}
 	
 	private static void placePlant(String[] args) {
@@ -108,7 +132,6 @@ public class Controller {
 		advancePlants();
 		advanceZombies();
 		spawnZombies();
-		view.draw();
 	}
 	
 	
@@ -221,8 +244,8 @@ public class Controller {
 		
 		board = new Board();
 		view = new ASCIIView(board);
+		view.drawMenu();
 		entityFactory = new EntityFactory();
-		view.announce("TEMP MSG: Move options...\n\tplace <name> <x> <y>\n\t\twhere name is either Peashooter, Melon-pult, or Chestnut\n\tremove <x> <y>\n\tskip\n\t\ttyping nothing and just hitting enter should work too");
 	}
 
 

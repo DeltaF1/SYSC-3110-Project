@@ -14,6 +14,33 @@ public class ASCIIView {
 	private JTextField textInput;
 	private JTextArea eventLog;
 	
+	private static String splash = "\r\n" + 
+			"          ___    __                          _                           \r\n" + 
+			"         F _ \",  LJ     ___ _     _ ___     FJ_       ____               \r\n" + 
+			"        J `-' |  FJ    F __` L   J '__ J   J  _|     F ___J              \r\n" + 
+			"        |  __/F J  L  | |--| |   | |__| |  | |-'    | '----_             \r\n" + 
+			"        F |__/  J  L  F L__J J   F L  J J  F |__-.  )-____  L            \r\n" + 
+			"       J__|     J__L J\\____,__L J__L  J__L \\_____/ J\\______/F            \r\n" + 
+			"       |__L     |__|  J____,__F |__L  J__| J_____F  J______F             \r\n" + 
+			"                                                                         \r\n" + 
+			"                                                                         \r\n" + 
+			"                          _    _     ____                                \r\n" + 
+			"                         J |  | L   F ___J                               \r\n" + 
+			"                         J J  F L  | '----_                              \r\n" + 
+			"                         J\\ \\/ /F  )-____  L  __                         \r\n" + 
+			"                          \\\\__//  J\\______/F J__L                        \r\n" + 
+			"                           \\__/    J______F  |__|                        \r\n" + 
+			"                                                                         \r\n" + 
+			"    ____                               _        __                       \r\n" + 
+			"   [__  '.     ____      _ _____      FJ___     LJ     ____       ____   \r\n" + 
+			"   `--7 .'    F __ J    J '_  _ `,   J  __ J          F __ J     F ___J  \r\n" + 
+			"    .'.'.'   | |--| |   | |_||_| |   | |--| |   FJ   | _____J   | '----_ \r\n" + 
+			"  .' (_(__   F L__J J   F L LJ J J   F L__J J  J  L  F L___--.  )-____  L\r\n" + 
+			" J________L J\\______/F J__L LJ J__L J__,____/L J__L J\\______/F J\\______/F\r\n" + 
+			" |________|  J______F  |__L LJ J__| J__,____F  |__|  J______F   J______F \r\n" + 
+			"                                                                         \r\n" + 
+			"";
+	
 	public ASCIIView (Board board) {
 		this.board = board;
 		
@@ -24,32 +51,6 @@ public class ASCIIView {
 		textOutput = new JTextArea();
 		textOutput.setEditable(false);
 		textOutput.setFont(monoFont);
-		textOutput.setText("\r\n" + 
-				"          ___    __                          _                           \r\n" + 
-				"         F _ \",  LJ     ___ _     _ ___     FJ_       ____               \r\n" + 
-				"        J `-' |  FJ    F __` L   J '__ J   J  _|     F ___J              \r\n" + 
-				"        |  __/F J  L  | |--| |   | |__| |  | |-'    | '----_             \r\n" + 
-				"        F |__/  J  L  F L__J J   F L  J J  F |__-.  )-____  L            \r\n" + 
-				"       J__|     J__L J\\____,__L J__L  J__L \\_____/ J\\______/F            \r\n" + 
-				"       |__L     |__|  J____,__F |__L  J__| J_____F  J______F             \r\n" + 
-				"                                                                         \r\n" + 
-				"                                                                         \r\n" + 
-				"                          _    _     ____                                \r\n" + 
-				"                         J |  | L   F ___J                               \r\n" + 
-				"                         J J  F L  | '----_                              \r\n" + 
-				"                         J\\ \\/ /F  )-____  L  __                         \r\n" + 
-				"                          \\\\__//  J\\______/F J__L                        \r\n" + 
-				"                           \\__/    J______F  |__|                        \r\n" + 
-				"                                                                         \r\n" + 
-				"    ____                               _        __                       \r\n" + 
-				"   [__  '.     ____      _ _____      FJ___     LJ     ____       ____   \r\n" + 
-				"   `--7 .'    F __ J    J '_  _ `,   J  __ J          F __ J     F ___J  \r\n" + 
-				"    .'.'.'   | |--| |   | |_||_| |   | |--| |   FJ   | _____J   | '----_ \r\n" + 
-				"  .' (_(__   F L__J J   F L LJ J J   F L__J J  J  L  F L___--.  )-____  L\r\n" + 
-				" J________L J\\______/F J__L LJ J__L J__,____/L J__L J\\______/F J\\______/F\r\n" + 
-				" |________|  J______F  |__L LJ J__| J__,____F  |__|  J______F   J______F \r\n" + 
-				"                                                                         \r\n" + 
-				"");
 		
 		eventLog = new JTextArea();
 		eventLog.setEditable(false);
@@ -93,7 +94,13 @@ public class ASCIIView {
 		return repeat("+---", width) + "+\n";
 	}
 	
-	private String drawBoard(Board board) {
+	public void drawBoard() {
+		String out = boardRepr(this.board);
+		textOutput.setText(out);
+		frame.pack();
+	}
+	
+	private static String boardRepr(Board board) {
 		Tile[][] tiles = board.getTiles();
 		
 		String out = "";
@@ -121,17 +128,6 @@ public class ASCIIView {
 		return out;
 	}
 	
-	public int draw()
-	{
-		String s = drawBoard(board);
-		
-		textOutput.setText(s);
-		
-		frame.pack();
-		
-		return s.length();
-	}
-	
 	public static String entityRepr(Entity entity) {
 		if (entity instanceof Zombie) {
 			return "[Z]";
@@ -146,6 +142,13 @@ public class ASCIIView {
 		}
 		eventLog.append(message + "\r\n");
 		eventLog.setCaretPosition(eventLog.getText().length());
+	}
+
+	public void drawMenu() {
+		// TODO Auto-generated method stub
+		textOutput.setText(splash);
+		frame.pack();
+		announce("Type 'start' to begin the game. To place a plant type 'place <name> x y'. When you're satisfied with your turn type 'done'");
 	}
 	
 	
