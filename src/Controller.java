@@ -11,7 +11,7 @@ public class Controller {
 		MAINMENU,
 		PRELEVEL,
 		INLEVEL;
-	} //test comment, remove later
+	}
 	
 	static GameState state = GameState.MAINMENU;
 	
@@ -86,6 +86,7 @@ public class Controller {
 				board.placeEntity(x, y, selectedPlant);
 				sunPoints -= plantCost;
 				view.announce(String.format("%s placed successfully at (%d, %d)", plantName, x, y));
+				view.announce(String.format("You have %d sun points remaining", sunPoints));
 			} else {
 				view.announce(String.format("You can't afford a %s. It costs %d sun points and you have %d!", 
 					plantName, plantCost, sunPoints));
