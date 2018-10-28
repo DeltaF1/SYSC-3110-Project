@@ -96,6 +96,7 @@ public class ASCIIView {
 	
 	public void drawBoard() {
 		String out = boardRepr(this.board);
+		out += "Sun: " + board.getSun() +"\n";
 		textOutput.setText(out);
 		frame.pack();
 	}

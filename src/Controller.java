@@ -6,7 +6,6 @@ public class Controller {
 	private static ASCIIView view;
 	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
 	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when selling a plant
-	public static int sunPoints; //total sun points for the current player
 	enum GameState {
 		MAINMENU,
 		PRELEVEL,
@@ -82,14 +81,12 @@ public class Controller {
 		int y = coords[1];
 		if (board.getEntity(x, y) == null) {
 			int plantCost = selectedPlant.getCost();
-			if (sunPoints >= selectedPlant.getCost()) {
+			if (board.spendSun(selectedPlant.getCost())) {
 				board.placeEntity(x, y, selectedPlant);
-				sunPoints -= plantCost;
 				view.announce(String.format("%s placed successfully at (%d, %d)", plantName, x, y));
-				view.announce(String.format("You have %d sun points remaining", sunPoints));
 			} else {
 				view.announce(String.format("You can't afford a %s. It costs %d sun points and you have %d!", 
-					plantName, plantCost, sunPoints));
+					plantName, plantCost, board.getSun()));
 			}
 		} else {
 			view.announce("There's already something there, put your plant somewhere else.");
@@ -139,7 +136,6 @@ public class Controller {
 		advancePlants();
 		advanceZombies();
 		spawnZombies();
-		view.announce(String.format("Turn complete, you now have %d sunpoints", sunPoints));
 	}
 	
 	
@@ -164,7 +160,7 @@ public class Controller {
 				if( occupant instanceof Plant) {
 					Plant plant = (Plant)occupant;
 					if (plant instanceof Sunflower) { //pretty trash logic, should have this in the Plant.update() method somehow
-						sunPoints += 50;
+						board.addSun(50);
 					}
 					if (plant.getCoolDown() >= 1) {
 						plant.setCoolDown(plant.getCoolDown()-1);
@@ -251,8 +247,8 @@ public class Controller {
 
 	
 	public static void main(String[] args) {
-		sunPoints = 150;
 		board = new Board();
+		board.addSun(150);
 		view = new ASCIIView(board);
 		view.drawMenu();
 		entityFactory = new EntityFactory();

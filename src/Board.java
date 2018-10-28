@@ -5,6 +5,7 @@ public class Board {
 	private Tile[][] tiles;
 	public static final int WIDTH = 20;
 	public static final int HEIGHT = 10;
+	private int sunPoints;
 	
 	public Board() {
 		this.tiles = new Tile[HEIGHT][WIDTH];
@@ -13,6 +14,7 @@ public class Board {
 				this.tiles[y][x] = new Tile();
 			}
 		}
+		sunPoints = 0;
 	}
 	
 	public Board(Tile[][] tiles) {
@@ -91,5 +93,22 @@ public class Board {
 			String err = String.format("invalid board coordinates: (x = %d, y = %d)", x, y);
 			throw new IllegalArgumentException(err);
 		}
+	}
+	
+	public int getSun() {
+		return sunPoints;
+	}
+	
+	public boolean spendSun(int cost) {
+		if (cost <= sunPoints) {
+			sunPoints -= cost;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public void addSun(int sun) {
+		sunPoints += sun;
 	}
 }
