@@ -4,6 +4,7 @@ public class Controller {
 	private static Board board;
 	private static EntityFactory entityFactory;
 	private static ASCIIView view;
+	static Level level;
 	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
 	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when selling a plant
 	enum GameState {
@@ -13,6 +14,7 @@ public class Controller {
 	}
 	
 	static GameState state = GameState.MAINMENU;
+	static int turn = 0;
 	
 	/**
 	 * register all command types here
@@ -59,6 +61,7 @@ public class Controller {
 	 */
 	public static void startGame() {
 		state = GameState.INLEVEL;
+		turn = 0;
 		view.announce("Level start!");
 		view.drawBoard();
 	}
@@ -136,6 +139,7 @@ public class Controller {
 		advancePlants();
 		advanceZombies();
 		spawnZombies();
+		turn++;
 	}
 	
 	
@@ -241,14 +245,30 @@ public class Controller {
 	 * Handle new zombies spawned this turn
 	 */
 	private static void spawnZombies() {
-		int newPosY = ThreadLocalRandom.current().nextInt(0, board.HEIGHT);
-		board.placeEntity(board.WIDTH-1,newPosY, new BasicZombie());
+		int numZombies = level.getWave(turn);
+		
+		for (int i = 0; i < numZombies; i++) {
+			boolean placed = false;
+			do {
+				int newPosY = ThreadLocalRandom.current().nextInt(0, board.HEIGHT);
+				placed = board.placeEntity(board.WIDTH-1,newPosY, new BasicZombie());
+			} while (placed == false);
+		}
 	}
 
 	
 	public static void main(String[] args) {
 		board = new Board();
 		board.addSun(150);
+		
+		//TODO: Load levels from text files
+		level = new Level();
+		
+		level.addWave(0, 1);
+		level.addWave(2, 2);
+		level.addWave(5, 6);
+		level.addWave(7, 6);
+		
 		view = new ASCIIView(board);
 		view.drawMenu();
 		entityFactory = new EntityFactory();
