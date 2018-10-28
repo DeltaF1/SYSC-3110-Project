@@ -227,7 +227,14 @@ public class Controller {
 		int newX = x;
 		Zombie zombie = (Zombie)board.getEntity(x,y);
 		for (int i = 1; i < zombie.getMovSpd() + 1; i ++) {
-			Entity encounteredEntity = board.getEntity(newX-1, y);
+			
+			Entity encounteredEntity;
+			if (newX > 1) {
+				encounteredEntity = board.getEntity(newX-1, y);
+			}else {
+				encounteredEntity = null;
+			}
+			
 			//wait in line behind zombie ahead
 			if (newX > 0 && encounteredEntity instanceof Zombie ) {
 				break;
