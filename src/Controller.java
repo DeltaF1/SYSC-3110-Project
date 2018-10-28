@@ -1,3 +1,8 @@
+/**
+ * Entry point of the program: the "Controller" in the so called "Model View Controller" pattern
+ * Check GitHub for authors
+ */
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Controller {
@@ -18,6 +23,7 @@ public class Controller {
 	
 	/**
 	 * register all command types here
+	 * @param commandStr a command to evaluate
 	 */
 	public static void parseText(String commandStr) {
 		if (commandStr == null || commandStr.length() == 0) {
@@ -58,6 +64,7 @@ public class Controller {
 	
 	/*
 	 * TODO: call loadLevel first to go to PRELEVEL state and show the player which zombies will be in the level
+	 * stats the game
 	 */
 	public static void startGame() {
 		state = GameState.INLEVEL;
@@ -66,6 +73,10 @@ public class Controller {
 		view.drawBoard();
 	}
 	
+	/**
+	 * places a plant
+	 * @param args user specified arguments (plant name and coordinates)
+	 */
 	private static void placePlant(String[] args) {
 		if (args.length < 3) {
 			view.announce("To place a plant you need to specify plant name, x coordinate, and y coordinate");
@@ -96,6 +107,10 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Tells a user what's on a specific tile
+	 * @param args user specified arguments (tile coordinates)
+	 */
 	private static void tileInfo(String[] args) {
 		if (args.length < 2) {
 			view.announce("To see tile info you need to specify an x coordinate and a y coordinate");
@@ -122,6 +137,12 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * converts two strings to x y coordinates on the board
+	 * @param strx x coordinate as a String
+	 * @param stry y coordinate as a String
+	 * @return null if (strx, stry) is not a valid position on the board, otherwise two integer locations are returned in an int array
+	 */
 	private static int[] strCoordsToInt(String strx, String stry) {
 		int x, y;
 		try {
@@ -135,6 +156,10 @@ public class Controller {
 		return new int[] {x, y};
 	}
 	
+	/**
+	 * ends the current turn
+	 * @param args extra arguments specified by player (currently unused)
+	 */
 	private static void endTurn(String[] args) {
 		advancePlants();
 		advanceZombies();
@@ -146,6 +171,7 @@ public class Controller {
 	
 	/**
 	 * Determine the X position of the closest zombie on the Y row (this must be the zombie hit by plant projectile)
+	 * @param y the y position of row we are checking for a zombie
 	 */
 	private static Integer getHitZombieX(int y) {
 		for (int x = 0; x < Board.WIDTH; x++) {
@@ -156,6 +182,9 @@ public class Controller {
 		return null;
 	}
 	
+	/**
+	 * makes the plants shoot/increase sun
+	 */
 	private static void advancePlants() {
 
 		for (int y = 0; y < Board.HEIGHT; y++) {
@@ -191,6 +220,8 @@ public class Controller {
 	
 	/**
 	 * Complete a turn for an individual zombie
+	 * @param x x position of the zombie
+	 * @param y y position of the zombie
 	 */
 	private static void advanceZombie(int x, int y) {
 		int newX = x;

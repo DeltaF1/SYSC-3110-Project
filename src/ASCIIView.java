@@ -1,3 +1,8 @@
+/**
+ * A view for the game made with ascii graphics
+ * Check GitHub for authors
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -41,6 +46,10 @@ public class ASCIIView {
 			"                                                                         \r\n" + 
 			"";
 	
+	/**
+	 * creates a new ASCIIView
+	 * @param board the board to use in this view
+	 */
 	public ASCIIView (Board board) {
 		this.board = board;
 		
@@ -79,21 +88,38 @@ public class ASCIIView {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Receives text from a user and sends it to the controller to be parsed
+	 */
 	protected void handleTextInput() {
 		String text = textInput.getText();
 		textInput.setText(null);
 		
 		Controller.parseText(text);
 	}
-
+	
+	/**
+	 * repeats a string a certain number of times
+	 * @param str String to repeat
+	 * @param times times to repeat the string
+	 * @return
+	 */
 	public static String repeat(String str, int times) {
         return new String(new char[times]).replace("\0", str);
     }
 	
+	/**
+	 * creates a string that divides a row on the view with a specified width
+	 * @param width width of the row divider
+	 * @return the row divider string
+	 */
 	private static String rowDivider(int width) {
 		return repeat("+---", width) + "+\n";
 	}
 	
+	/**
+	 * draws the whole board out of ASCII, complete with indicated sun points
+	 */
 	public void drawBoard() {
 		String out = boardRepr(this.board);
 		out += "Sun: " + board.getSun() +"\n";
@@ -101,6 +127,11 @@ public class ASCIIView {
 		frame.pack();
 	}
 	
+	/**
+	 * Converts a board to it's ASCII representation
+	 * @param board board to convert to ASCII
+	 * @return an ASCII representation of the board
+	 */
 	private static String boardRepr(Board board) {
 		Tile[][] tiles = board.getTiles();
 		
@@ -129,6 +160,11 @@ public class ASCIIView {
 		return out;
 	}
 	
+	/**
+	 * creates an ASCII representation of an entity
+	 * @param entity entity to make an ASCII representation of
+	 * @return the ASCII representation of the entity
+	 */
 	public static String entityRepr(Entity entity) {
 		if (entity instanceof Zombie) {
 			return "[Z]";
@@ -137,6 +173,10 @@ public class ASCIIView {
 
 	}
 	
+	/**
+	 * Tells the player something
+	 * @param message information to tell the player
+	 */
 	public void announce(String message) {
 		if (message == null) {
 			return;
@@ -145,6 +185,9 @@ public class ASCIIView {
 		eventLog.setCaretPosition(eventLog.getText().length());
 	}
 
+	/**
+	 * Draws the start menu
+	 */
 	public void drawMenu() {
 		// TODO Auto-generated method stub
 		textOutput.setText(splash);
