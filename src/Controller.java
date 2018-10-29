@@ -70,10 +70,12 @@ public class Controller {
 			default:
 				view.announce("\"" + cmdName + "\"" + " isn't even a real command");
 			}
-			if (state == GameState.GAMEOVER) {
-				view.drawGameOver();
-			}else {
+			if (state == GameState.INLEVEL) {
 				view.drawBoard();
+			}else if (state == GameState.GAMEOVER) {
+				view.drawGameOver();
+			}else if (state == GameState.WINSCREEN) {
+				view.drawWinScreen();
 			}
 		}
 	}
@@ -179,7 +181,9 @@ public class Controller {
 	private static void endTurn(String[] args) {
 		advancePlants();
 		advanceZombies();
-		spawnZombies();
+		if (state == GameState.INLEVEL) {
+			spawnZombies();
+		}
 		turn++;
 	}
 	
@@ -304,7 +308,7 @@ public class Controller {
 	 * Handle new zombies spawned this turn
 	 */
 	private static void spawnZombies() {
-		int numZombies = levels.get(level-1).getWave(turn);
+		int numZombies = levels.get(level).getWave(turn);
 		
 		for (int i = 0; i < numZombies; i++) {
 			boolean placed = false;
@@ -315,23 +319,31 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * decreases the count of zombies left alive and takes appropriate action when no zombies are left
+	 * @param amnt int the amount to decrease the zombies alive count
+	 */
 	public static void decreaseZombieCount(int amnt) {
 		levelZombiesLeft -= amnt;
 		view.announce("TEMP: zombies left this level - " + Integer.toString(levelZombiesLeft));
-		if (levelZombiesLeft == 0){
-			
+		if (levelZombiesLeft <= 0){
+			level += 1;
+			turn = 0;
 			if (level >= levels.size() ) {
 				view.announce("TEMP: the player beat all levels");
 				state = GameState.WINSCREEN;
-				view.drawWinScreen();
 			}else {
-				levelZombiesLeft = levels.get(level).getTotalZombies();//note: I dont do "level-1" because it is not incremented yet
+				levelZombiesLeft = levels.get(level).getTotalZombies();
 				view.announce("TEMP: the player beat level " + Integer.toString(level));
 			}
-			level += 1;
+			
 		}
 	}
 	
+	/**
+	 * sets the board to be empty, sets money to the starting amount and sets up level data
+	 * @param board Board the board the game takes place on
+	 */
 	public static void setUpGame(Board board) {
 		board.wipe();
 		board.addSun(150);
@@ -343,12 +355,13 @@ public class Controller {
 		level1.addWave(0, 1);
 		
 		Level level2 = new Level();
-		level2.addWave(1, 2);
+		level2.addWave(0, 2);
 		
 		levels.add(level1);
 		levels.add(level2);
 		
-		level = 1;
+		level = 0;
+		turn = 0;
 		levelZombiesLeft = level1.getTotalZombies();
 	}
 	

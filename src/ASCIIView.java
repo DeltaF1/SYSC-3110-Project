@@ -195,6 +195,9 @@ public class ASCIIView {
 		announce("Type 'start' to begin the game. To place a plant type 'place <name> x y'. When you're satisfied with your turn type 'done'");
 	}
 	
+	/**
+	 * Draws the game over screen
+	 */
 	public void drawGameOver() {
 		textOutput.setText("          ___    __                          _                           \r\n Game over ascii art or something \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ");
 		frame.pack();
@@ -202,6 +205,9 @@ public class ASCIIView {
 
 	}
 	
+	/**
+	 * Draws the win screen
+	 */
 	public void drawWinScreen() {
 		textOutput.setText("          ___    __                          _                           \r\nWin ascii art or something \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ");
 		frame.pack();

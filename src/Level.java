@@ -23,7 +23,7 @@ public class Level {
 	//the "turn" variable represents the turn relative to the start of the level
 	//levelStartTurnOffset is the actual Controller turn number this level started on
 	//This was need to make getWave work with multiple levels
-	public int levelStartTurnOffset = 0;
+	//public int levelStartTurnOffset = 0;
 	
 	private LinkedList<Wave> waves;
 	private Wave current;
@@ -55,7 +55,7 @@ public class Level {
 	public int getWave(int turn) {
 		if (iterator == null) {//initialize iterator if starting level
 			iterator = waves.iterator();
-			levelStartTurnOffset = turn;
+			//levelStartTurnOffset = turn;
 		}
 		
 		if (current == null && iterator.hasNext()) {//start wave 1 if starting game
@@ -63,7 +63,7 @@ public class Level {
 		}
 		
 		if (current != null) {
-			if (turn == current.turn + levelStartTurnOffset) {
+			if (turn == current.turn ) { //+ levelStartTurnOffsets
 				int numZombies = current.numZombies;
 				current = null;
 				return numZombies;
@@ -76,6 +76,9 @@ public class Level {
 		}
 	}
 	
+	/**
+	 * get the total zombies that need to be spawned this round;
+	 */
 	public int getTotalZombies() {
 		return totalZombies;
 	}
