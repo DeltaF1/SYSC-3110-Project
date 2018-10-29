@@ -8,3 +8,21 @@ Ehren, Trevor, Aldous, and Sam
 
 ## Roadmap
 
+To be met by November 8th, 2018:
+
+GUI layer on top of text-based skeleton
+Unit testing (Model)
+Extraneous changes to UML/data structures
+
+To be met by November ??, 2018:
+
+Complete implementation
+Unlimited undo/redo actions available
+Multiple unique entities
+
+To be met by December ??, 2018:
+
+Save and load features
+Game level builder(XML)
+
+OPTIONAL: Real-time version / port to android
