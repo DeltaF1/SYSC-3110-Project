@@ -195,6 +195,20 @@ public class ASCIIView {
 		announce("Type 'start' to begin the game. To place a plant type 'place <name> x y'. When you're satisfied with your turn type 'done'");
 	}
 	
+	public void drawGameOver() {
+		textOutput.setText("          ___    __                          _                           \r\n Game over ascii art or something \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ");
+		frame.pack();
+		announce("Type 'start' to start a new game. To place a plant type 'place <name> x y'. When you're satisfied with your turn type 'done'");
+
+	}
+	
+	public void drawWinScreen() {
+		textOutput.setText("          ___    __                          _                           \r\nWin ascii art or something \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ");
+		frame.pack();
+		announce("Type 'start' to start a new game. To place a plant type 'place <name> x y'. When you're satisfied with your turn type 'done'");
+
+	}
+	
 	
 /*	old main replaced with Controller's Main
   public static void main(String[] args) {

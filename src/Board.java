@@ -171,4 +171,14 @@ public class Board {
 	public void addSun(int sun) {
 		sunPoints += sun;
 	}
+	
+	public void wipe() {
+		this.tiles = new Tile[HEIGHT][WIDTH];
+		for (int y = 0; y < HEIGHT; y++) {
+			for (int x = 0; x < WIDTH; x++) {
+				this.tiles[y][x] = new Tile();
+			}
+		}
+		sunPoints = 0;
+	}
 }

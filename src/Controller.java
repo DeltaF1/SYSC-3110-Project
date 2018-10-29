@@ -18,7 +18,9 @@ public class Controller {
 	enum GameState {
 		MAINMENU,
 		PRELEVEL,
-		INLEVEL;
+		INLEVEL,
+		GAMEOVER,
+		WINSCREEN;
 	}
 	
 	static GameState state = GameState.MAINMENU;
@@ -47,6 +49,13 @@ public class Controller {
 				startGame();
 			}
 			break;
+		case GAMEOVER:
+		case WINSCREEN:
+			if (cmdName.equals("start")) {
+				setUpGame(board);
+				startGame();
+			}
+			break;
 		case INLEVEL:	
 			switch (cmdName) {
 			case "place":
@@ -61,7 +70,11 @@ public class Controller {
 			default:
 				view.announce("\"" + cmdName + "\"" + " isn't even a real command");
 			}
-			view.drawBoard();
+			if (state == GameState.GAMEOVER) {
+				view.drawGameOver();
+			}else {
+				view.drawBoard();
+			}
 		}
 	}
 	
@@ -265,7 +278,10 @@ public class Controller {
 			}else {
 				view.announce("TEMP MSG: a zombie broke through on row " + Integer.toString(y));
 				board.removeEntity(x, y);
-				decreaseZombieCount(1); // probably doesnt matter since this should end game eventually
+				//dont drawGameOver() here because it will be erased
+				state = GameState.GAMEOVER;
+				
+				//decreaseZombieCount(1); // probably doesnt matter since this should end game eventually
 			}
 			
 		}
@@ -303,18 +319,21 @@ public class Controller {
 		levelZombiesLeft -= amnt;
 		view.announce("TEMP: zombies left this level - " + Integer.toString(levelZombiesLeft));
 		if (levelZombiesLeft == 0){
-			level += 1;
-			if (level > levels.size() ) {
+			
+			if (level >= levels.size() ) {
 				view.announce("TEMP: the player beat all levels");
+				state = GameState.WINSCREEN;
+				view.drawWinScreen();
 			}else {
-				levelZombiesLeft = levels.get(level-1).getTotalZombies();
-				view.announce("TEMP: the player beat a level");
+				levelZombiesLeft = levels.get(level).getTotalZombies();//note: I dont do "level-1" because it is not incremented yet
+				view.announce("TEMP: the player beat level " + Integer.toString(level));
 			}
+			level += 1;
 		}
 	}
 	
-	public static void main(String[] args) {
-		board = new Board();
+	public static void setUpGame(Board board) {
+		board.wipe();
 		board.addSun(150);
 		
 		//TODO: Load levels from text files
@@ -331,6 +350,12 @@ public class Controller {
 		
 		level = 1;
 		levelZombiesLeft = level1.getTotalZombies();
+	}
+	
+	public static void main(String[] args) {
+		board = new Board();
+		
+		setUpGame(board);
 		
 		view = new ASCIIView(board);
 		view.drawMenu();
