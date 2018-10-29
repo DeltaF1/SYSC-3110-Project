@@ -1,12 +1,12 @@
 For Milestone 1, some of the most notable data structures found in group 19's project include Linked lists, 
 Hashmaps, and 2 dimensional arrays.
 
-In order to populate the game with Plant and Zombie entities, the EntityFactory class utilizes two private Hasmaps and an enumerated
+In order to populate the game with Plant and Zombie entities, the EntityFactory class utilizes two private Hashmaps and an enumerated
 entity type of either Plant or Zombie. The setup of the EntityFactory class is perfect for a Hashmap's key-value pair, as in this case
 each type of Plant/Zombie entity (the 'value') is associated with a distinct String (the 'key'). As a result, should additional entities
 be added in future, they can be included in EntityFactory's register() method, ensuring new Plant/Zombie types can be added simply and easily.
 In this way, the EntityFactory can be entirely responsible for the creation of new Plants and Zombies, casting objects as needed and calling
-their respective constructors from within its makeEntity method.
+their respective constructors from within its makeEntity method. A HashMap was chosen rather than a TreeMap because we do not care about the subclasses being ordered, and elements will never need to be removed from the Map. 
 
 However, once these entities have been created, they need to be placed on a board, and their locations (along with their personal fields 
 such as Hp and cooldown) need to be monitored. An easy way that the Board class keeps track of all relevant entities is by creating a
