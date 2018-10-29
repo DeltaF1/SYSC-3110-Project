@@ -6,6 +6,8 @@ Ehren, Trevor, Aldous, and Sam
 
 ## Known issues
 
+Known issues can be found at https://github.com/DeltaF1/SYSC-3110-Project/issues
+
 ## Roadmap
 
 To be met by November 8th, 2018:
