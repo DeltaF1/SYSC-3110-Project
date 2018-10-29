@@ -9,8 +9,7 @@ import java.util.LinkedList;
 public class Level {
 	private class Wave {
 		public int turn;
-		public int numZombies;
-		
+		public int numZombies;		
 		/**
 		 * creates a new wave
 		 * @param turn turn number for wave
@@ -21,10 +20,15 @@ public class Level {
 			this.numZombies = numZombies;
 		}
 	}
+	//the "turn" variable represents the turn relative to the start of the level
+	//levelStartTurnOffset is the actual Controller turn number this level started on
+	//This was need to make getWave work with multiple levels
+	public int levelStartTurnOffset = 0;
 	
 	private LinkedList<Wave> waves;
 	private Wave current;
 	private Iterator<Wave> iterator;
+	private int totalZombies = 0;
 	
 	/**
 	 * creates a new Level with 0 waves
@@ -40,6 +44,7 @@ public class Level {
 	 */
 	public void addWave(int turn, int numZombies) {
 		waves.add(new Wave(turn, numZombies));
+		totalZombies += numZombies;
 	}
 	
 	/**
@@ -48,16 +53,17 @@ public class Level {
 	 * @return an integer number of zombies
 	 */
 	public int getWave(int turn) {
-		if (iterator == null) {
+		if (iterator == null) {//initialize iterator if starting level
 			iterator = waves.iterator();
+			levelStartTurnOffset = turn;
 		}
 		
-		if (current == null && iterator.hasNext()) {
+		if (current == null && iterator.hasNext()) {//start wave 1 if starting game
 			current = iterator.next(); 
 		}
 		
 		if (current != null) {
-			if (turn == current.turn) {
+			if (turn == current.turn + levelStartTurnOffset) {
 				int numZombies = current.numZombies;
 				current = null;
 				return numZombies;
@@ -68,5 +74,9 @@ public class Level {
 		} else {
 			return -1;
 		}
+	}
+	
+	public int getTotalZombies() {
+		return totalZombies;
 	}
 }

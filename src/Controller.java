@@ -3,13 +3,16 @@
  * Check GitHub for authors
  */
 
+import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Controller {
 	private static Board board;
 	private static EntityFactory entityFactory;
 	private static ASCIIView view;
-	static Level level;
+	static LinkedList<Level> levels;
+	static int level;
+	static int levelZombiesLeft;
 	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
 	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when selling a plant
 	enum GameState {
@@ -205,9 +208,10 @@ public class Controller {
 						if (bulletHit != null) {
 							Zombie shotZombie = (Zombie) board.getEntity(bulletHit, y);
 							int newHP = shotZombie.getHp() - ((Plant)board.getEntity(x,y)).getDamage();
-							view.announce("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(shotZombie.getHp()));
+							view.announce("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(newHP));
 							if (newHP <= 0) {
 								board.removeEntity(bulletHit, y);
+								decreaseZombieCount(1);
 							}else {
 								shotZombie.setHp(newHP);
 							}
@@ -261,6 +265,7 @@ public class Controller {
 			}else {
 				view.announce("TEMP MSG: a zombie broke through on row " + Integer.toString(y));
 				board.removeEntity(x, y);
+				decreaseZombieCount(1); // probably doesnt matter since this should end game eventually
 			}
 			
 		}
@@ -283,7 +288,7 @@ public class Controller {
 	 * Handle new zombies spawned this turn
 	 */
 	private static void spawnZombies() {
-		int numZombies = level.getWave(turn);
+		int numZombies = levels.get(level-1).getWave(turn);
 		
 		for (int i = 0; i < numZombies; i++) {
 			boolean placed = false;
@@ -294,18 +299,38 @@ public class Controller {
 		}
 	}
 
+	public static void decreaseZombieCount(int amnt) {
+		levelZombiesLeft -= amnt;
+		view.announce("TEMP: zombies left this level - " + Integer.toString(levelZombiesLeft));
+		if (levelZombiesLeft == 0){
+			level += 1;
+			if (level > levels.size() ) {
+				view.announce("TEMP: the player beat all levels");
+			}else {
+				levelZombiesLeft = levels.get(level-1).getTotalZombies();
+				view.announce("TEMP: the player beat a level");
+			}
+		}
+	}
 	
 	public static void main(String[] args) {
 		board = new Board();
 		board.addSun(150);
 		
 		//TODO: Load levels from text files
-		level = new Level();
+		levels = new LinkedList<Level>();
 		
-		level.addWave(0, 1);
-		level.addWave(2, 2);
-		level.addWave(5, 6);
-		level.addWave(7, 6);
+		Level level1 = new Level();
+		level1.addWave(0, 1);
+		
+		Level level2 = new Level();
+		level2.addWave(1, 2);
+		
+		levels.add(level1);
+		levels.add(level2);
+		
+		level = 1;
+		levelZombiesLeft = level1.getTotalZombies();
 		
 		view = new ASCIIView(board);
 		view.drawMenu();
