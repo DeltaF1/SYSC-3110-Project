@@ -10,21 +10,21 @@ Known issues can be found at https://github.com/DeltaF1/SYSC-3110-Project/issues
 
 ## Roadmap
 
-To be met by November 8th, 2018:
+### To be met by November 8th, 2018:
 
-GUI layer on top of text-based skeleton
-Unit testing (Model)
-Extraneous changes to UML/data structures
+- GUI layer on top of text-based skeleton
+- Unit testing (Model)
+- Extraneous changes to UML/data structures
 
-To be met by November ??, 2018:
+### To be met by November ??, 2018:
 
-Complete implementation
-Unlimited undo/redo actions available
-Multiple unique entities
+- Complete implementation
+- Unlimited undo/redo actions available
+- Multiple unique entities
 
-To be met by December ??, 2018:
+### To be met by December ??, 2018:
 
-Save and load features
-Game level builder(XML)
+- Save and load features
+- Game level builder(XML)
 
 OPTIONAL: Real-time version / port to android
