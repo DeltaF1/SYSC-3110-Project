@@ -9,7 +9,7 @@ import mainPackage.BasicZombie;
 import mainPackage.Entity;
 import mainPackage.Tile;
 
-public class testTile {
+public class TestTile {
 	Tile tile;
 	
 	@Before
