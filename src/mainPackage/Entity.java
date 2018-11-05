@@ -1,3 +1,4 @@
+package mainPackage;
 /**
  * Represents an entity (either a zombie or a plant)
  * Check GitHub for authors

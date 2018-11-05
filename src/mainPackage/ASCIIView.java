@@ -1,3 +1,4 @@
+package mainPackage;
 /**
  * A view for the game made with ascii graphics
  * Check GitHub for authors

@@ -1,3 +1,4 @@
+package mainPackage;
 /**
 * a plant that creates sun points every turn
  * Check GitHub for authors

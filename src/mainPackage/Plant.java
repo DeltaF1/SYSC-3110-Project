@@ -1,3 +1,4 @@
+package mainPackage;
 /**
  * A class that represents a plant
  * Check GitHub for authors

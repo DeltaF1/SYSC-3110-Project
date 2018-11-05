@@ -1,3 +1,4 @@
+package mainPackage;
 /**
  * A factory class to spawn Entities
  * Check GitHub for authors

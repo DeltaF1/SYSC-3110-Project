@@ -1,3 +1,4 @@
+package mainPackage;
 /**
  * a zombie that moves forward and eats plants
  * Check GitHub for authors

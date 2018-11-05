@@ -1,3 +1,4 @@
+package mainPackage;
 /**
  * A class that represents a board that the plants and zombies move on
  * Check GitHub for authors

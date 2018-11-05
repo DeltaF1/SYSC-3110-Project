@@ -1,3 +1,4 @@
+package mainPackage;
 /**
  * A plant that shoots
  * Check GitHub for authors

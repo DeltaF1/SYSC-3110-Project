@@ -1,3 +1,4 @@
+package mainPackage;
 /**
  * Entry point of the program: the "Controller" in the so called "Model View Controller" pattern
  * Check GitHub for authors

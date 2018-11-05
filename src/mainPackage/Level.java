@@ -1,3 +1,4 @@
+package mainPackage;
 /**
  * a class that represents a level
  * Check GitHub for authors

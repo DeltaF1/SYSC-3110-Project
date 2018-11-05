@@ -1,3 +1,4 @@
+package mainPackage;
 /**
  * A class that represents a zombie entity
  * Check GitHub for authors

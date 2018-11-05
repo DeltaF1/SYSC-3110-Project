@@ -1,3 +1,4 @@
+package mainPackage;
 /**
  * A spot on a Board that can hold an Entity
  * Check GitHub for authors
