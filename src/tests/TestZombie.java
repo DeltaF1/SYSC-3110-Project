@@ -21,6 +21,4 @@ public class TestZombie {
 		assertEquals("Attack speed should be 2",
 				zombie.getMovSpd(),2);
 	}
-	
-	
 }
