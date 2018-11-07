@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class ASCIIView {
+public class ASCIIView implements View {
 	
 	private Board board;
 	private JFrame frame;
@@ -215,48 +215,5 @@ public class ASCIIView {
 		announce("Type 'start' to start a new game. To place a plant type 'place <name> x y'. When you're satisfied with your turn type 'done'");
 
 	}
-	
-	
-/*	old main replaced with Controller's Main
-  public static void main(String[] args) {
-		
-		ASCIIView view = new ASCIIView();
-		
-		Tile[][] tiles = new Tile[2][2];
-		
-		tiles[0][0] = new Tile();
-		tiles[0][1] = new Tile();
-		tiles[1][0] = new Tile();
-		tiles[1][0].setOccupant(new Entity("test", 0, 0));
 
-		
-		tiles[1][1] = new Tile();
-		
-		Board board = new Board(tiles);
-		
-		view.board = board;
-//		
-//		// Move this to a different method? Or should this be in the controller loop?
-//		
-//		Scanner scanner = new Scanner(System.in);
-//		String input;
-//		while (true) {
-//			view.draw();
-//			
-//			input = scanner.next();
-//			
-//			if (input.equals("quit")) { break; }
-//		}
-//		
-//		scanner.close();
-
-		board.placeEntity(1, 19, new Entity("test", 0, 0));
-		
-		System.out.println(view.drawBoard(board));
-		//view.draw();
-		
-		board.removeEntity(1, 19);
-		//view.draw();
-		System.out.println(view.drawBoard(board));
-	}*/
 }
