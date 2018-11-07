@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Controller {
 	private static Board board;
 	private static EntityFactory entityFactory;
-	private static ASCIIView view;
+	private static View view;
 	static LinkedList<Level> levels;
 	static int level;
 	static int levelZombiesLeft;
