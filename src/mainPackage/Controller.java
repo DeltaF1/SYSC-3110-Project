@@ -112,7 +112,10 @@ public class Controller {
 			return;
 		int x = coords[0]; 
 		int y = coords[1];
-		if (board.getEntity(x, y) == null) {
+		if (x >= PLACE_AREA_WIDTH) {
+			view.announce(String.format("You can't place a plant beyond x = %d", PLACE_AREA_WIDTH));
+		}
+		else if (board.getEntity(x, y) == null) {
 			int plantCost = selectedPlant.getCost();
 			if (board.spendSun(selectedPlant.getCost())) {
 				board.placeEntity(x, y, selectedPlant);
