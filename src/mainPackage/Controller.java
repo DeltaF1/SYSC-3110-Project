@@ -72,7 +72,7 @@ public class Controller {
 				view.announce("\"" + cmdName + "\"" + " isn't even a real command");
 			}
 			if (state == GameState.INLEVEL) {
-				view.drawBoard();
+				view.drawBoard(board);
 			}else if (state == GameState.GAMEOVER) {
 				view.drawGameOver();
 			}else if (state == GameState.WINSCREEN) {
@@ -89,29 +89,20 @@ public class Controller {
 		state = GameState.INLEVEL;
 		turn = 0;
 		view.announce("Level start!");
-		view.drawBoard();
+		view.drawBoard(board);
 	}
 	
 	/**
 	 * places a plant
 	 * @param args user specified arguments (plant name and coordinates)
 	 */
-	private static void placePlant(String[] args) {
-		if (args.length < 3) {
-			view.announce("To place a plant you need to specify plant name, x coordinate, and y coordinate");
-			return;
-		}
-		String plantName = args[0];
+	public static void placePlant(String plantName, int x, int y) {
 		Plant selectedPlant = entityFactory.makePlant(plantName);
 		if (selectedPlant == null) {
 			view.announce("\"" + plantName + "\"" + " is not a valid plant name");
 			return;
 		}
-		int[] coords = strCoordsToInt(args[1], args[2]);
-		if (coords == null)
-			return;
-		int x = coords[0]; 
-		int y = coords[1];
+
 		if (x >= PLACE_AREA_WIDTH) {
 			view.announce(String.format("You can't place a plant beyond x = %d", PLACE_AREA_WIDTH));
 		}
@@ -133,16 +124,7 @@ public class Controller {
 	 * Tells a user what's on a specific tile
 	 * @param args user specified arguments (tile coordinates)
 	 */
-	private static void tileInfo(String[] args) {
-		if (args.length < 2) {
-			view.announce("To see tile info you need to specify an x coordinate and a y coordinate");
-			return;
-		}
-		int[] coords = strCoordsToInt(args[0], args[1]);
-		if (coords == null)
-			return;
-		int x = coords[0]; 
-		int y = coords[1];
+	public static void tileInfo(int x, int y) {
 		Entity tileEntity = board.getEntity(x, y);
 		if (tileEntity == null) {
 			view.announce("There's nothing on that tile");
@@ -182,13 +164,14 @@ public class Controller {
 	 * ends the current turn
 	 * @param args extra arguments specified by player (currently unused)
 	 */
-	private static void endTurn(String[] args) {
+	public static void endTurn() {
 		advancePlants();
 		advanceZombies();
 		if (state == GameState.INLEVEL) {
 			spawnZombies();
 		}
 		turn++;
+		view.drawBoard(board);
 	}
 	
 	
@@ -374,7 +357,7 @@ public class Controller {
 		
 		setUpGame(board);
 		
-		view = new ASCIIView(board);
+		view = new GraphicsView(board);
 		view.drawMenu();
 		entityFactory = new EntityFactory();
 	}

@@ -121,8 +121,8 @@ public class ASCIIView implements View {
 	/**
 	 * draws the whole board out of ASCII, complete with indicated sun points
 	 */
-	public void drawBoard() {
-		String out = boardRepr(this.board);
+	public void drawBoard(Board board) {
+		String out = boardRepr(board);
 		out += "Sun: " + board.getSun() +"\n";
 		textOutput.setText(out);
 		frame.pack();
