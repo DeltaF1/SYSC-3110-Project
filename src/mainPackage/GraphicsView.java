@@ -15,8 +15,11 @@ public class GraphicsView implements View
 	
 	private JFrame frame;
 	private JPanel menuPanel;
+	
 	private JPanel boardPanel;
 	private BoardButton[][] boardButtons;
+	private JLabel sunLabel;
+	
 	private JPanel endPanel;
 	private JLabel statusText;
 	private String selectedPlant;
@@ -145,6 +148,9 @@ public class GraphicsView implements View
 			plantPanel.add(projButton);
 			
 			boardPanel.add(plantPanel, BorderLayout.SOUTH);
+			
+			sunLabel = new JLabel("THIS TEXT SHOULD NOT BE SEEN");
+			boardPanel.add(sunLabel);
 
 		// End screen panel setup
 			endPanel = new JPanel();
@@ -163,7 +169,7 @@ public class GraphicsView implements View
 			endPanel.add(mainMenuButton);
 			
 		frame.setContentPane(menuPanel);
-		frame.setMinimumSize(new Dimension(100, 100));
+		frame.setMinimumSize(new Dimension(300, 300));
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -181,7 +187,7 @@ public class GraphicsView implements View
 	@Override
 	public void drawBoard(Board board)
 	{
-		System.out.println("Updated View!");
+
 		if (frame.getContentPane() != boardPanel) {
 			frame.setContentPane(boardPanel);
 		}
@@ -204,6 +210,10 @@ public class GraphicsView implements View
 				}
 			}
 		}
+		
+		sunLabel.setText("Sun: "+board.getSun());
+		
+		System.out.println("Updated View!");
 		refreshFrame();
 
 	}
