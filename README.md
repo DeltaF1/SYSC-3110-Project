@@ -1,5 +1,6 @@
 # SYSC-3110-Project
 _Plants vs. Zombies Clone for SYSC 3110 Fall 2018_
+GitHub URL:https://github.com/DeltaF1/SYSC-3110-Project
 
 ## Authors
 Ehren, Trevor, Aldous, and Sam
