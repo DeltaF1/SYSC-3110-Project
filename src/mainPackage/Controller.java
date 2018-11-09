@@ -203,7 +203,7 @@ public class Controller {
 				view.announce("TMP MSG: The plant at " + Integer.toString(newX-1) + "," + Integer.toString(y) +" had its health reduced to " + Integer.toString(newHP));
 				if (newHP <= 0) {
 					board.removeEntity(newX-1, y);
-				}else {
+				} else {
 					attacking.setHp(newHP);
 				}
 				break;
