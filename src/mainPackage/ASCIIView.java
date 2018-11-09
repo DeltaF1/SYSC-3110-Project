@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import mainPackage.Controller.GameState;
+
 public class ASCIIView implements View {
 	
 	private Board board;
@@ -96,18 +98,63 @@ public class ASCIIView implements View {
 		String text = textInput.getText();
 		textInput.setText(null);
 		
-		Controller.parseText(text);
+		//parseText(text);
 	}
 	
 	/**
-	 * repeats a string a certain number of times
-	 * @param str String to repeat
-	 * @param times times to repeat the string
-	 * @return
+	 * register all command types here
+	 * @param commandStr a command to evaluate
 	 */
-	public static String repeat(String str, int times) {
-        return new String(new char[times]).replace("\0", str);
-    }
+	/*
+	public void parseText(String commandStr) {
+		if (commandStr == null || commandStr.length() == 0) {
+			announce("Try actually typing something next time");
+			return;
+		}
+		String[] cmdNameAndArgs = commandStr.split(" ", 2);
+		String cmdName = cmdNameAndArgs[0];
+		String[] cmdArgs = new String[0];
+		if (cmdNameAndArgs.length > 1) {
+			cmdArgs = cmdNameAndArgs[1].split(" ");
+		}
+		
+		// Move this into more sub-methods?
+		switch (state) {
+		case MAINMENU:
+			if (cmdName.equals("start")) {
+				startGame();
+			}
+			break;
+		case GAMEOVER:
+		case WINSCREEN:
+			if (cmdName.equals("start")) {
+				setUpGame(board);
+				startGame();
+			}
+			break;
+		case INLEVEL:	
+			switch (cmdName) {
+			case "place":
+				placePlant(cmdArgs);
+				break;
+			case "done":
+				endTurn(cmdArgs);
+				break;
+			case "info":
+				tileInfo(cmdArgs);
+				break;
+			default:
+				view.announce("\"" + cmdName + "\"" + " isn't even a real command");
+			}
+			if (state == GameState.INLEVEL) {
+				view.drawBoard(board);
+			}else if (state == GameState.GAMEOVER) {
+				view.drawGameOver();
+			}else if (state == GameState.WINSCREEN) {
+				view.drawWinScreen();
+			}
+		}
+	}*/
 	
 	/**
 	 * creates a string that divides a row on the view with a specified width
@@ -115,7 +162,7 @@ public class ASCIIView implements View {
 	 * @return the row divider string
 	 */
 	private static String rowDivider(int width) {
-		return repeat("+---", width) + "+\n";
+		return StringUtils.repeat("+---", width) + "+\n";
 	}
 	
 	/**
