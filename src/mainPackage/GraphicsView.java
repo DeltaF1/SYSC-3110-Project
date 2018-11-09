@@ -8,11 +8,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-
-
 public class GraphicsView implements View
 {
-	
 	private JFrame frame;
 	private JPanel menuPanel;
 	
@@ -28,6 +25,10 @@ public class GraphicsView implements View
 	private static ImageIcon sunflowerIcon = new ImageIcon("images/sunflower.png");
 	private static ImageIcon peashooterIcon = new ImageIcon("images/peashooter.png");
 	private static ImageIcon blankIcon = new ImageIcon("images/blank.png");
+	
+	/**
+	 * A button that represents a square on the board grid
+	 */
 	private class BoardButton extends JButton {
 		private int x,y;
 		public BoardButton(int x, int y) {
@@ -49,6 +50,9 @@ public class GraphicsView implements View
 		}
 	}
 	
+	/**
+	 * A button that can be used to choose which seed to plant
+	 */
 	private class PlantButton extends JButton {
 		public String plantType;
 		
@@ -115,9 +119,12 @@ public class GraphicsView implements View
 			
 		// Board panel setup
 			boardPanel = new JPanel();
-			
+
+			// Create a panel that contains the grid of buttons 
 			JPanel gameBoardPanel = new JPanel();
 			gameBoardPanel.setLayout(new GridLayout(Board.HEIGHT, Board.WIDTH));
+
+			// Generate buttons
 			boardButtons = new BoardButton[Board.HEIGHT][Board.WIDTH];
 			for (int i = 0; i < Board.HEIGHT; i++) {
 				for (int j = 0; j < Board.WIDTH; j++) {
@@ -139,6 +146,8 @@ public class GraphicsView implements View
 				}
 			});
 			boardPanel.add(endTurnButton);
+			
+			// Create a panel to hold the buttons that choose which seed to plant
 			JPanel plantPanel = new JPanel();
 			
 			PlantButton sunflowerButton = new PlantButton("sunflower");
@@ -174,6 +183,9 @@ public class GraphicsView implements View
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Handles click events from the board. If a plant is selected to plant, attempt to plant it via the controller
+	 */
 	protected void clickButton(BoardButton button, int x, int y)
 	{
 		if (selectedPlant == null) {
@@ -185,6 +197,9 @@ public class GraphicsView implements View
 	}
 
 	@Override
+	/**
+	 * Draws out the model onto a grid of buttons
+	 */
 	public void drawBoard(Board board)
 	{
 
@@ -217,7 +232,13 @@ public class GraphicsView implements View
 		refreshFrame();
 
 	}
-
+	
+	/**
+	 * Returns the correct image to use for the given plant
+	 * 
+	 * @param plant
+	 * @return The ImageIcon associated with the plant name
+	 */
 	private static ImageIcon getIcon(String plant) {
 		switch(plant) {
 			
@@ -236,14 +257,19 @@ public class GraphicsView implements View
 	}
 
 	@Override
+	/**
+	 * Draws the menu panel
+	 */
 	public void drawMenu()
 	{
 		frame.setContentPane(menuPanel);
 		refreshFrame();
-
 	}
 
 	@Override
+	/**
+	 * Draws the end-screen card and sets the status to game over 
+	 */
 	public void drawGameOver()
 	{
 		statusText.setText("Game Over!");
@@ -252,6 +278,9 @@ public class GraphicsView implements View
 	}
 
 	@Override
+	/**
+	 * Draws the end-screen card and sets the status to win
+	 */
 	public void drawWinScreen()
 	{
 		statusText.setText("You win!");
@@ -259,6 +288,9 @@ public class GraphicsView implements View
 		refreshFrame();
 	}
 	
+	/*
+	 * Redraws and resizes the JFrame 
+	 */
 	private void refreshFrame() {
 		frame.pack();
 		frame.revalidate();
