@@ -88,6 +88,7 @@ public class Controller {
 	public static void startGame() {
 		state = GameState.INLEVEL;
 		turn = 0;
+		setUpGame(board);
 		view.announce("Level start!");
 		view.drawBoard(board);
 	}
@@ -166,13 +167,15 @@ public class Controller {
 	 * @param args extra arguments specified by player (currently unused)
 	 */
 	public static void endTurn() {
-		advancePlants();
-		advanceZombies();
 		if (state == GameState.INLEVEL) {
+			advancePlants();
+			advanceZombies();
 			spawnZombies();
+			turn++;
 		}
-		turn++;
-		view.drawBoard(board);
+		if (state == GameState.INLEVEL) {
+			view.drawBoard(board);
+		}
 	}
 	
 	
@@ -272,6 +275,7 @@ public class Controller {
 				board.removeEntity(x, y);
 				//dont drawGameOver() here because it will be erased
 				state = GameState.GAMEOVER;
+				view.drawGameOver();
 				
 				//decreaseZombieCount(1); // probably doesnt matter since this should end game eventually
 			}
@@ -320,6 +324,7 @@ public class Controller {
 			if (level >= levels.size() ) {
 				view.announce("TEMP: the player beat all levels");
 				state = GameState.WINSCREEN;
+				view.drawWinScreen();
 			}else {
 				levelZombiesLeft = levels.get(level).getTotalZombies();
 				view.announce("TEMP: the player beat level " + Integer.toString(level));
@@ -355,10 +360,7 @@ public class Controller {
 	
 	public static void main(String[] args) {
 		board = new Board();
-		
-		setUpGame(board);
-		
-		view = new GraphicsView(board);
+		view = new GraphicsView();
 		view.drawMenu();
 		entityFactory = new EntityFactory();
 	}

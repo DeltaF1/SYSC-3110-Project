@@ -18,6 +18,7 @@ public class GraphicsView implements View
 	private JPanel boardPanel;
 	private BoardButton[][] boardButtons;
 	private JPanel endPanel;
+	private JLabel statusText;
 	private String selectedPlant;
 	
 	private static ImageIcon zombieIcon = new ImageIcon("images/zombie.png");
@@ -79,7 +80,7 @@ public class GraphicsView implements View
 		}
 	}
 	
-	public GraphicsView(Board board)
+	public GraphicsView()
 	{
 		frame = new JFrame("Plants Vs. Zombies - Now with graphics!");
 		
@@ -113,7 +114,7 @@ public class GraphicsView implements View
 			boardPanel = new JPanel();
 			
 			JPanel gameBoardPanel = new JPanel();
-			gameBoardPanel.setLayout(new GridLayout(board.HEIGHT, board.WIDTH));
+			gameBoardPanel.setLayout(new GridLayout(Board.HEIGHT, Board.WIDTH));
 			boardButtons = new BoardButton[Board.HEIGHT][Board.WIDTH];
 			for (int i = 0; i < Board.HEIGHT; i++) {
 				for (int j = 0; j < Board.WIDTH; j++) {
@@ -144,9 +145,25 @@ public class GraphicsView implements View
 			plantPanel.add(projButton);
 			
 			boardPanel.add(plantPanel, BorderLayout.SOUTH);
+
+		// End screen panel setup
+			endPanel = new JPanel();
+			statusText = new JLabel("test");
+			JButton mainMenuButton = new JButton("Main Menu");
+			mainMenuButton.addActionListener(new ActionListener()
+			{
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					drawMenu();
+				}
+			});
 			
+			endPanel.add(statusText);
+			endPanel.add(mainMenuButton);
 			
 		frame.setContentPane(menuPanel);
+		frame.setMinimumSize(new Dimension(100, 100));
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -219,15 +236,17 @@ public class GraphicsView implements View
 	@Override
 	public void drawGameOver()
 	{
-		// TODO Auto-generated method stub
-
+		statusText.setText("Game Over!");
+		frame.setContentPane(endPanel);
+		refreshFrame();
 	}
 
 	@Override
 	public void drawWinScreen()
 	{
-		// TODO Auto-generated method stub
-
+		statusText.setText("You win!");
+		frame.setContentPane(endPanel);
+		refreshFrame();
 	}
 	
 	private void refreshFrame() {
