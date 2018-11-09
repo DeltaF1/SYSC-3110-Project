@@ -111,6 +111,7 @@ public class Controller {
 			if (board.spendSun(selectedPlant.getCost())) {
 				board.placeEntity(x, y, selectedPlant);
 				view.announce(String.format("%s placed successfully at (%d, %d)", plantName, x, y));
+				view.drawBoard(board);
 			} else {
 				view.announce(String.format("You can't afford a %s. It costs %d sun points and you have %d!", 
 					plantName, plantCost, board.getSun()));

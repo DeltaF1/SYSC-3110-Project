@@ -1,5 +1,6 @@
 package mainPackage;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -20,8 +21,9 @@ public class GraphicsView implements View
 	private String selectedPlant;
 	
 	private static ImageIcon zombieIcon = new ImageIcon("images/zombie.png");
-	private static ImageIcon sunflowerIcon = new ImageIcon("image/sunflower.png");
-	
+	private static ImageIcon sunflowerIcon = new ImageIcon("images/sunflower.png");
+	private static ImageIcon peashooterIcon = new ImageIcon("images/peashooter.png");
+	private static ImageIcon blankIcon = new ImageIcon("images/blank.png");
 	private class BoardButton extends JButton {
 		private int x,y;
 		public BoardButton(int x, int y) {
@@ -41,18 +43,39 @@ public class GraphicsView implements View
 				}
 			});
 		}
+	}
+	
+	private class PlantButton extends JButton {
+		public String plantType;
 		
-		public void setPlant() {
-			setIcon(sunflowerIcon);
-		}
-		
-		public void setZombie() {
-			System.out.println("Set zombieIcon!");
-			setIcon(zombieIcon);
-		}
-		
-		public void clear() {
-			setIcon(null);
+		public PlantButton (String plantType) {
+			super();
+			
+			setPreferredSize(new Dimension(48,48));
+			
+			this.plantType = plantType;
+			
+			ImageIcon icon;
+			switch (plantType) {
+				default:
+					icon = sunflowerIcon; 
+			}
+			setIcon(GraphicsView.getIcon(plantType));
+			
+			addActionListener(new ActionListener()
+			{
+				
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					// TODO Auto-generated method stub
+					if (selectedPlant == plantType) {
+						selectedPlant = null;
+					} else {
+						selectedPlant = plantType;
+					}
+				}
+			});
 		}
 	}
 	
@@ -112,6 +135,15 @@ public class GraphicsView implements View
 				}
 			});
 			boardPanel.add(endTurnButton);
+			JPanel plantPanel = new JPanel();
+			
+			PlantButton sunflowerButton = new PlantButton("sunflower");
+			plantPanel.add(sunflowerButton);
+			
+			PlantButton projButton = new PlantButton("proj");
+			plantPanel.add(projButton);
+			
+			boardPanel.add(plantPanel, BorderLayout.SOUTH);
 			
 			
 		frame.setContentPane(menuPanel);
@@ -125,6 +157,7 @@ public class GraphicsView implements View
 			Controller.tileInfo(x, y);
 		} else {
 			Controller.placePlant(selectedPlant, x, y);
+			selectedPlant = null;
 		}
 	}
 
@@ -139,10 +172,18 @@ public class GraphicsView implements View
 		for (int i = 0; i < Board.HEIGHT; i++) {
 			for (int j = 0; j < Board.WIDTH; j++) {
 				Entity entity = board.getEntity(j, i); 
-				if (entity != null) {
-					boardButtons[i][j].setZombie();
-				} else {
-					boardButtons[i][j].clear();
+				// Todo, create a map of types to ImageIcons?
+				BoardButton button = boardButtons[i][j];
+				if (entity instanceof Zombie) {
+					button.setIcon(zombieIcon);
+				} else if (entity instanceof Plant) {
+					if (entity instanceof Sunflower) {
+						button.setIcon(sunflowerIcon);
+					} else if (entity instanceof ProjectilePlant) {
+						button.setIcon(peashooterIcon);
+					}
+				} else if (entity == null) {
+					button.setIcon(blankIcon);
 				}
 			}
 		}
@@ -150,11 +191,21 @@ public class GraphicsView implements View
 
 	}
 
+	private static ImageIcon getIcon(String plant) {
+		switch(plant) {
+			
+			case "proj":
+				return peashooterIcon;
+			case "sunflower":
+			default:
+				return sunflowerIcon;
+		}
+	}
+	
 	@Override
 	public void announce(String message)
 	{
-		// TODO Auto-generated method stub
-
+		System.out.println(message);
 	}
 
 	@Override
