@@ -1,12 +1,17 @@
 package mainPackage;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class GraphicsView implements View
 {
@@ -15,11 +20,12 @@ public class GraphicsView implements View
 	
 	private JPanel boardPanel;
 	private BoardButton[][] boardButtons;
-	private JLabel sunLabel;
+	private JTextPane sunInfo;
+	private JTextPane announcements;
 	
 	private JPanel endPanel;
 	private JLabel statusText;
-	private String selectedPlant;
+	private PlantButton selectedPlantButton;
 	
 	private static ImageIcon zombieIcon = new ImageIcon("images/zombie.png");
 	private static ImageIcon sunflowerIcon = new ImageIcon("images/sunflower.png");
@@ -70,6 +76,8 @@ public class GraphicsView implements View
 			}
 			setIcon(GraphicsView.getIcon(plantType));
 			
+			PlantButton thisButton = this;
+			
 			addActionListener(new ActionListener()
 			{
 				
@@ -77,13 +85,24 @@ public class GraphicsView implements View
 				public void actionPerformed(ActionEvent e)
 				{
 					// TODO Auto-generated method stub
-					if (selectedPlant == plantType) {
-						selectedPlant = null;
+					if (selectedPlantButton != null) {
+						selectedPlantButton.setBorder(new LineBorder(Color.GRAY));
+					}
+					if (selectedPlantButton == thisButton) {
+						selectedPlantButton = null;
 					} else {
-						selectedPlant = plantType;
+						selectedPlantButton = thisButton;
+						thisButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 					}
 				}
 			});
+		}
+		
+		/*
+		 * @return the plant type for this PlantButton
+		 */
+		String getPlantType() {
+			return plantType;
 		}
 	}
 	
@@ -110,7 +129,7 @@ public class GraphicsView implements View
 				public void actionPerformed(ActionEvent e)
 				{
 					Controller.startGame();
-					
+					frame.setSize(new Dimension(960,650)); //pretty weird but if we don't resize then the size of the frame is all messed up... calling frame.pack() is supposed to fix this but for some reason it doesn't
 				}
 			});
 			
@@ -119,6 +138,7 @@ public class GraphicsView implements View
 			
 		// Board panel setup
 			boardPanel = new JPanel();
+			boardPanel.setLayout(new BoxLayout(boardPanel, BoxLayout.PAGE_AXIS));
 
 			// Create a panel that contains the grid of buttons 
 			JPanel gameBoardPanel = new JPanel();
@@ -136,6 +156,15 @@ public class GraphicsView implements View
 			
 			boardPanel.add(gameBoardPanel);
 			
+			JPanel controlsAndInfoPanel = new JPanel(); //for the buttons and announcement
+			controlsAndInfoPanel.setLayout(new BoxLayout(controlsAndInfoPanel, BoxLayout.PAGE_AXIS));
+			
+			sunInfo = new JTextPane();
+			sunInfo.setEditable(false);
+			sunInfo.setOpaque(false);
+			sunInfo.setContentType("text/html");
+			controlsAndInfoPanel.add(sunInfo);
+			
 			JButton endTurnButton = new JButton("End turn");
 			endTurnButton.addActionListener(new ActionListener()
 			{
@@ -145,21 +174,25 @@ public class GraphicsView implements View
 					Controller.endTurn();
 				}
 			});
-			boardPanel.add(endTurnButton);
 			
 			// Create a panel to hold the buttons that choose which seed to plant
-			JPanel plantPanel = new JPanel();
+			JPanel controlsPanel = new JPanel();
+			controlsPanel.add(endTurnButton);
 			
 			PlantButton sunflowerButton = new PlantButton("sunflower");
-			plantPanel.add(sunflowerButton);
+			controlsPanel.add(sunflowerButton);
 			
 			PlantButton projButton = new PlantButton("proj");
-			plantPanel.add(projButton);
+			controlsPanel.add(projButton);
 			
-			boardPanel.add(plantPanel, BorderLayout.SOUTH);
+			controlsAndInfoPanel.add(controlsPanel);
 			
-			sunLabel = new JLabel("THIS TEXT SHOULD NOT BE SEEN");
-			boardPanel.add(sunLabel);
+			announcements = new JTextPane();
+			announcements.setEditable(false);
+			announcements.setOpaque(false);
+			controlsAndInfoPanel.add(announcements);
+			
+			boardPanel.add(controlsAndInfoPanel, BorderLayout.SOUTH);
 
 		// End screen panel setup
 			endPanel = new JPanel();
@@ -188,11 +221,10 @@ public class GraphicsView implements View
 	 */
 	protected void clickButton(BoardButton button, int x, int y)
 	{
-		if (selectedPlant == null) {
+		if (selectedPlantButton == null) {
 			Controller.tileInfo(x, y);
 		} else {
-			Controller.placePlant(selectedPlant, x, y);
-			selectedPlant = null;
+			Controller.placePlant(selectedPlantButton.getPlantType(), x, y);
 		}
 	}
 
@@ -226,11 +258,11 @@ public class GraphicsView implements View
 			}
 		}
 		
-		sunLabel.setText("Sun: "+board.getSun());
+		sunInfo.setText("<b>Sun: " + board.getSun() + "</b>"); //its kind of ugly but the easiest way to bold is with html tags
+		centerText(sunInfo);
 		
 		System.out.println("Updated View!");
 		refreshFrame();
-
 	}
 	
 	/**
@@ -253,7 +285,19 @@ public class GraphicsView implements View
 	@Override
 	public void announce(String message)
 	{
-		System.out.println(message);
+		announcements.setText(message);
+		centerText(announcements);
+	}
+	
+	/*
+	 * Centers text
+	 * @param pane the JTextPane to center text in
+	 */
+	private void centerText(JTextPane pane) {
+		StyledDocument text = pane.getStyledDocument();
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		text.setParagraphAttributes(0, text.getLength(), center, false);
 	}
 
 	@Override
@@ -292,8 +336,8 @@ public class GraphicsView implements View
 	 * Redraws and resizes the JFrame 
 	 */
 	private void refreshFrame() {
-		frame.pack();
 		frame.revalidate();
+		frame.pack();
 	}
 
 }
