@@ -1,37 +1,41 @@
 # Really Terrible Plants VS Zombies
 
-
-When you start the game you will be greeted with a splash screen. Type the command `start` and press enter to start the game.  
+**Core features**
+------
+When you start the game you will be greeted with a splash screen. Press the `Start Game` button to start the game.  
 
 Once the game begins you will have 150 sun points. If you don't plant a sunflower using these points you will almost certainly lose.  
-To plant a sunflower type `place sunflower 0 0` and press enter. A [x] symbol will appear in the top left of the screen. This is your sunflower.  
+To plant a sunflower simply click the sunflower picture at the bottom of the screen, and then click on anywhere in the grid to place it.
 
-To advance the game to the next state, enter the command `done`.  Zombies (represented by a [z] symbol) should appear on the right of the map.  
+To advance the game to the next state, click the `End turn` button.  Zombies should appear on the right of the map.  If the zombies get to the left side of the map you lose.
 
-Now that you understand how the game works, here are a list of commands: 
+Now that you understand how to play the game, here are a list of other features: 
 
-## Start
-`start`
-Starts the game
-Only works on the home screen
 
-## Place
-`place <plantName> <x> <y>`  
-Places a plant at the specified location
+**Plants**
+------
 
-* **plantName**: name of the plant you're placing. options include:
-	* _sunflower_ (a plant that produces 50 sun every turn)
-	* _proj_ (a plant that shoots any zombie standing in front of it)
-* **x**: x coordinate to place the plant
-* **y**: y coordinate to place the plant
+_"Attack like the Fire and be still as the Mountain"._ 
+\- Sun Tzu, The Art of War
 
-## Info
-`info <x> <y>`
-Retrieves information about the entity at the specified location
+#### Projectile plant (aka proj)
+![](https://imgur.com/vvJAXDx.png)
+Shoots straight forward at oncoming zombies to lower their health/morale
 
-* **x**: x coordinate to inspect
-* **y**: y coordinate to inspect
+#### Sunflower
+![](https://imgur.com/UbF537X.png)
+Generates 50 sun every turn
 
-## Done
-`done`
-Completes your turn
+
+**Zombies**
+------
+_"Be strong and courageous. Do not fear or be in dread of them."_
+\- Deuteronomy 31:6
+#### Zombie
+![](https://imgur.com/DZ8P141.png)
+Just your run of the mill zombie. Pretty pathetic honestly
+
+
+## **Tile Info**
+
+Clicking on a tile retrieves information about the entity at the specified location. This information tells you about the entity's health, damage, name and speed
