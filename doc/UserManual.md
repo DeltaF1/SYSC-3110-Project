@@ -15,24 +15,24 @@ Now that you understand how to play the game, here are a list of other features:
 **Plants**
 ------
 
-_"Attack like the Fire and be still as the Mountain"._ 
+_"Attack like the Fire and be still as the Mountain"._  
 \- Sun Tzu, The Art of War
 
 #### Projectile plant (aka proj)
-![](https://imgur.com/vvJAXDx.png)
+![](https://imgur.com/vvJAXDx.png)  
 Shoots straight forward at oncoming zombies to lower their health/morale
 
 #### Sunflower
-![](https://imgur.com/UbF537X.png)
+![](https://imgur.com/UbF537X.png)  
 Generates 50 sun every turn
 
 
 **Zombies**
 ------
-_"Be strong and courageous. Do not fear or be in dread of them."_
+_"Be strong and courageous. Do not fear or be in dread of them."_  
 \- Deuteronomy 31:6
 #### Zombie
-![](https://imgur.com/DZ8P141.png)
+![](https://imgur.com/DZ8P141.png)  
 Just your run of the mill zombie. Pretty pathetic honestly
 
 
