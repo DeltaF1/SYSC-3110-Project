@@ -182,50 +182,34 @@ public class Controller {
 	 * @param y y position of the zombie
 	 */
 	private static void advanceZombie(int x, int y) {
-		int newX = x;
 		Zombie zombie = (Zombie)board.getEntity(x,y);
-		for (int i = 1; i < zombie.getMovSpd() + 1; i ++) {
-			
-			Entity encounteredEntity;
-			if (newX > 1) {
-				encounteredEntity = board.getEntity(newX-1, y);
-			}else {
-				encounteredEntity = null;
-			}
-			
-			//wait in line behind zombie ahead
-			if (newX > 0 && encounteredEntity instanceof Zombie ) {
+		Entity encounteredEntity = null;
+		//move zomb forward until it hits an entity or reaches end of map
+		for (int i = 0; i < (zombie.getMovSpd()) && (x > 0); i ++) {
+			encounteredEntity = board.getEntity(x-1, y);
+			if (encounteredEntity == null) { //walk forward if we can
+				x --;
+			} else { //stop walking when we bump into entity
 				break;
-			//attack plant
-			} else if  (newX > 0 && encounteredEntity instanceof Plant ) {
+			}
+		}
+		if (x > 0) { //zomb hasn't gotten to end of map
+			board.moveEntity(x, y, zombie); //update zomb position
+			//attack plant if in front of a plant
+			if  (encounteredEntity instanceof Plant ) {
 				Plant attacking = (Plant) encounteredEntity;
 				int newHP = attacking.getHp() - zombie.getDamage();
-				view.announce("TMP MSG: The plant at " + Integer.toString(newX-1) + "," + Integer.toString(y) +" had its health reduced to " + Integer.toString(newHP));
+				view.announce("The plant at " + Integer.toString(x - 1) + "," + Integer.toString(y) +" had its health reduced to " + Integer.toString(newHP));
 				if (newHP <= 0) {
-					board.removeEntity(newX-1, y);
+					board.removeEntity(x - 1, y);
 				} else {
 					attacking.setHp(newHP);
 				}
-				break;
-			//walk forward
-			} else {
-				newX = x - 1;
 			}
-		}
-		if (newX != x) {
-			if (newX >= 0) {
-				board.moveEntity(newX,y,zombie);
-			
-			}else {
-				view.announce("TEMP MSG: a zombie broke through on row " + Integer.toString(y));
-				board.removeEntity(x, y);
-				//dont drawGameOver() here because it will be erased
-				state = GameState.GAMEOVER;
-				view.drawGameOver();
-				
-				//decreaseZombieCount(1); // probably doesnt matter since this should end game eventually
-			}
-			
+		} else { //zomb has reached end of map, game over
+			//dont drawGameOver() here because it will be erased
+			state = GameState.GAMEOVER;
+			view.drawGameOver();
 		}
 	}
 	

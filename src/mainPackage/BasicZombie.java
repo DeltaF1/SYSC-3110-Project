@@ -11,6 +11,6 @@ public class BasicZombie extends Zombie {
 	 * creates a new BasicZombie
 	 */
 	public BasicZombie() {
-		super("a zombie", 60,20,2);
+		super("a zombie", 60,20,1);
 	}
 }
