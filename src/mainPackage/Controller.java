@@ -231,14 +231,20 @@ public class Controller {
 	 * Handle new zombies spawned this turn
 	 */
 	private static void spawnZombies() {
-		int numZombies = levels.get(level).getWave(turn);
 		
-		for (int i = 0; i < numZombies; i++) {
-			boolean placed = false;
-			do {
-				int newPosY = ThreadLocalRandom.current().nextInt(0, board.HEIGHT);
-				placed = board.placeEntity(board.WIDTH-1,newPosY, new BasicZombie());
-			} while (placed == false);
+		if(levelZombiesLeft == 0){
+			//do nothing! No zombies left to spawn
+		}else{
+		
+			int numZombies = levels.get(level).getWave(turn);
+		
+			for (int i = 0; i < numZombies; i++) {
+				boolean placed = false;
+				do {
+					int newPosY = ThreadLocalRandom.current().nextInt(0, board.HEIGHT);
+					placed = board.placeEntity(board.WIDTH-1,newPosY, new BasicZombie());
+				} while (placed == false);
+			}
 		}
 	}
 
