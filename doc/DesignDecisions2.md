@@ -12,11 +12,10 @@ grid. When a user clicks a board button, a [Controller] (../src/mainPackage/Cont
 tile. If the user clicks a plant button followed by a board button, the Controller instead attempts to plant that respective entity on the 
 selected tile, so long as it is unoccupied. The GraphicsView used a 2-dimensional array of buttons so that the view could be updated from the model easily. This could be changed in the future to reduce redundancy between the storage of BoardButtons in the GridLayout and the 2-dimensional array.
 
-Naturally, with changes in the view, so too must the Controller change. Specifically, a new class [StringUtils](..src/mainPackage/StringUtils.java) 
-was created to replace the parseText method in the Controller to optimize cohesion and reorganize structure. Furthermore, the Controller 
+The controller was refactored to be less dependent on the implemntation of its View, and so parseText was moved to ASCIIView. Furthermore, the Controller 
 now properly references View instead of ASCIIView, and the Controller was modified to accommodate for this shift by making several of its 
 methods public and making inputs for those methods simpler, as text-based entry was no longer required. However, the essence of the 
-controller remains, and much of the code did not have to change, since the implemntation of the view was properly isolated from the model and controller in Milestone 1.
+controller remains, and much of the code did not have to change, since the implementation of the view was properly isolated from the model and controller in Milestone 1.
 
 In terms of unit testing, a separate package was created containing test classes for every class not directly associated with the MVC 
 model. These classes are made up of a series of test methods, each with a purpose of ensuring a specific method in its respective main 
