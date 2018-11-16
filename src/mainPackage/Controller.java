@@ -221,7 +221,8 @@ public class Controller {
 		for (int y = 0; y < board.getTiles().length; y++) {
 			for (int x = 0; x <  board.getTiles()[y].length; x++) {
 				if( board.getEntity(x, y) instanceof Zombie) {
-					advanceZombie(x,y);				}
+					advanceZombie(x,y);				
+				}
 			}
 		}
 	}
