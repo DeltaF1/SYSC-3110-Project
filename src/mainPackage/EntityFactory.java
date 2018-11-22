@@ -12,10 +12,15 @@ public class EntityFactory {
 	private static HashMap<String, Class<? extends Zombie>> zombieTypes = new HashMap<String, Class<? extends Zombie>>();
 	private static enum EntityType {PLANT, ZOMBIE};
 	
-	//register all plant types here
-	private static void registerPlants() {
+	// Initialize the entity types
+	static {
 		plantTypes.put("proj", ProjectilePlant.class);
 		plantTypes.put("sunflower", Sunflower.class);
+	}
+	
+	//register all plant types here
+	private static void registerPlants() {
+
 	}
 	
 	//register all zombie types here
