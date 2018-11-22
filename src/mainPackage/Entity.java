@@ -1,4 +1,7 @@
 package mainPackage;
+
+import javax.swing.Icon;
+
 /**
  * Represents an entity (either a zombie or a plant)
  * Check GitHub for authors
@@ -48,6 +51,11 @@ public class Entity {
 	 */
 	public int getDamage() {
 		return damage;
+	}
+
+	public Icon getIcon() {
+		// TODO Auto-generated method stub
+		return Images.blankIcon;
 	}
 
 }
