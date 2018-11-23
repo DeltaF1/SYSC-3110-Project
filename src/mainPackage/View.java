@@ -12,4 +12,8 @@ public interface View {
 	
 	public void drawWinScreen();
 	
+	public void updateEntity(Entity entity, int x, int y);
+	
+	public void updateSun(int sun);
+	
 }

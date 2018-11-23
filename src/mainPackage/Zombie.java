@@ -1,4 +1,7 @@
 package mainPackage;
+
+import javax.swing.ImageIcon;
+
 /**
  * A class that represents a zombie entity
  * Check GitHub for authors
@@ -26,5 +29,8 @@ public class Zombie extends Entity {
 	public int getMovSpd() {
 		return movSpd;
 	}
-
+	
+	public ImageIcon getIcon() {
+		return Images.zombieIcon;
+	}
 }

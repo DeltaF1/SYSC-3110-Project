@@ -37,6 +37,10 @@ public class GraphicsView implements View
 			this.x = x;
 			this.y = y;
 			
+//			setOpaque(false);
+//			setContentAreaFilled(false);
+//			setBorderPainted(false);
+			
 			setPreferredSize(new Dimension(48,48));
 			
 			addActionListener(new ActionListener()
@@ -246,7 +250,7 @@ public class GraphicsView implements View
 		if (frame.getContentPane() != boardPanel) {
 			frame.setContentPane(boardPanel);
 		}
-		
+		/*
 		for (int i = 0; i < Board.HEIGHT; i++) {
 			for (int j = 0; j < Board.WIDTH; j++) {
 				Entity entity = board.getEntity(j, i); 
@@ -264,29 +268,29 @@ public class GraphicsView implements View
 					button.setIcon(Images.blankIcon);
 				}
 
-			}
 		}
 		
 		sunInfo.setText("<b>Sun: " + board.getSun() + "</b>"); //its kind of ugly but the easiest way to bold is with html tags
 		centerText(sunInfo);
 		
 		System.out.println("Updated View!");
-		refreshFrame();
+		refreshFrame();*/
 	}
 	
 	public void updateEntity(Entity entity, int x, int y) {
-		// Todo, create a map of types to ImageIcons?
-		BoardButton button = boardButtons[x][y];
-		if (entity == null) {
+		BoardButton button = boardButtons[y][x];
+		if (entity == null || entity.getIcon() == null) {
 			button.setIcon(Images.blankIcon);
 		} else {
 			button.setIcon(entity.getIcon());
 		}
+		refreshFrame();
 	}
 	
 	public void updateSun(int sun) {
 		sunInfo.setText("<b>Sun: " + sun + "</b>"); // It's kind of ugly but the easiest way to bold is with html tags
 		centerText(sunInfo);
+		refreshFrame();
 	}
 	
 	@Override
