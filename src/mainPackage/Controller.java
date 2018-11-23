@@ -5,13 +5,13 @@ package mainPackage;
  */
 
 import java.util.LinkedList;
+import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 public class Controller {
 	private static Board board;
+	private static Stack<String> boardStates;
 	private static View view;
 	static LinkedList<Level> levels;
 	static int level;
@@ -115,11 +115,7 @@ public class Controller {
 	 * @param args extra arguments specified by player (currently unused)
 	 */
 	public static void endTurn() {
-		try {
-			System.out.println(board.toXML());
-		} catch (ParserConfigurationException | TransformerException e) {
-			e.printStackTrace();
-		}
+		boardStates.push(board.toXML());
 		if (state == GameState.INLEVEL) {
 			advancePlants();
 			advanceZombies();
@@ -283,6 +279,8 @@ public class Controller {
 	public static void setUpGame(Board board) {
 		board.wipe();
 		board.addSun(150);
+		
+		boardStates = new Stack<String>();
 		
 		//TODO: Load levels from text files
 		levels = new LinkedList<Level>();

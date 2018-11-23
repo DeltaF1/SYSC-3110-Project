@@ -223,53 +223,58 @@ public class Board {
 	 * @throws ParserConfigurationException
 	 * @throws TransformerException 
 	 */
-	public String toXML() throws ParserConfigurationException, TransformerException {
-		Document xml  = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-		Element rootElm = xml.createElement("board");
-		Element allTilesElm = xml.createElement("tiles");
-		Element sunElm = xml.createElement("sunPoints");
-		Element widthElm = xml.createElement("WIDTH");
-		Element heightElm = xml.createElement("HEIGHT");
-		for (Tile[] row: tiles) {
-			Element rowElm = xml.createElement("row");
-			for (Tile t: row) {
-				Element tileElm = xml.createElement("tile");
-				Entity occupant = t.getOccupant();
-				if (occupant != null) {
-					String occupantType;
-					if (occupant instanceof Zombie) 
-						occupantType = "zombie";
-					else 
-						occupantType =  "plant";
-					Element occupantElm = xml.createElement(occupantType);
-					Attr hpAttr = xml.createAttribute("hp");
-					hpAttr.setValue(String.format("%d", occupant.getHp()));
-					Attr dmgAttr = xml.createAttribute("damage");
-					dmgAttr.setValue(String.format("%d", occupant.getDamage()));
-					occupantElm.setAttributeNode(hpAttr);
-					occupantElm.setAttributeNode(dmgAttr);
-					occupantElm.appendChild(xml.createTextNode(t.getOccupant().getName()));
-					tileElm.appendChild(occupantElm);
+	public String toXML() {
+		try {
+			Document xml  = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+			Element rootElm = xml.createElement("board");
+			Element allTilesElm = xml.createElement("tiles");
+			Element sunElm = xml.createElement("sunPoints");
+			Element widthElm = xml.createElement("WIDTH");
+			Element heightElm = xml.createElement("HEIGHT");
+			for (Tile[] row: tiles) {
+				Element rowElm = xml.createElement("row");
+				for (Tile t: row) {
+					Element tileElm = xml.createElement("tile");
+					Entity occupant = t.getOccupant();
+					if (occupant != null) {
+						String occupantType;
+						if (occupant instanceof Zombie) 
+							occupantType = "zombie";
+						else 
+							occupantType =  "plant";
+						Element occupantElm = xml.createElement(occupantType);
+						Attr hpAttr = xml.createAttribute("hp");
+						hpAttr.setValue(String.format("%d", occupant.getHp()));
+						Attr dmgAttr = xml.createAttribute("damage");
+						dmgAttr.setValue(String.format("%d", occupant.getDamage()));
+						occupantElm.setAttributeNode(hpAttr);
+						occupantElm.setAttributeNode(dmgAttr);
+						occupantElm.appendChild(xml.createTextNode(t.getOccupant().getName()));
+						tileElm.appendChild(occupantElm);
+					}
+					rowElm.appendChild(tileElm);
 				}
-				rowElm.appendChild(tileElm);
+				allTilesElm.appendChild(rowElm);
 			}
-			allTilesElm.appendChild(rowElm);
-		}
-		sunElm.appendChild(xml.createTextNode(String.format("%d", sunPoints)));
-		widthElm.appendChild(xml.createTextNode(String.format("%d", WIDTH)));
-		heightElm.appendChild(xml.createTextNode(String.format("%d", HEIGHT)));
-		rootElm.appendChild(allTilesElm);
-		rootElm.appendChild(sunElm);
-		rootElm.appendChild(widthElm);
-		rootElm.appendChild(heightElm);
-		xml.appendChild(rootElm);
-		StringWriter sw = new StringWriter();
-		TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-        transformer.transform(new DOMSource(xml), new StreamResult(sw));
-        return sw.toString();
+			sunElm.appendChild(xml.createTextNode(String.format("%d", sunPoints)));
+			widthElm.appendChild(xml.createTextNode(String.format("%d", WIDTH)));
+			heightElm.appendChild(xml.createTextNode(String.format("%d", HEIGHT)));
+			rootElm.appendChild(allTilesElm);
+			rootElm.appendChild(sunElm);
+			rootElm.appendChild(widthElm);
+			rootElm.appendChild(heightElm);
+			xml.appendChild(rootElm);
+			StringWriter sw = new StringWriter();
+			TransformerFactory tf = TransformerFactory.newInstance();
+	        Transformer transformer = tf.newTransformer();
+	        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+	        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+	        transformer.transform(new DOMSource(xml), new StreamResult(sw));
+	        return sw.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+	    	return null;
+	    }
 	}
 	
 	public static Board fromXML(String xml) {
