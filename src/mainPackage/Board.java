@@ -277,21 +277,22 @@ public class Board {
 			SAXParser sax = SAXParserFactory.newInstance().newSAXParser();
 			Board newBoard = new Board();
 			sax.parse(new InputSource(new StringReader(xml)), new DefaultHandler() {
-				Entity currentEntity = null;
+				int currentHp;
 				String currentTag;
 				int currentRow = 0;
 				int currentColumn = 0;
 				
 				@Override
-				public void startElement(String u, String ln, String qName, Attributes a) {
+				public void startElement(String u, String ln, String qName, Attributes attributes) {
 					currentTag = qName;
-					switch (qName) {
-					case "tile":
-						currentEntity = null;
-					case "plant":
-						currentEntity = EntityFactory.
-					case "zombie":
-						
+					if (qName == "plant" || qName == "zombie") {
+						currentHp = 0;
+						for (int i = 0; i < attributes.getLength(); i ++) {
+							if (attributes.getQName(i).equals("hp")) {
+								currentHp = Integer.valueOf(attributes.getValue(i));
+								break;
+							}
+						}
 					}
 				}
 				
@@ -299,12 +300,7 @@ public class Board {
 				public void endElement(String url, String localName, String qName) {
 					currentTag = "";
 					switch (qName) {
-					case "zombie":
-						break;
-					case "plant":
-						break;
 					case "tile":
-						newBoard.placeEntity(currentColumn, currentRow, currentEntity);
 						currentColumn ++;
 						break;
 					case "row":
@@ -322,6 +318,16 @@ public class Board {
 						break;
 					case "sunPoints":
 						newBoard.setSun(Integer.valueOf(data));
+						break;
+					case "plant":
+						Plant newPlant = EntityFactory.makePlant(data);
+						newPlant.setHp(currentHp);
+						newBoard.placeEntity(currentColumn, currentRow, newPlant);
+						break;
+					case "zombie":
+						Zombie newZombie = EntityFactory.makeZombie(data);
+						newZombie.setHp(currentHp);
+						newBoard.placeEntity(currentColumn, currentRow, newZombie);
 						break;
 					}
 				}
