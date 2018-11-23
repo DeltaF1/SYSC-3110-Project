@@ -169,9 +169,27 @@ public class GraphicsView implements View
 				}
 			});
 			
+			JButton undoButton = new JButton("Undo turn");
+			undoButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Controller.undoTurn();
+				}
+			});
+			
+			JButton redoButton = new JButton("Redo turn");
+			undoButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Controller.redoTurn();
+				}
+			});
+			
 			// Create a panel to hold the buttons that choose which seed to plant
 			JPanel controlsPanel = new JPanel();
 			controlsPanel.add(endTurnButton);
+			controlsPanel.add(undoButton);
+			controlsPanel.add(redoButton);
 			
 			PlantButton sunflowerButton = new PlantButton("sunflower");
 			controlsPanel.add(sunflowerButton);
