@@ -12,7 +12,6 @@ import javax.xml.transform.TransformerException;
 
 public class Controller {
 	private static Board board;
-	private static EntityFactory entityFactory;
 	private static View view;
 	static LinkedList<Level> levels;
 	static int level;
@@ -47,7 +46,7 @@ public class Controller {
 	 * @param args user specified arguments (plant name and coordinates)
 	 */
 	public static void placePlant(String plantName, int x, int y) {
-		Plant selectedPlant = entityFactory.makePlant(plantName);
+		Plant selectedPlant = EntityFactory.makePlant(plantName);
 		if (selectedPlant == null) {
 			view.announce("\"" + plantName + "\"" + " is not a valid plant name");
 			return;
@@ -306,7 +305,6 @@ public class Controller {
 		board = new Board();
 		view = new GraphicsView();
 		view.drawMenu();
-		entityFactory = new EntityFactory();
 	}
 
 

@@ -16,32 +16,16 @@ public class EntityFactory {
 	static {
 		plantTypes.put("proj", ProjectilePlant.class);
 		plantTypes.put("sunflower", Sunflower.class);
-	}
-	
-	//register all plant types here
-	private static void registerPlants() {
-
-	}
-	
-	//register all zombie types here
-	private static void registerZombies() {
+		
 		zombieTypes.put("basic", BasicZombie.class);
 	}
-	
-	/**
-	 * creates a new EntityFactory
-	 */
-	public EntityFactory() {
-		registerPlants();
-		registerZombies();
-	}
-	
+
 	/**
 	 * makes a new zombie
 	 * @param type type of zombie to create
 	 * @return null if zombie type doesn't exist, otherwise returns a genuine zombie
 	 */
-	public Zombie makeZombie(String type) {
+	public static Zombie makeZombie(String type) {
 		return (Zombie) makeEntity(EntityType.ZOMBIE, type);
 	}
 	
@@ -50,7 +34,7 @@ public class EntityFactory {
 	 * @param type type of plant to create
 	 * @return a zombie. JUST KIDDING its a plant. unless the type doesn't exist, then it returns null
 	 */
-	public Plant makePlant(String type) {
+	public static Plant makePlant(String type) {
 		return (Plant) makeEntity(EntityType.PLANT, type);
 	}
 	
@@ -60,7 +44,7 @@ public class EntityFactory {
 	 * @param type more specific String type of entity
 	 * @return a new Entity if it was made successfully, otherwise null
 	 */
-	private Entity makeEntity(EntityType t, String type) {
+	private static Entity makeEntity(EntityType t, String type) {
 		Class<? extends Entity> entitySubclass = plantTypes.get(type);
 		if (entitySubclass == null)
 			entitySubclass = zombieTypes.get(type);

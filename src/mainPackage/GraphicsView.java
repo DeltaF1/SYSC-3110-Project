@@ -27,11 +27,6 @@ public class GraphicsView implements View
 	private JLabel statusText;
 	private PlantButton selectedPlantButton;
 	
-	private static ImageIcon zombieIcon = new ImageIcon("images/zombie.png");
-	private static ImageIcon sunflowerIcon = new ImageIcon("images/sunflower.png");
-	private static ImageIcon peashooterIcon = new ImageIcon("images/peashooter.png");
-	private static ImageIcon blankIcon = new ImageIcon("images/blank.png");
-	
 	/**
 	 * A button that represents a square on the board grid
 	 */
@@ -69,12 +64,7 @@ public class GraphicsView implements View
 			
 			this.plantType = plantType;
 			
-			ImageIcon icon;
-			switch (plantType) {
-				default:
-					icon = sunflowerIcon; 
-			}
-			setIcon(GraphicsView.getIcon(plantType));
+			setIcon(Images.getIcon(plantType));
 			
 			PlantButton thisButton = this;
 			
@@ -245,16 +235,17 @@ public class GraphicsView implements View
 				// Todo, create a map of types to ImageIcons?
 				BoardButton button = boardButtons[i][j];
 				if (entity instanceof Zombie) {
-					button.setIcon(zombieIcon);
+					button.setIcon(Images.zombieIcon);
 				} else if (entity instanceof Plant) {
 					if (entity instanceof Sunflower) {
-						button.setIcon(sunflowerIcon);
+						button.setIcon(Images.sunflowerIcon);
 					} else if (entity instanceof ProjectilePlant) {
-						button.setIcon(peashooterIcon);
+						button.setIcon(Images.peashooterIcon);
 					}
 				} else if (entity == null) {
-					button.setIcon(blankIcon);
+					button.setIcon(Images.blankIcon);
 				}
+
 			}
 		}
 		
@@ -265,21 +256,19 @@ public class GraphicsView implements View
 		refreshFrame();
 	}
 	
-	/**
-	 * Returns the correct image to use for the given plant
-	 * 
-	 * @param plant
-	 * @return The ImageIcon associated with the plant name
-	 */
-	private static ImageIcon getIcon(String plant) {
-		switch(plant) {
-			
-			case "proj":
-				return peashooterIcon;
-			case "sunflower":
-			default:
-				return sunflowerIcon;
+	public void updateEntity(Entity entity, int x, int y) {
+		// Todo, create a map of types to ImageIcons?
+		BoardButton button = boardButtons[x][y];
+		if (entity == null) {
+			button.setIcon(Images.blankIcon);
+		} else {
+			button.setIcon(entity.getIcon());
 		}
+	}
+	
+	public void updateSun(int sun) {
+		sunInfo.setText("<b>Sun: " + sun + "</b>"); // It's kind of ugly but the easiest way to bold is with html tags
+		centerText(sunInfo);
 	}
 	
 	@Override
