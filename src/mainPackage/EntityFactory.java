@@ -16,8 +16,14 @@ public class EntityFactory {
 	static {
 		plantTypes.put("proj", ProjectilePlant.class);
 		plantTypes.put("sunflower", Sunflower.class);
+		plantTypes.put("wallnut", Wallnut.class);
+		plantTypes.put("repeater", Repeater.class);
+		plantTypes.put("melon", Melonpult.class);
 		
 		zombieTypes.put("basic", BasicZombie.class);
+		zombieTypes.put("boomer",Boomer.class);
+		zombieTypes.put("zoomer",Zoomer.class);
+		zombieTypes.put("doomer",Doomer.class);
 	}
 
 	/**
