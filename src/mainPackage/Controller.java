@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Controller {
 	private static Board board;
 	private static Stack<String> boardStates;
+	private static Stack<String> undoneBoardStates;
 	private static View view;
 	static LinkedList<Level> levels;
 	static int level;
@@ -124,6 +125,35 @@ public class Controller {
 		}
 		if (state == GameState.INLEVEL) {
 			view.drawBoard(board);
+		}
+	}
+	
+	/**
+	 * return the game to its state before the most recent turn
+	 */
+	public static void undoTurn() {
+		if (! boardStates.isEmpty()) {
+			board = Board.fromXML(boardStates.pop());
+			turn --;
+			view.drawBoard(board);
+			view.announce("Undid turn");
+		} else {
+			view.announce("Nothing to undo!");
+		}
+	}
+	
+	/**
+	 * undo an undoTurn
+	 * CURRENTLY BROKEN BECAUSE ENDTURN IS THE ONLY THING THAT THROWS A BOARD ON THE STACK
+	 */
+	public static void redoTurn() {
+		if (! undoneBoardStates.isEmpty()) {
+			board = Board.fromXML(undoneBoardStates.pop());
+			turn ++;
+			view.drawBoard(board);
+			view.announce("Redid turn");
+		} else {
+			view.announce("Nothing to redo!");
 		}
 	}
 	
@@ -264,11 +294,10 @@ public class Controller {
 				view.announce("TEMP: the player beat all levels");
 				state = GameState.WINSCREEN;
 				view.drawWinScreen();
-			}else {
+			} else {
 				levelZombiesLeft = levels.get(level).getTotalZombies();
 				view.announce("TEMP: the player beat level " + Integer.toString(level));
 			}
-			
 		}
 	}
 	
@@ -281,6 +310,7 @@ public class Controller {
 		board.addSun(150);
 		
 		boardStates = new Stack<String>();
+		undoneBoardStates = new Stack<String>();
 		
 		//TODO: Load levels from text files
 		levels = new LinkedList<Level>();
