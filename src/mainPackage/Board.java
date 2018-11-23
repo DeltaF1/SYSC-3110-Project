@@ -285,6 +285,14 @@ public class Board {
 				@Override
 				public void startElement(String u, String ln, String qName, Attributes a) {
 					currentTag = qName;
+					switch (qName) {
+					case "tile":
+						currentEntity = null;
+					case "plant":
+						currentEntity = EntityFactory.
+					case "zombie":
+						
+					}
 				}
 				
 				@Override
@@ -297,7 +305,6 @@ public class Board {
 						break;
 					case "tile":
 						newBoard.placeEntity(currentColumn, currentRow, currentEntity);
-						currentEntity = null;
 						currentColumn ++;
 						break;
 					case "row":

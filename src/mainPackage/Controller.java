@@ -248,7 +248,7 @@ public class Controller {
 				boolean placed = false;
 				do {
 					int newPosY = ThreadLocalRandom.current().nextInt(0, board.HEIGHT);
-					placed = board.placeEntity(board.WIDTH-1,newPosY, entityFactory.makeZombie("basic"));
+					placed = board.placeEntity(board.WIDTH-1,newPosY, EntityFactory.makeZombie("basic"));
 				} while (placed == false);
 			}
 		}
