@@ -219,6 +219,7 @@ public class Controller {
 	 * @param y y position of the zombie
 	 */
 	private static void advanceZombie(int x, int y) {
+		int oldX = x;
 		Zombie zombie = (Zombie)board.getEntity(x,y);
 		Entity encounteredEntity = null;
 		//move zomb forward until it hits an entity or reaches end of map
@@ -231,7 +232,8 @@ public class Controller {
 			}
 		}
 		if (x > 0) { //zomb hasn't gotten to end of map
-			board.moveEntity(x, y, zombie); //update zomb position
+			board.placeEntity(x, y, board.getEntity(oldX, y));
+			board.removeEntity(oldX, y);
 			//attack plant if in front of a plant
 			if  (encounteredEntity instanceof Plant ) {
 				Plant attacking = (Plant) encounteredEntity;
