@@ -116,15 +116,15 @@ public class Controller {
 	 * @param args extra arguments specified by player (currently unused)
 	 */
 	public static void endTurn() {
-		boardStates.push(board.toXML());
 		if (state == GameState.INLEVEL) {
 			advancePlants();
 			advanceZombies();
 			spawnZombies();
 			turn++;
-		}
-		if (state == GameState.INLEVEL) {
 			view.drawBoard(board);
+			boardStates.push(board.toXML());
+			undoneBoardStates.removeAllElements();
+			printStacks();
 		}
 	}
 	
@@ -132,31 +132,38 @@ public class Controller {
 	 * return the game to its state before the most recent turn
 	 */
 	public static void undoTurn() {
-		if (! boardStates.isEmpty()) {
-			board = Board.fromXML(boardStates.pop());
+		if (boardStates.size() > 1) { //can only undo if you have both the current state and some previous state in the stack
+			undoneBoardStates.push(boardStates.pop()); //put current state in undone stack
+			board.setXML(boardStates.peek()); 
 			turn --;
 			view.drawBoard(board);
 			view.announce("Undid turn");
 		} else {
 			view.announce("Nothing to undo!");
 		}
+		printStacks();
 	}
 	
 	/**
 	 * undo an undoTurn
-	 * CURRENTLY BROKEN BECAUSE ENDTURN IS THE ONLY THING THAT THROWS A BOARD ON THE STACK
 	 */
-	public static void redoTurn() {
+	public static void redoTurn() { 
 		if (! undoneBoardStates.isEmpty()) {
-			board = Board.fromXML(undoneBoardStates.pop());
+			board.setXML(undoneBoardStates.pop()); 
 			turn ++;
 			view.drawBoard(board);
 			view.announce("Redid turn");
 		} else {
 			view.announce("Nothing to redo!");
 		}
+		printStacks();
 	}
 	
+	private static void printStacks() {
+		System.out.println(String.format("UNDO STACK SIZE: %d", boardStates.size()));
+		System.out.println(String.format("REDO STACK SIZE: %d", undoneBoardStates.size()));
+		System.out.println("\n");
+	}
 	
 	/**
 	 * Determine the X position of the closest zombie on the Y row (this must be the zombie hit by plant projectile)
@@ -186,7 +193,7 @@ public class Controller {
 					}
 					if (plant.getCoolDown() >= 1) {
 						plant.setCoolDown(plant.getCoolDown()-1);
-					}else if (plant.getCoolDown() >= 0){
+					} else if (plant.getCoolDown() >= 0){
 						plant.setCoolDown(plant.getAtkSpd());
 						
 						view.announce("TEMP MSG: plant at " + Integer.toString(x) + "," + Integer.toString(y) + " shot");
@@ -198,7 +205,7 @@ public class Controller {
 							if (newHP <= 0) {
 								board.removeEntity(bulletHit, y);
 								decreaseZombieCount(1);
-							}else {
+							} else {
 								shotZombie.setHp(newHP);
 							}
 						}

@@ -174,7 +174,7 @@ public class GraphicsView implements View
 			});
 			
 			JButton redoButton = new JButton("Redo turn");
-			undoButton.addActionListener(new ActionListener() {
+			redoButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Controller.redoTurn();
