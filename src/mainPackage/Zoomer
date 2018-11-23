@@ -17,12 +17,12 @@ public class Zoomer extends Zombie {
 	 * @param damage damage zombie does
 	 * @param movSpd movement speed of zombie
 	 */
-	public Boomer(String name, int hp, int damage, int movSpd) {
-		super(name, hp, damage, (movSpd*2));
+	public Boomer(String name) {
+		super(name, 60, 20, 2);
 	}
 	/*
 	public ImageIcon getIcon() {
 		return Images.zoomerIcon;
 	}
-  */
+ 	*/
 }
