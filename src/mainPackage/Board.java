@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.LinkedList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,12 +37,16 @@ public class Board {
 	public static final int WIDTH = 20;
 	public static final int HEIGHT = 10;
 	private int sunPoints;
+	private LinkedList<View> views;
 	
 	/**
 	 * Creates a new board
 	 */
 	public Board() {
 		this.tiles = new Tile[HEIGHT][WIDTH];
+		
+		views = new LinkedList<View>();
+		
 		for (int y = 0; y < HEIGHT; y++) {
 			for (int x = 0; x < WIDTH; x++) {
 				this.tiles[y][x] = new Tile();
@@ -97,6 +102,7 @@ public class Board {
 		checkCoords(x, y);
 		if (tiles[y][x].getOccupant() == null) {
 			tiles[y][x].setOccupant(e);
+			updateEntity(x, y);
 			return true;
 		}
 		return false;
@@ -130,7 +136,8 @@ public class Board {
 		Tile startTile = getEntityTile(e);
 		if (startTile != null && tiles[y][x].getOccupant() == null) {
 			startTile.setOccupant(null);
-			tiles[y][x].setOccupant(e);
+			updateEntity(x+1, y); //TODO: SUPER HACKY PLS FIX
+			placeEntity(x, y, e);
 			System.out.println("moved zomb to "+ Integer.toString(x));
 			return true;
 		}
@@ -146,6 +153,7 @@ public class Board {
 	public void removeEntity(int x, int y) {
 		checkCoords(x, y);
 		tiles[y][x].setOccupant(null);
+		updateEntity(x,y);
 	}
 	
 	/**
@@ -184,7 +192,7 @@ public class Board {
 	 */
 	public boolean spendSun(int cost) {
 		if (cost <= sunPoints) {
-			sunPoints -= cost;
+			addSun(-cost);
 			return true;
 		} else {
 			return false;
@@ -197,6 +205,7 @@ public class Board {
 	 */
 	public void addSun(int sun) {
 		sunPoints += sun;
+		updateSun(sunPoints);
 	}
 	
 	/**
@@ -205,6 +214,7 @@ public class Board {
 	 */
 	public void setSun(int sun) {
 		sunPoints = sun;
+		updateSun(sunPoints);
 	}
 	
 	public void wipe() {
@@ -212,9 +222,28 @@ public class Board {
 		for (int y = 0; y < HEIGHT; y++) {
 			for (int x = 0; x < WIDTH; x++) {
 				this.tiles[y][x] = new Tile();
+				updateEntity(x, y);
 			}
 		}
 		sunPoints = 0;
+		updateSun(sunPoints);
+		
+	}
+	
+	public void registerView(View view) {
+		views.add(view);
+	}
+	
+	private void updateEntity(int x, int y) {
+		for (View view : views) {
+			view.updateEntity(getEntity(x, y), x, y);
+		}
+	}
+	
+	private void updateSun(int sun) {
+		for (View view : views) {
+			view.updateSun(sun);
+		}
 	}
 	
 	/**

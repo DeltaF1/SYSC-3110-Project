@@ -263,4 +263,16 @@ public class ASCIIView implements View {
 
 	}
 
+	@Override
+	public void updateEntity(Entity entity, int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateSun(int sun) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
