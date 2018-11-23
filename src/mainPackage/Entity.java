@@ -55,7 +55,7 @@ public class Entity {
 
 	public Icon getIcon() {
 		// TODO Auto-generated method stub
-		return Images.blankIcon;
+		return null;
 	}
 
 }
