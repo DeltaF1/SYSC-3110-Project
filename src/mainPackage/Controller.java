@@ -7,6 +7,9 @@ package mainPackage;
 import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 public class Controller {
 	private static Board board;
 	private static EntityFactory entityFactory;
@@ -113,6 +116,11 @@ public class Controller {
 	 * @param args extra arguments specified by player (currently unused)
 	 */
 	public static void endTurn() {
+		try {
+			System.out.println(board.toXML());
+		} catch (ParserConfigurationException | TransformerException e) {
+			e.printStackTrace();
+		}
 		if (state == GameState.INLEVEL) {
 			advancePlants();
 			advanceZombies();
@@ -123,7 +131,6 @@ public class Controller {
 			view.drawBoard(board);
 		}
 	}
-	
 	
 	
 	/**
@@ -242,7 +249,7 @@ public class Controller {
 				boolean placed = false;
 				do {
 					int newPosY = ThreadLocalRandom.current().nextInt(0, board.HEIGHT);
-					placed = board.placeEntity(board.WIDTH-1,newPosY, new BasicZombie());
+					placed = board.placeEntity(board.WIDTH-1,newPosY, entityFactory.makeZombie("basic"));
 				} while (placed == false);
 			}
 		}

@@ -10,8 +10,8 @@ public class ProjectilePlant extends Plant{
 	/**
 	 * creates a new projectile plant
 	 */
-	public ProjectilePlant() {
-		super("Projectile", 100, 10, 1, 50);
+	public ProjectilePlant(String name) {
+		super(name, 100, 10, 1, 50);
 	}
 	
 }

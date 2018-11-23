@@ -22,4 +22,5 @@ public class Tile {
 	public void setOccupant(Entity occupant) {
 		this.occupant = occupant;
 	}
+	
 }

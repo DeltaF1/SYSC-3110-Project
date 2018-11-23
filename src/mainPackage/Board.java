@@ -1,4 +1,30 @@
 package mainPackage;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 /**
  * A class that represents a board that the plants and zombies move on
  * Check GitHub for authors
@@ -173,6 +199,14 @@ public class Board {
 		sunPoints += sun;
 	}
 	
+	/**
+	 * sets sunpoints to the specified value
+	 * @param sun amount of sun points
+	 */
+	public void setSun(int sun) {
+		sunPoints = sun;
+	}
+	
 	public void wipe() {
 		this.tiles = new Tile[HEIGHT][WIDTH];
 		for (int y = 0; y < HEIGHT; y++) {
@@ -181,5 +215,114 @@ public class Board {
 			}
 		}
 		sunPoints = 0;
+	}
+	
+	/**
+	 * converts this Board to xml
+	 * @return a String representing the current state of the Board in XML format
+	 * @throws ParserConfigurationException
+	 * @throws TransformerException 
+	 */
+	public String toXML() throws ParserConfigurationException, TransformerException {
+		Document xml  = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+		Element rootElm = xml.createElement("board");
+		Element allTilesElm = xml.createElement("tiles");
+		Element sunElm = xml.createElement("sunPoints");
+		Element widthElm = xml.createElement("WIDTH");
+		Element heightElm = xml.createElement("HEIGHT");
+		for (Tile[] row: tiles) {
+			Element rowElm = xml.createElement("row");
+			for (Tile t: row) {
+				Element tileElm = xml.createElement("tile");
+				Entity occupant = t.getOccupant();
+				if (occupant != null) {
+					String occupantType;
+					if (occupant instanceof Zombie) 
+						occupantType = "zombie";
+					else 
+						occupantType =  "plant";
+					Element occupantElm = xml.createElement(occupantType);
+					Attr hpAttr = xml.createAttribute("hp");
+					hpAttr.setValue(String.format("%d", occupant.getHp()));
+					Attr dmgAttr = xml.createAttribute("damage");
+					dmgAttr.setValue(String.format("%d", occupant.getDamage()));
+					occupantElm.setAttributeNode(hpAttr);
+					occupantElm.setAttributeNode(dmgAttr);
+					occupantElm.appendChild(xml.createTextNode(t.getOccupant().getName()));
+					tileElm.appendChild(occupantElm);
+				}
+				rowElm.appendChild(tileElm);
+			}
+			allTilesElm.appendChild(rowElm);
+		}
+		sunElm.appendChild(xml.createTextNode(String.format("%d", sunPoints)));
+		widthElm.appendChild(xml.createTextNode(String.format("%d", WIDTH)));
+		heightElm.appendChild(xml.createTextNode(String.format("%d", HEIGHT)));
+		rootElm.appendChild(allTilesElm);
+		rootElm.appendChild(sunElm);
+		rootElm.appendChild(widthElm);
+		rootElm.appendChild(heightElm);
+		xml.appendChild(rootElm);
+		StringWriter sw = new StringWriter();
+		TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.transform(new DOMSource(xml), new StreamResult(sw));
+        return sw.toString();
+	}
+	
+	public static Board fromXML(String xml) {
+		try {
+			SAXParser sax = SAXParserFactory.newInstance().newSAXParser();
+			Board newBoard = new Board();
+			sax.parse(new InputSource(new StringReader(xml)), new DefaultHandler() {
+				Entity currentEntity = null;
+				String currentTag;
+				int currentRow = 0;
+				int currentColumn = 0;
+				
+				@Override
+				public void startElement(String u, String ln, String qName, Attributes a) {
+					currentTag = qName;
+				}
+				
+				@Override
+				public void endElement(String url, String localName, String qName) {
+					currentTag = "";
+					switch (qName) {
+					case "zombie":
+						break;
+					case "plant":
+						break;
+					case "tile":
+						newBoard.placeEntity(currentColumn, currentRow, currentEntity);
+						currentEntity = null;
+						currentColumn ++;
+						break;
+					case "row":
+						currentColumn = 0;
+						currentRow ++;
+						break;
+					}
+				}
+				
+				@Override
+				public void characters(char[] ch, int start, int len) {
+					String data = new String(ch, start, len);
+					switch (currentTag) {
+					case "tile":
+						break;
+					case "sunPoints":
+						newBoard.setSun(Integer.valueOf(data));
+						break;
+					}
+				}
+			});
+			return newBoard;
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

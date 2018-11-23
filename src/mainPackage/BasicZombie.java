@@ -10,7 +10,7 @@ public class BasicZombie extends Zombie {
 	/**
 	 * creates a new BasicZombie
 	 */
-	public BasicZombie() {
-		super("a zombie", 60,20,1);
+	public BasicZombie(String name) {
+		super(name, 60,20,1);
 	}
 }
