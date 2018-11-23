@@ -3,10 +3,15 @@ package mainPackage;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.text.SimpleAttributeSet;
@@ -100,6 +105,26 @@ public class GraphicsView implements View
 		}
 	}
 	
+	private class MenuPanel extends JPanel {
+		private BufferedImage bgImage;
+		
+		public MenuPanel () {
+			super();
+			try {
+				bgImage = ImageIO.read(new File("images/splash.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			setPreferredSize(new Dimension(bgImage.getWidth(), bgImage.getHeight()));
+		}
+		@Override
+		  protected void paintComponent(Graphics g) {
+
+		    super.paintComponent(g);
+		    g.drawImage(bgImage, 0, 0, null);
+		}
+	}
+	
 	public GraphicsView()
 	{
 		frame = new JFrame("Plants Vs. Zombies - Now with graphics!");
@@ -113,7 +138,7 @@ public class GraphicsView implements View
 			frame.setJMenuBar(menuBar);
 		
 		// Main menu panel setup
-			menuPanel = new JPanel();
+			menuPanel = new MenuPanel();
 			JButton startGame = new JButton("Start Game");
 			
 			startGame.addActionListener(new ActionListener()
@@ -128,7 +153,6 @@ public class GraphicsView implements View
 				}
 			});
 			
-			menuPanel.add(new JLabel("PvZ"));
 			menuPanel.add(startGame);
 			
 		// Board panel setup

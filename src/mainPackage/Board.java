@@ -34,8 +34,8 @@ import org.xml.sax.helpers.DefaultHandler;
 public class Board {
 	
 	private Entity[][] entities;
-	public static final int WIDTH = 25;
-	public static final int HEIGHT = 5;
+	public static final int WIDTH = 20;
+	public static final int HEIGHT = 10;
 	private int sunPoints;
 	private LinkedList<View> views;
 	
