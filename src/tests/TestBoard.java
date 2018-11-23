@@ -18,15 +18,10 @@ public class TestBoard {
 	
 	@Test
 	public void testSetTiles() {
-		Entity[][] tiles = new Tile[Board.HEIGHT][Board.WIDTH];
-		for (int y = 0; y < Board.HEIGHT; y++) {
-			for (int x = 0; x < Board.WIDTH; x++) {
-				tiles[y][x] = new Tile();
-			}
-		}
+		Entity[][] tiles = new Entity[Board.HEIGHT][Board.WIDTH];
 		board.setTiles(tiles);
 		
-		Tile[][] getReturnedTiles = board.getTiles();
+		Entity[][] getReturnedTiles = board.getTiles();
 		for (int y = 0; y < Board.HEIGHT; y++) {
 			for (int x = 0; x < Board.WIDTH; x++) {
 				assertTrue("Unexpected tile instance at " + Integer.toString(x) + "," + Integer.toString(y),
@@ -37,16 +32,16 @@ public class TestBoard {
 	
 	@Test
 	public void testPlaceEntity() {
-		Entity testEntity = new BasicZombie();
+		Entity testEntity = new BasicZombie(null);
 		board.placeEntity(1, 1, testEntity);
 		for (int y = 0; y < Board.HEIGHT; y++) {
 			for (int x = 0; x < Board.WIDTH; x++) {
 				if(x == 1 && y == 1) {
 					assertTrue("Expected entity to be occupant of " + Integer.toString(x) + "," + Integer.toString(y),
-							board.getTile(x, y).getOccupant() == testEntity);
+							board.getEntity(x, y) == testEntity);
 				}else {
 					assertFalse( "Entity should not be occupant of " + Integer.toString(x) + "," + Integer.toString(y),
-							board.getTile(x, y).getOccupant() == testEntity);
+							board.getEntity(x, y) == testEntity);
 				}
 			}
 		}
@@ -54,17 +49,17 @@ public class TestBoard {
 	
 	@Test
 	public void testMoveEntity() {
-		Entity testEntity = new BasicZombie();
+		Entity testEntity = new BasicZombie(null);
 		board.placeEntity(1, 1,  testEntity);
-		board.moveEntity(0, 1, testEntity);
+		board.moveEntity(0, 1, 1,1);
 		for (int y = 0; y < Board.HEIGHT; y++) {
 			for (int x = 0; x < Board.WIDTH; x++) {
 				if(x == 0 && y == 1) {
 					assertTrue("Expected entity to be occupant of " + Integer.toString(x) + "," + Integer.toString(y),
-							board.getTile(x, y).getOccupant() == testEntity);
+							board.getEntity(x, y) == testEntity);
 				}else {
 					assertFalse( "Entity should not be occupant of " + Integer.toString(x) + "," + Integer.toString(y),
-							board.getTile(x, y).getOccupant() == testEntity);
+							board.getEntity(x, y) == testEntity);
 				}
 			}
 		}
@@ -72,14 +67,14 @@ public class TestBoard {
 	
 	@Test
 	public void testRemoveEntity() {
-		Entity testEntity = new BasicZombie();
+		Entity testEntity = new BasicZombie(null);
 		board.placeEntity(1, 1,  testEntity);
 		
 		Entity[][] testEntities = new Entity[Board.HEIGHT][Board.WIDTH];
 		
 		for (int y = 0; y < Board.HEIGHT; y++) {
 			for (int x = 0; x < Board.WIDTH; x++) {
-				testEntities[y][x] = new BasicZombie();
+				testEntities[y][x] = new BasicZombie(null);
 				board.placeEntity(x, y, testEntities[y][x]);
 			}
 		}
@@ -90,10 +85,10 @@ public class TestBoard {
 			for (int x = 0; x < Board.WIDTH; x++) {
 				if(x == 1 && y == 1) {
 					assertTrue("Occupant should be null at " + Integer.toString(x) + "," + Integer.toString(y),
-							board.getTile(x, y).getOccupant() == null);
+							board.getEntity(x, y) == null);
 				}else {
 					assertTrue("Unexpected occupant at " + Integer.toString(x) + "," + Integer.toString(y),
-							board.getTile(x, y).getOccupant() == testEntities[y][x]);
+							board.getEntity(x, y) == testEntities[y][x]);
 				}
 			}
 		}
@@ -171,18 +166,13 @@ public class TestBoard {
 	@Test
 	public void testWipe() {
 		board.addSun(1);
-		Tile[][] tiles = new Tile[Board.HEIGHT][Board.WIDTH];
-		for (int y = 0; y < Board.HEIGHT; y++) {
-			for (int x = 0; x < Board.WIDTH; x++) {
-				tiles[y][x] = new Tile();
-			}
-		}
+		Entity[][] tiles = new Entity[Board.HEIGHT][Board.WIDTH];
 		board.setTiles(tiles);
 		board.wipe();
 		for (int y = 0; y < Board.HEIGHT; y++) {
 			for (int x = 0; x < Board.WIDTH; x++) {
 				assertEquals("tile occupant was not removed at "  + Integer.toString(x) + "," + Integer.toString(y),
-						board.getTile(x, y).getOccupant(),null);
+						board.getEntity(x, y), null);
 			}
 		}
 		

@@ -11,7 +11,6 @@ import mainPackage.Board;
 import mainPackage.Entity;
 import mainPackage.EntityFactory;
 import mainPackage.Plant;
-import mainPackage.Tile;
 import mainPackage.Zombie;
 import mainPackage.ProjectilePlant;
 import mainPackage.Sunflower;
