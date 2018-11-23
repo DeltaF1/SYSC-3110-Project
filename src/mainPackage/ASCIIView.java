@@ -181,12 +181,12 @@ public class ASCIIView implements View {
 	 * @return an ASCII representation of the board
 	 */
 	private static String boardRepr(Board board) {
-		Tile[][] tiles = board.getTiles();
+		Entity[][] entities = board.getTiles();
 		
 		String out = "";
 		
-		int width = tiles[0].length;
-		int height = tiles.length;
+		int width = entities[0].length;
+		int height = entities.length;
 		
 		for (int i = 0; i < height; i++) {
 			out += rowDivider(width);
@@ -194,12 +194,12 @@ public class ASCIIView implements View {
 			for (int j = 0; j < width; j++) {
 				out += "|";
 				
-				Tile tile = tiles[i][j];
+				Entity tile = entities[i][j];
 				
-				if (tile.getOccupant() == null) {
+				if (tile == null) {
 					out += "   ";
 				} else {
-					out += entityRepr(tile.getOccupant());
+					out += entityRepr(tile);
 				}
 			}
 			out += "|\n";

@@ -18,7 +18,7 @@ public class TestBoard {
 	
 	@Test
 	public void testSetTiles() {
-		Tile[][] tiles = new Tile[Board.HEIGHT][Board.WIDTH];
+		Entity[][] tiles = new Tile[Board.HEIGHT][Board.WIDTH];
 		for (int y = 0; y < Board.HEIGHT; y++) {
 			for (int x = 0; x < Board.WIDTH; x++) {
 				tiles[y][x] = new Tile();

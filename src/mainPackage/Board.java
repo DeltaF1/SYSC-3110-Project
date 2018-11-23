@@ -34,8 +34,8 @@ import org.xml.sax.helpers.DefaultHandler;
 public class Board {
 	
 	private Entity[][] entities;
-	public static final int WIDTH = 20;
-	public static final int HEIGHT = 10;
+	public static final int WIDTH = 25;
+	public static final int HEIGHT = 5;
 	private int sunPoints;
 	private LinkedList<View> views;
 	
@@ -317,5 +317,11 @@ public class Board {
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void moveEntity(int x1, int y1, int x2, int y2) {
+		Entity e = getEntity(x1,y1);
+		removeEntity(x1, y1);
+		placeEntity(x2,y2,e);
 	}
 }

@@ -234,8 +234,7 @@ public class Controller {
 			}
 		}
 		if (x > 0) { //zomb hasn't gotten to end of map
-			board.placeEntity(x, y, board.getEntity(oldX, y));
-			board.removeEntity(oldX, y);
+			board.moveEntity(oldX, y, x, y);
 			//attack plant if in front of a plant
 			if  (encounteredEntity instanceof Plant ) {
 				Plant attacking = (Plant) encounteredEntity;
