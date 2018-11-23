@@ -13,11 +13,8 @@ public class Zoomer extends Zombie {
 	/**
 	 * creates a new Zoomer zombie
 	 * @param name name of the zombie
-	 * @param hp health of the zombie
-	 * @param damage damage zombie does
-	 * @param movSpd movement speed of zombie
 	 */
-	public Boomer(String name) {
+	public Zoomer(String name) {
 		super(name, 60, 20, 2);
 	}
 	/*
