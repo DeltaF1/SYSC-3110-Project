@@ -17,8 +17,8 @@ public class Doomer extends Zombie {
 	 * @param damage damage zombie does
 	 * @param movSpd movement speed of zombie
 	 */
-	public Doomer(String name, int hp, int damage, int movSpd) {
-		super(name, hp, (damage*2), movSpd);
+	public Doomer(String name) {
+		super(name, 60, 40, 1);
 	}
 	/*
 	public ImageIcon getIcon() {
