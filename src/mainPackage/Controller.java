@@ -147,7 +147,9 @@ public class Controller {
 	 */
 	public static void redoTurn() { 
 		if (! undoneBoardStates.isEmpty()) {
-			board.setXML(undoneBoardStates.pop()); 
+			String undoneState = undoneBoardStates.pop();
+			boardStates.push(undoneState);
+			board.setXML(undoneState); 
 			turn ++;
 			view.drawBoard(board);
 			view.announce("Redid turn");
