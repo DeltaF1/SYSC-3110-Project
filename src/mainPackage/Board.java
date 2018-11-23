@@ -277,10 +277,10 @@ public class Board {
 	    }
 	}
 	
-	public static Board fromXML(String xml) {
+	public void setXML(String xml) {
 		try {
+			this.wipe();
 			SAXParser sax = SAXParserFactory.newInstance().newSAXParser();
-			Board newBoard = new Board();
 			sax.parse(new InputSource(new StringReader(xml)), new DefaultHandler() {
 				int currentHp;
 				String currentTag;
@@ -322,25 +322,23 @@ public class Board {
 					case "tile":
 						break;
 					case "sunPoints":
-						newBoard.setSun(Integer.valueOf(data));
+						setSun(Integer.valueOf(data));
 						break;
 					case "plant":
 						Plant newPlant = EntityFactory.makePlant(data);
 						newPlant.setHp(currentHp);
-						newBoard.placeEntity(currentColumn, currentRow, newPlant);
+						placeEntity(currentColumn, currentRow, newPlant);
 						break;
 					case "zombie":
 						Zombie newZombie = EntityFactory.makeZombie(data);
 						newZombie.setHp(currentHp);
-						newBoard.placeEntity(currentColumn, currentRow, newZombie);
+						placeEntity(currentColumn, currentRow, newZombie);
 						break;
 					}
 				}
 			});
-			return newBoard;
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			e.printStackTrace();
-			return null;
 		}
 	}
 }
