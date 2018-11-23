@@ -1,0 +1,28 @@
+package mainPackage;
+
+import javax.swing.ImageIcon;
+
+/**
+ * A class that represents a Doomer zombie entity
+ * Check GitHub for authors
+ *
+ */
+
+public class Doomer extends Zombie {
+	
+	/**
+	 * creates a new Doomer zombie
+	 * @param name name of the zombie
+	 * @param hp health of the zombie
+	 * @param damage damage zombie does
+	 * @param movSpd movement speed of zombie
+	 */
+	public Doomer(String name, int hp, int damage, int movSpd) {
+		super(name, hp, (damage*2), movSpd);
+	}
+	/*
+	public ImageIcon getIcon() {
+		return Images.doomerIcon;
+	}
+  */
+}
