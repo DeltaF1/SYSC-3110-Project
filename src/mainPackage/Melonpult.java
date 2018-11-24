@@ -16,9 +16,9 @@ public class Melonpult extends Plant{
 	public Melonpult(String name) {
 		super(name, 100, 30, 1, 300);
 	}
-	/*
+
 	public ImageIcon getIcon() {
 		return Images.melonIcon;
 	}
-	*/
+
 }

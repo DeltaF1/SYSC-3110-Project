@@ -16,9 +16,8 @@ public class Repeater extends Plant{
 	public Repeater(String name) {
 		super(name, 100, 10, 2, 200);
 	}
-	/*
+
 	public ImageIcon getIcon() {
 		return Images.repeaterIcon;
 	}
-	*/
 }

@@ -217,18 +217,14 @@ public class GraphicsView implements View
 			controlsPanel.add(redoButton);
 			
 			PlantButton sunflowerButton = new PlantButton("sunflower");
-			controlsPanel.add(sunflowerButton);
-			
 			PlantButton projButton = new PlantButton("proj");
-			controlsPanel.add(projButton);
-			
 			PlantButton repeaterButton = new PlantButton("repeater");
-			controlsPanel.add(repeaterButton);
-			
 			PlantButton melonButton = new PlantButton("melon");
-			controlsPanel.add(melonButton);
-			
 			PlantButton wallnutButton = new PlantButton("wallnut");
+			controlsPanel.add(sunflowerButton);
+			controlsPanel.add(projButton);
+			controlsPanel.add(repeaterButton);
+			controlsPanel.add(melonButton);
 			controlsPanel.add(wallnutButton);
 			
 			controlsAndInfoPanel.add(controlsPanel);
