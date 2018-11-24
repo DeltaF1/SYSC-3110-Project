@@ -222,6 +222,15 @@ public class GraphicsView implements View
 			PlantButton projButton = new PlantButton("proj");
 			controlsPanel.add(projButton);
 			
+			PlantButton repeaterButton = new PlantButton("repeater");
+			controlsPanel.add(repeaterButton);
+			
+			PlantButton melonButton = new PlantButton("melon");
+			controlsPanel.add(melonButton);
+			
+			PlantButton wallnutButton = new PlantButton("wallnut");
+			controlsPanel.add(wallnutButton);
+			
 			controlsAndInfoPanel.add(controlsPanel);
 			
 			announcements = new JTextPane();

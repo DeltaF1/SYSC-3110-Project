@@ -318,6 +318,7 @@ public class Controller {
 		board.addSun(150);
 		
 		boardStates = new Stack<String>();
+		boardStates.push(board.toXML());
 		undoneBoardStates = new Stack<String>();
 		
 		//TODO: Load levels from text files
