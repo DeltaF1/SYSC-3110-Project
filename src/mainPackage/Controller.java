@@ -196,12 +196,12 @@ public class Controller {
 					} else if (plant.getCoolDown() >= 0){
 						plant.setCoolDown(plant.getAtkSpd());
 						
-						view.announce("TEMP MSG: plant at " + Integer.toString(x) + "," + Integer.toString(y) + " shot");
+						System.out.println("TEMP MSG: plant at " + Integer.toString(x) + "," + Integer.toString(y) + " shot");
 						Integer bulletHit = getHitZombieX(y);
 						if (bulletHit != null) {
 							Zombie shotZombie = (Zombie) board.getEntity(bulletHit, y);
 							int newHP = shotZombie.getHp() - ((Plant)board.getEntity(x,y)).getDamage();
-							view.announce("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(newHP));
+							System.out.println("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(newHP));
 							if (newHP <= 0) {
 								board.removeEntity(bulletHit, y);
 								decreaseZombieCount(1);
