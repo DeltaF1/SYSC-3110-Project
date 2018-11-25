@@ -2,6 +2,8 @@ package mainPackage.zombies;
 
 import javax.swing.ImageIcon;
 
+import mainPackage.Images;
+
 /**
  * A class that represents a Zoomer zombie entity
  * Check GitHub for authors
