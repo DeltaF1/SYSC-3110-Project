@@ -376,6 +376,7 @@ public class Board {
 		}
 	}
 	
+
 	public void setSpawns(TreeMap<Integer, LinkedList<String>> spawns) {
 		this.spawns = spawns;
 	}
@@ -387,5 +388,13 @@ public class Board {
 			spawns.put(wave, cur);
 		}
 		cur.add(zombieType);
+	}
+
+	public  Stack<String> getBoardStates(){
+		return boardStates;
+	}
+	
+	public Stack<String> getUndoneBoardStates(){
+		return undoneBoardStates;
 	}
 }
