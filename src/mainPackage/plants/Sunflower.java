@@ -1,6 +1,8 @@
-package mainPackage;
+package mainPackage.plants;
 
 import javax.swing.ImageIcon;
+
+import mainPackage.Images;
 
 /**
 * a plant that creates sun points every turn

@@ -1,6 +1,8 @@
-package mainPackage;
+package mainPackage.plants;
 
 import javax.swing.ImageIcon;
+
+import mainPackage.Images;
 
 /**
  * a plant that acts solely as a wall to stop zombies

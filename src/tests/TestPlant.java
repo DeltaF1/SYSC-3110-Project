@@ -1,5 +1,6 @@
 package tests;
 import mainPackage.*;
+import mainPackage.plants.Plant;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

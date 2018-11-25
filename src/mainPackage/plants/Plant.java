@@ -1,4 +1,7 @@
-package mainPackage;
+package mainPackage.plants;
+
+import mainPackage.Entity;
+
 /**
  * A class that represents a plant
  * Check GitHub for authors

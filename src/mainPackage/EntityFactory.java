@@ -7,6 +7,18 @@ package mainPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import mainPackage.plants.Melonpult;
+import mainPackage.plants.Plant;
+import mainPackage.plants.ProjectilePlant;
+import mainPackage.plants.Repeater;
+import mainPackage.plants.Sunflower;
+import mainPackage.plants.Wallnut;
+import mainPackage.zombies.BasicZombie;
+import mainPackage.zombies.Boomer;
+import mainPackage.zombies.Doomer;
+import mainPackage.zombies.Zombie;
+import mainPackage.zombies.Zoomer;
+
 public class EntityFactory {
 	private static HashMap<String, Class<? extends Plant>> plantTypes = new HashMap<String, Class<? extends Plant>>();
 	private static HashMap<String, Class<? extends Zombie>> zombieTypes = new HashMap<String, Class<? extends Zombie>>();

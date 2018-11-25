@@ -10,10 +10,10 @@ import org.junit.Test;
 import mainPackage.Board;
 import mainPackage.Entity;
 import mainPackage.EntityFactory;
-import mainPackage.Plant;
-import mainPackage.Zombie;
-import mainPackage.ProjectilePlant;
-import mainPackage.Sunflower;
+import mainPackage.plants.Plant;
+import mainPackage.plants.ProjectilePlant;
+import mainPackage.plants.Sunflower;
+import mainPackage.zombies.Zombie;
 
 public class TestEntityFactory {
 	EntityFactory entityFactory;

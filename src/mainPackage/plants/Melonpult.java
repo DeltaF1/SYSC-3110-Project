@@ -1,6 +1,8 @@
-package mainPackage;
+package mainPackage.plants;
 
 import javax.swing.ImageIcon;
+
+import mainPackage.Images;
 
 /**
  * A heavy hitting plant thats costly but powerful

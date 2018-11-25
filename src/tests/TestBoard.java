@@ -1,5 +1,6 @@
 package tests;
 import mainPackage.*;
+import mainPackage.zombies.BasicZombie;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

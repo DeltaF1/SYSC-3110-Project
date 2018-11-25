@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import mainPackage.Controller.GameState;
+import mainPackage.zombies.Zombie;
 
 public class ASCIIView implements View {
 	
@@ -168,7 +169,7 @@ public class ASCIIView implements View {
 	/**
 	 * draws the whole board out of ASCII, complete with indicated sun points
 	 */
-	public void drawBoard(Board board) {
+	public void drawGame() {
 		String out = boardRepr(board);
 		out += "Sun: " + board.getSun() +"\n";
 		textOutput.setText(out);

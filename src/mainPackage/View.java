@@ -2,7 +2,7 @@ package mainPackage;
 
 public interface View {
 	
-	public void drawBoard(Board board);
+	public void drawGame();
 	
 	public void announce(String message);
 	

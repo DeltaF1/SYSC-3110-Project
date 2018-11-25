@@ -1,4 +1,4 @@
-package mainPackage;
+package mainPackage.zombies;
 /**
  * a zombie that moves forward and eats plants
  * Check GitHub for authors

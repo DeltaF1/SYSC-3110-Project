@@ -1,4 +1,4 @@
-package mainPackage;
+package mainPackage.zombies;
 
 import javax.swing.ImageIcon;
 

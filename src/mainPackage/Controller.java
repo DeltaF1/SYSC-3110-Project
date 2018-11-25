@@ -8,6 +8,10 @@ import java.util.LinkedList;
 import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 
+import mainPackage.plants.Plant;
+import mainPackage.plants.Sunflower;
+import mainPackage.zombies.Zombie;
+
 
 public class Controller {
 	private static Board board;
@@ -39,7 +43,7 @@ public class Controller {
 		turn = 0;
 		setUpGame(board);
 		view.announce("Level start!");
-		view.drawBoard(board);
+		view.drawGame();
 	}
 	
 	/**
@@ -134,7 +138,6 @@ public class Controller {
 			undoneBoardStates.push(boardStates.pop()); //put current state in undone stack
 			board.setXML(boardStates.peek()); 
 			turn --;
-			view.drawBoard(board);
 			view.announce("Undid turn");
 		} else {
 			view.announce("Nothing to undo!");
@@ -151,7 +154,6 @@ public class Controller {
 			boardStates.push(undoneState);
 			board.setXML(undoneState); 
 			turn ++;
-			view.drawBoard(board);
 			view.announce("Redid turn");
 		} else {
 			view.announce("Nothing to redo!");

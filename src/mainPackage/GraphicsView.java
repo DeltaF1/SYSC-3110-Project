@@ -274,7 +274,7 @@ public class GraphicsView implements View
 	/**
 	 * Draws out the model onto a grid of buttons
 	 */
-	public void drawBoard(Board board)
+	public void drawGame()
 	{
 		if (frame.getContentPane() != boardPanel) {
 			frame.setContentPane(boardPanel);

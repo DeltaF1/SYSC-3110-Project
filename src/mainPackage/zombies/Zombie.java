@@ -1,6 +1,9 @@
-package mainPackage;
+package mainPackage.zombies;
 
 import javax.swing.ImageIcon;
+
+import mainPackage.Entity;
+import mainPackage.Images;
 
 /**
  * A class that represents a zombie entity

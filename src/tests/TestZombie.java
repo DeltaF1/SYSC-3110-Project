@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import mainPackage.Plant;
-import mainPackage.Zombie;
+import mainPackage.plants.Plant;
+import mainPackage.zombies.Zombie;
 
 public class TestZombie {
 	Zombie zombie;
