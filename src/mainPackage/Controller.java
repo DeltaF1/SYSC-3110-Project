@@ -287,24 +287,20 @@ public class Controller {
 		board.wipe();
 		board.addSun(150);
 		
-
+		//TOFIX
 		board.boardStates.push(board.toXML());
 		
-		//TODO: Load levels from text files
-		levels = new LinkedList<Level>();
+		board.addSpawn(1, "basic");
+		board.addSpawn(1, "basic");
 		
-		Level level1 = new Level();
-		level1.addWave(0, 1);
+		board.addSpawn(5, "boomer");
+		board.addSpawn(5, "boomer");
+		board.addSpawn(5, "basic");
 		
-		Level level2 = new Level();
-		level2.addWave(0, 2);
-		
-		levels.add(level1);
-		levels.add(level2);
-		
-		level = 0;
-		turn = 0;
-		levelZombiesLeft = level1.getTotalZombies();
+		board.addSpawn(10, "zoomer");
+		board.addSpawn(10, "doomer");
+		board.addSpawn(10, "doomer");
+		levelZombiesLeft = 0;
 	}
 	
 	public static void main(String[] args) {

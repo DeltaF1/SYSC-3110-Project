@@ -17,9 +17,9 @@ public class Zoomer extends Zombie {
 	public Zoomer(String name) {
 		super(name, 60, 20, 2);
 	}
-	/*
+	
 	public ImageIcon getIcon() {
 		return Images.zoomerIcon;
 	}
- 	*/
+ 	
 }

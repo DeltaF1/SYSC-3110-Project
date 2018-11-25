@@ -6,8 +6,10 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -47,6 +49,7 @@ public class Board {
 	private TreeMap<Integer, LinkedList<String>> spawns;
 	public Stack<String> boardStates;
 	private Stack<String> undoneBoardStates;
+	
 	/**
 	 * Creates a new board
 	 */
@@ -337,7 +340,19 @@ public class Board {
 
 	public void endTurn() {
 		boardStates.push(toXML());
-		undoneBoardStates.removeAllElements();	
+		undoneBoardStates.removeAllElements();
+		
+		turn++;
+		List<String> wave = spawns.get(turn);
+		if (wave != null) {
+			for (String zombieType : wave) {
+				boolean placed = false;
+				do {
+					int newPosY = ThreadLocalRandom.current().nextInt(0, HEIGHT);
+					placed = placeEntity(WIDTH-1,newPosY, EntityFactory.makeZombie(zombieType));
+				} while (placed == false);
+			}
+		}
 	}
 
 	public boolean undo() {
@@ -359,5 +374,18 @@ public class Board {
 		} else {
 			return false;
 		}
+	}
+	
+	public void setSpawns(TreeMap<Integer, LinkedList<String>> spawns) {
+		this.spawns = spawns;
+	}
+	
+	public void addSpawn(int wave, String zombieType) {
+		LinkedList<String> cur = spawns.get(wave);
+		if (cur == null) {
+			cur = new LinkedList<String>();
+			spawns.put(wave, cur);
+		}
+		cur.add(zombieType);
 	}
 }

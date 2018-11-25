@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import mainPackage.Controller.GameState;
 import mainPackage.zombies.Zombie;
 
 public class ASCIIView implements View {
