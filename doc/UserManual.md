@@ -53,7 +53,7 @@ Just your run of the mill zombie. Pretty pathetic honestly
 #### Boomer
 ![](https://imgur.com/7wpECPh.png)  
 Has 2x as much health as a regular Zombie.  
-Can be heard mumbling about how much better the original Plants vs Zombies was in between sips of ice cold Monster Energy™.  Wandered into the garden in search of a riding lawn mower
+Can be heard mumbling about how much better the original Plants vs Zombies was in between sips of ice cold Monster Zero Ultraâ„¢.  Wandered into the garden in search of a ride on lawn mower
 
 #### Zoomer
 ![](https://imgur.com/ehnudNf.png)  
