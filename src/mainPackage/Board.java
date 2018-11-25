@@ -360,4 +360,13 @@ public class Board {
 			return false;
 		}
 	}
+	
+
+	public  Stack<String> getBoardStates(){
+		return boardStates;
+	}
+	
+	public Stack<String> getUndoneBoardStates(){
+		return undoneBoardStates;
+	}
 }

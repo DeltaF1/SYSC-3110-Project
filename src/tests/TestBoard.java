@@ -52,7 +52,7 @@ public class TestBoard {
 	public void testMoveEntity() {
 		Entity testEntity = new BasicZombie(null);
 		board.placeEntity(1, 1,  testEntity);
-		board.moveEntity(0, 1, 1,1);
+		board.moveEntity( 1,1,0, 1);
 		for (int y = 0; y < Board.HEIGHT; y++) {
 			for (int x = 0; x < Board.WIDTH; x++) {
 				if(x == 0 && y == 1) {

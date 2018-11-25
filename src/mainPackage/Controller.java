@@ -14,6 +14,8 @@ import mainPackage.zombies.Zombie;
 
 
 public class Controller {
+	public final static int START_SUN = 150;
+	
 	private static Board board;
 	private static View view;
 	static LinkedList<Level> levels;
@@ -307,12 +309,29 @@ public class Controller {
 		levelZombiesLeft = level1.getTotalZombies();
 	}
 	
-	public static void main(String[] args) {
-		board = new Board();
-		view = new GraphicsView();
+	public static void controllerInit(Board aBoard, GraphicsView aView) {
+		board = aBoard;
+		view = aView;
 		view.drawMenu();
 		board.registerView(view);
 	}
+	
+	public static void main(String[] args) {
+		controllerInit(new Board(),new GraphicsView());
+	}
+	
+	
+	public static LinkedList<Level> getLevels()
+	{
+		return levels;
+		
+	}
+
+	public static int getTurn() {
+		return turn;
+	}
+
+
 
 
 }
