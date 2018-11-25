@@ -15,23 +15,12 @@ import mainPackage.zombies.Zombie;
 
 public class Controller {
 	private static Board board;
-	private static Stack<String> boardStates;
-	private static Stack<String> undoneBoardStates;
 	private static View view;
 	static LinkedList<Level> levels;
 	static int level;
 	static int levelZombiesLeft;
 	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
 	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when selling a plant
-	enum GameState {
-		MAINMENU,
-		PRELEVEL,
-		INLEVEL,
-		GAMEOVER,
-		WINSCREEN;
-	}
-	
-	static GameState state = GameState.MAINMENU;
 	static int turn = 0;
 	
 	/*
@@ -39,7 +28,6 @@ public class Controller {
 	 * stats the game
 	 */
 	public static void startGame() {
-		state = GameState.INLEVEL;
 		turn = 0;
 		setUpGame(board);
 		view.announce("Level start!");
@@ -119,52 +107,34 @@ public class Controller {
 	 * @param args extra arguments specified by player (currently unused)
 	 */
 	public static void endTurn() {
-		if (state == GameState.INLEVEL) {
+
 			advancePlants();
 			advanceZombies();
 			spawnZombies();
 			turn++;
-			boardStates.push(board.toXML());
-			undoneBoardStates.removeAllElements();
-			printStacks();
-		}
+			board.endTurn();
 	}
 	
 	/**
 	 * return the game to its state before the most recent turn
 	 */
 	public static void undoTurn() {
-		if (boardStates.size() > 1) { //can only undo if you have both the current state and some previous state in the stack
-			undoneBoardStates.push(boardStates.pop()); //put current state in undone stack
-			board.setXML(boardStates.peek()); 
-			turn --;
+		if (board.undo()) {
 			view.announce("Undid turn");
 		} else {
 			view.announce("Nothing to undo!");
 		}
-		printStacks();
 	}
 	
 	/**
 	 * undo an undoTurn
 	 */
 	public static void redoTurn() { 
-		if (! undoneBoardStates.isEmpty()) {
-			String undoneState = undoneBoardStates.pop();
-			boardStates.push(undoneState);
-			board.setXML(undoneState); 
-			turn ++;
+		if (board.redo()) {
 			view.announce("Redid turn");
 		} else {
 			view.announce("Nothing to redo!");
 		}
-		printStacks();
-	}
-	
-	private static void printStacks() {
-		System.out.println(String.format("UNDO STACK SIZE: %d", boardStates.size()));
-		System.out.println(String.format("REDO STACK SIZE: %d", undoneBoardStates.size()));
-		System.out.println("\n");
 	}
 	
 	/**
@@ -250,7 +220,6 @@ public class Controller {
 			}
 		} else { //zomb has reached end of map, game over
 			//dont drawGameOver() here because it will be erased
-			state = GameState.GAMEOVER;
 			view.drawGameOver();
 		}
 	}
@@ -302,7 +271,6 @@ public class Controller {
 			turn = 0;
 			if (level >= levels.size() ) {
 				view.announce("TEMP: the player beat all levels");
-				state = GameState.WINSCREEN;
 				view.drawWinScreen();
 			} else {
 				levelZombiesLeft = levels.get(level).getTotalZombies();
@@ -319,9 +287,8 @@ public class Controller {
 		board.wipe();
 		board.addSun(150);
 		
-		boardStates = new Stack<String>();
-		boardStates.push(board.toXML());
-		undoneBoardStates = new Stack<String>();
+
+		board.boardStates.push(board.toXML());
 		
 		//TODO: Load levels from text files
 		levels = new LinkedList<Level>();

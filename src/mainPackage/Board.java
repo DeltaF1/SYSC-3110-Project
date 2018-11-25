@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.LinkedList;
+import java.util.Stack;
+import java.util.TreeMap;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,15 +43,20 @@ public class Board {
 	public static final int HEIGHT = 10;
 	private int sunPoints;
 	private LinkedList<View> views;
-	
+	private int turn;
+	private TreeMap<Integer, LinkedList<String>> spawns;
+	public Stack<String> boardStates;
+	private Stack<String> undoneBoardStates;
 	/**
 	 * Creates a new board
 	 */
 	public Board() {
-		this.entities = new Entity[HEIGHT][WIDTH];
-		
+		entities = new Entity[HEIGHT][WIDTH];
+		turn = 0;
 		views = new LinkedList<View>();
-		
+		spawns = new TreeMap<>();
+		boardStates = new Stack<String>();
+		undoneBoardStates = new Stack<String>();
 		sunPoints = 0;
 	}
 	
@@ -326,5 +333,31 @@ public class Board {
 		Entity e = getEntity(x1,y1);
 		removeEntity(x1, y1);
 		placeEntity(x2,y2,e);
+	}
+
+	public void endTurn() {
+		boardStates.push(toXML());
+		undoneBoardStates.removeAllElements();	
+	}
+
+	public boolean undo() {
+		if (boardStates.size() > 1) { //can only undo if you have both the current state and some previous state in the stack
+			undoneBoardStates.push(boardStates.pop()); //put current state in undone stack
+			setXML(boardStates.peek());
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean redo() {
+		if (! undoneBoardStates.isEmpty()) {
+			String undoneState = undoneBoardStates.pop();
+			boardStates.push(undoneState);
+			setXML(undoneState);
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
