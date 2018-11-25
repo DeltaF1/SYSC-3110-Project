@@ -127,7 +127,7 @@ public class GraphicsView implements View
 	
 	public GraphicsView()
 	{
-		frame = new JFrame("Plants Vs. Zombies - Now with graphics!");
+		frame = new JFrame("Plants Vs. Zombies - Now with time travel!");
 		
 		// Menu Bar setup
 			JMenuBar menuBar = new JMenuBar();
