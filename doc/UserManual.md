@@ -1,4 +1,4 @@
-# Really Terrible Plants VS Zombies [now with a proper GUI]
+# Really Terrible Plants VS Zombies [now with time travel]
 
 **Core features**
 ------
@@ -26,16 +26,49 @@ Shoots straight forward at oncoming zombies to lower their health/morale
 ![](https://imgur.com/UbF537X.png)  
 Generates 50 sun every turn
 
+#### Melonpult (aka melon)  
+![](https://imgur.com/SqDrjBs.png)  
+Has a picture of a Minecraft melon as part of its icon  
+Also does 3 times more damage than a Projectile plant
+
+#### Walnut  
+![](https://imgur.com/z63mmOb.png)  
+The only fully sentient plant in the entire garden. Each and every walnut has laughed, cried, loved, and been loved. Every walnut has seen beauty, known fear, felt wonder, and shed tears of joy. Every walnut has its own walnut family, with little walnut children, walnut parents, sisters, brothers, grandparents, uncles, aunts, and cousins. In a cruel twist of fate, it is also the only plant that is completely defenseless; it cannot move, nor attack the mindless beasts that threaten its very existence. It is fully aware that it has 2.5x as much health as a Sunflower or Peashooter, and that when the end does come it will not be instant but excruciatingly long, painful, and terrifying. It stares aimlessly toward the oncoming zombie horde with an expression of miserable acceptance, knowing that it is already dead.
+
+#### Repeater
+![](https://imgur.com/dJQUz6e.png)  
+2x attack speed
+
+
 
 **Zombies**
 ------
 _"Be strong and courageous. Do not fear or be in dread of them."_  
 \- Deuteronomy 31:6
+
 #### Zombie
-![](https://imgur.com/DZ8P141.png)  
+![](https://imgur.com/DZ8P141.png)   
 Just your run of the mill zombie. Pretty pathetic honestly
 
+#### Boomer
+![](https://imgur.com/7wpECPh.png)  
+Has 2x as much health as a regular Zombie.  
+Can be heard mumbling about how much better the original Plants vs Zombies was in between sips of ice cold Monster Energy™.  Wandered into the garden in search of a riding lawn mower
+
+#### Zoomer
+![](https://imgur.com/ehnudNf.png)  
+Moves extremely quickly, with twice the speed of a normal Zombie.   
+The Zoomer is constantly doing a perfect Fortnite floss to 6IX9INE's GUMMO, with a dab thrown in every 15 - 30 seconds for good measure. Fortunately, the game does not have any animations so none of these actions can actually be seen
+
+#### Doomer
+![](https://imgur.com/ptk5ABZ.png)  
+Nothing left to lose. Didn't really think they could get more pathetic than the basic Zombie, but here we are. The Doomer's black pill induced rage gives it 2x the attack power of a regular Zombie
 
 ## **Tile Info**
 
-Clicking on a tile retrieves information about the entity at the specified location. This information tells you about the entity's health, damage, name and speed
+Clicking on a tile retrieves information about the entity at the specified location. This information tells you about the entity's health, damage, name, speed and social security number
+
+## **Time travel**
+
+Pressing the `undo` button turns back time to the beginning of the last turn. Pressing the `redo` button will bring you forwards in time, essentially undoing an undo.    
+**warning:** Real Gamers do not ever use this feature because it is overpowered and game breaking. If you use this feature you are not a real Gamer
