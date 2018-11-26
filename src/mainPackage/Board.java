@@ -58,7 +58,7 @@ public class Board {
 		entities = new Entity[HEIGHT][WIDTH];
 		turn = 0;
 		views = new LinkedList<View>();
-		spawns = new TreeMap<>();
+		spawns = new TreeMap<Integer, LinkedList<String>>();
 		boardStates = new Stack<String>();
 		undoneBoardStates = new Stack<String>();
 		sunPoints = 0;

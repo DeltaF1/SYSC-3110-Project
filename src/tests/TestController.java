@@ -72,8 +72,6 @@ public class TestController {
 	@Test
 	public void testStartGame() {
 		Controller.startGame();
-		//assertEquals( Controller.getState(), GameState.INLEVEL );
-		assertEquals( Controller.getTurn(), 0);
 		for (int y = 0; y < Board.HEIGHT; y++) {
 			for (int x = 0; x < Board.WIDTH; x++) {
 				assertEquals("tile occupant was not removed at "  + Integer.toString(x) + "," + Integer.toString(y),
