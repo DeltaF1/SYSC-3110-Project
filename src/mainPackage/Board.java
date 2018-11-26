@@ -190,12 +190,10 @@ public class Board {
 	public void wipe() {
 		for (int y = 0; y < HEIGHT; y++) {
 			for (int x = 0; x < WIDTH; x++) {
-				this.entities[y][x] = null;
-				updateEntity(x, y);
+				removeEntity(x,y);
 			}
 		}
-		sunPoints = 0;
-		updateSun(sunPoints);
+		setSun(0);
 		turn = 0;
 	}
 	
