@@ -22,6 +22,9 @@ public class TestEntityFactory {
 		entityFactory =  new EntityFactory();
 	}
 	
+	/**
+	 * Tests that plants can be created by name as expected
+	 */
 	@Test
 	public void testMakePlant() {
 		Plant plant = entityFactory.makePlant("proj");

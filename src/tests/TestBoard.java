@@ -17,8 +17,11 @@ public class TestBoard {
 		board =  new Board();
 	}
 	
+	/**
+	 * ensure that tiles can be set and retrieved again like expected
+	 */
 	@Test
-	public void testSetTiles() {
+	public void testSetAndGetTiles() {
 		Entity[][] tiles = new Entity[Board.HEIGHT][Board.WIDTH];
 		board.setTiles(tiles);
 		
@@ -31,6 +34,9 @@ public class TestBoard {
 		}
 	}
 	
+	/**
+	 * ensure that entities can be placed on tiles
+	 */
 	@Test
 	public void testPlaceEntity() {
 		Entity testEntity = new BasicZombie(null);
@@ -48,6 +54,9 @@ public class TestBoard {
 		}
 	}
 	
+	/**
+	 * Ensure that an entity can be moved to another tile
+	 */
 	@Test
 	public void testMoveEntity() {
 		Entity testEntity = new BasicZombie(null);
@@ -66,6 +75,9 @@ public class TestBoard {
 		}
 	}
 	
+	/**
+	 * ensure that a entity can be removed from the board
+	 */
 	@Test
 	public void testRemoveEntity() {
 		Entity testEntity = new BasicZombie(null);
@@ -96,11 +108,15 @@ public class TestBoard {
 
 	}
 	
-	@Test
-	public void testGetEntityTile() {
-
-	}
 	
+	//@Test
+	//public void testGetEntityTile() {
+	//
+	//}
+	
+	/**
+	 * Ensure that checking if a coordinate is in bounds works
+	 */
 	@Test
 	public void testCheckCoords() {
 		try{
@@ -145,6 +161,9 @@ public class TestBoard {
 		
 	}
 
+	/**
+	 * Ensure that spending sun points works properly
+	 */
 	@Test
 	public void testSpendSun() {
 		assertEquals("Spending sun points should not be successfull, 0 sun points", board.spendSun(1),false);
@@ -156,6 +175,9 @@ public class TestBoard {
 		assertEquals("sun points was not decreased from 2 by 2 to 0 correcly", board.getSun(),0);
 	}
 	
+	/**
+	 * ensure that adding sun points works properly
+	 */
 	@Test
 	public void testAddSun() {
 		board.addSun(1);
@@ -164,6 +186,9 @@ public class TestBoard {
 		assertEquals("sun should equal 1",board.getSun(),2);
 	}
 	
+	/**
+	 * ensure that wiping the board properly resets everything
+	 */
 	@Test
 	public void testWipe() {
 		board.addSun(1);

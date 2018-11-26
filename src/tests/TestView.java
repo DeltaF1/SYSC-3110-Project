@@ -30,6 +30,9 @@ public class TestView {
 		Controller.controllerInit(board, graphicsView);
 	}
 	
+	/**
+	 * ensure starting a game works as expected
+	 */
 	@Test
 	public void testStartGame() {
 		graphicsView.getStartGameButton().doClick();
@@ -52,7 +55,9 @@ public class TestView {
 		
 	}
 	
-	
+	/**
+	 * ensure placing plants works as expected
+	 */
 	@Test
 	public void testPlacePlant() {
 		graphicsView.getStartGameButton().doClick();
@@ -100,17 +105,19 @@ public class TestView {
 	public void testEndUndoAndRedoTurn() {
 		graphicsView.getStartGameButton().doClick();
 		graphicsView.getEndTurnButton().doClick();
-		assertEquals(board.getTurn(),1);
-		assertEquals(board.getBoardStates().size(),2);
+		assertEquals("ensure that the game was advanced a turn by clicking end turn",
+				board.getTurn(),1);
+		assertEquals("ensure board states for undoing are being stored",
+				board.getBoardStates().size(),2);
 		graphicsView.getEndTurnButton().doClick();
-		assertEquals(board.getTurn(),2);
-		assertEquals(board.getBoardStates().size(),3);
+		assertEquals("turns should always increase on clicking end turn",board.getTurn(),2);
+		assertEquals("the stored board states did not increase",board.getBoardStates().size(),3);
 		graphicsView.getUndoButton().doClick();
-		assertEquals(board.getBoardStates().size(),2);
-		assertEquals(board.getUndoneBoardStates().size(),1);
+		assertEquals("the stored board states did not decrease from an undo",board.getBoardStates().size(),2);
+		assertEquals("The stored undone board states did not increase from an undo",board.getUndoneBoardStates().size(),1);
 		graphicsView.getRedoButton().doClick();
-		assertEquals(board.getBoardStates().size(),3);
-		assertEquals(board.getUndoneBoardStates().size(),0);
+		assertEquals("The stared board states should increase again from a redo",board.getBoardStates().size(),3);
+		assertEquals("The stored undone board states should now descrease from a redo",board.getUndoneBoardStates().size(),0);
 	}
 	
 }

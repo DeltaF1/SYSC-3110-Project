@@ -16,6 +16,9 @@ public class TestZombie {
 		zombie = new Zombie("somePlant", 60,20,2);
 	}
 	
+	/**
+	 * test that zombies can have their move speed returned properly
+	 */
 	@Test
 	public void testGetMovSpd() {
 		assertEquals("Attack speed should be 2",
