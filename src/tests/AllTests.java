@@ -16,7 +16,8 @@ import junit.framework.TestSuite;
        //TestSunflowerPlant.class,
        //TestProjectilePlant.class,
        TestZombie.class,
-       TestController.class
+       TestController.class,
+       TestView.class
 
 })
 

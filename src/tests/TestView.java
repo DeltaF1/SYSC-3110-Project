@@ -1,4 +1,104 @@
-package mainPackage;
+package tests;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import mainPackage.Board;
+import mainPackage.Controller;
+import mainPackage.GraphicsView;
+import mainPackage.plants.Melonpult;
+import mainPackage.plants.Repeater;
+import mainPackage.plants.Sunflower;
+import mainPackage.plants.Wallnut;
+
+public class TestView {
+	Board board;
+	GraphicsView graphicsView;
+	Controller controller;
+	
+	/**
+	 * setup MVC before performing test 
+	 */
+	@Before
+	public void init() {
+		controller= new Controller();
+		graphicsView = new GraphicsView();
+		board = new Board();
+		Controller.controllerInit(board, graphicsView);
+	}
+	
+	@Test
+	public void testStartGame() {
+		graphicsView.getStartGameButton().doClick();
+		assertEquals( board.getTurn(), 0);
+		for (int y = 0; y < Board.HEIGHT; y++) {
+			for (int x = 0; x < Board.WIDTH; x++) {
+				assertEquals("tile occupant was not removed at "  + Integer.toString(x) + "," + Integer.toString(y),
+						board.getEntity(x, y), null);
+			}
+		}
+		
+		assertEquals("sunPoints were not set to the starting amount",board.getSun(),Controller.START_SUN);
+		
+/*		sunflowerButton = new PlantButton("sunflower");
+		PlantButton projButton = new PlantButton("proj");
+		PlantButton repeaterButton = new PlantButton("repeater");
+		PlantButton melonButton = new PlantButton("melon");
+		PlantButton wallnutButton*/
+		
+		
+	}
+	
+	
+	@Test
+	public void testPlacePlant() {
+		graphicsView.getStartGameButton().doClick();
+		board.addSun( - Controller.START_SUN );
+		
+		assertEquals(board.getSun(),0);
+		board.addSun( 50 );
+
+		graphicsView.getWallnutButton().doClick();
+		graphicsView.clickBoardButton(0,0);		
+		board.addSun( 150 );
+		graphicsView.getSunflowerButton().doClick();
+		graphicsView.clickBoardButton(0,1);		
+		board.addSun( 200 );
+		graphicsView.getRepeaterButton().doClick();
+		graphicsView.clickBoardButton(0,2);	
+		board.addSun( 300 );
+		graphicsView.getMelonButton().doClick();
+		graphicsView.clickBoardButton(0,3);	
+
+		graphicsView.getWallnutButton().doClick();
+		graphicsView.clickBoardButton(1,0);	
+		board.addSun(300);
+		graphicsView.getMelonButton().doClick();
+		graphicsView.clickBoardButton(0,0);	
+		
+		assertTrue("A wallnut should have been placed at 0,0 and a melon should have failed to be placed on the existing entity",
+				board.getEntity(0, 0) instanceof Wallnut );
+		assertTrue("a sunflower should have been placed at 0,1", 
+				board.getEntity(0, 1) instanceof Sunflower );
+		assertTrue("a repreater should have been placed at 0,2",
+				board.getEntity(0, 2) instanceof Repeater );
+		assertTrue("a melonpult should have been placed at 0,3",
+				board.getEntity(0, 3) instanceof Melonpult);
+		assertTrue("a wallnut should have failed to place at 1,0 from lack of sunpoints",
+				board.getEntity(1, 0) == null);
+		assertTrue("a wallnut should have failed to place at 5,0 from being out of placement bounds",
+				board.getEntity(5, 0) == null);
+	}
+	
+	
+	
+	
+	/*
+	 
+	 package mainPackage;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -32,9 +132,7 @@ public class GraphicsView implements View
 	private JLabel statusText;
 	private PlantButton selectedPlantButton;
 	
-	/**
-	 * A button that represents a square on the board grid
-	 */
+
 	private class BoardButton extends JButton {
 		private int x,y;
 		public BoardButton(int x, int y) {
@@ -60,9 +158,7 @@ public class GraphicsView implements View
 		}
 	}
 	
-	/**
-	 * A button that can be used to choose which seed to plant
-	 */
+
 	private class PlantButton extends JButton {
 		public String plantType;
 		
@@ -97,9 +193,7 @@ public class GraphicsView implements View
 			});
 		}
 		
-		/*
-		 * @return the plant type for this PlantButton
-		 */
+
 		String getPlantType() {
 			return plantType;
 		}
@@ -125,62 +219,6 @@ public class GraphicsView implements View
 		}
 	}
 	
-	JButton startGame;
-	public JButton getStartGameButton() {
-		return startGame;
-	}
-	
-	/**
-	 * used by tests to simulate clicking on a button
-	 * @param x
-	 * @param y
-	 */
-	public void clickBoardButton(int x , int y){
-		boardButtons[y][x].doClick();
-	}
-	
-	JButton endTurnButton;
-	public JButton getEndTurnButton() {
-		return endTurnButton;
-	}
-	
-	JButton undoButton;
-	public JButton getUndoButton() {
-		return undoButton;
-	}
-	
-	JButton redoButton;
-	public JButton getRedoButton() {
-		return redoButton;
-	}
-	
-	PlantButton sunflowerButton;// = new PlantButton("sunflower");
-	public JButton getSunflowerButton() {
-		return sunflowerButton;
-	}
-	
-	
-	PlantButton projButton;// = new PlantButton("proj");
-	public JButton getProjButton() {
-		return projButton;
-	}
-	
-	PlantButton repeaterButton;// = new PlantButton("repeater");
-	public JButton getRepeaterButton() {
-		return repeaterButton;
-	}
-	
-	PlantButton melonButton;// = new PlantButton("melon");
-	public JButton getMelonButton() {
-		return melonButton;
-	}
-	
-	PlantButton wallnutButton;// = new PlantButton("wallnut");
-	public JButton getWallnutButton() {
-		return wallnutButton;
-	}
-	
-	
 	public GraphicsView()
 	{
 		frame = new JFrame("Plants Vs. Zombies - Now with time travel!");
@@ -195,8 +233,7 @@ public class GraphicsView implements View
 		
 		// Main menu panel setup
 			menuPanel = new MenuPanel();
-			startGame = new JButton("Start Game");
-
+			JButton startGame = new JButton("Start Game");
 			
 			startGame.addActionListener(new ActionListener()
 			{
@@ -273,11 +310,11 @@ public class GraphicsView implements View
 			controlsPanel.add(undoButton);
 			controlsPanel.add(redoButton);
 			
-			sunflowerButton = new PlantButton("sunflower");
-			projButton = new PlantButton("proj");
-			repeaterButton = new PlantButton("repeater");
-			melonButton = new PlantButton("melon");
-			wallnutButton = new PlantButton("wallnut");
+			PlantButton sunflowerButton = new PlantButton("sunflower");
+			PlantButton projButton = new PlantButton("proj");
+			PlantButton repeaterButton = new PlantButton("repeater");
+			PlantButton melonButton = new PlantButton("melon");
+			PlantButton wallnutButton = new PlantButton("wallnut");
 			controlsPanel.add(sunflowerButton);
 			controlsPanel.add(projButton);
 			controlsPanel.add(repeaterButton);
@@ -315,9 +352,7 @@ public class GraphicsView implements View
 		frame.setVisible(true);
 	}
 	
-	/**
-	 * Handles click events from the board. If a plant is selected to plant, attempt to plant it via the controller
-	 */
+
 	protected void clickButton(BoardButton button, int x, int y)
 	{
 		if (selectedPlantButton == null) {
@@ -328,9 +363,7 @@ public class GraphicsView implements View
 	}
 
 	@Override
-	/**
-	 * Draws out the model onto a grid of buttons
-	 */
+
 	public void drawGame()
 	{
 		if (frame.getContentPane() != boardPanel) {
@@ -361,10 +394,6 @@ public class GraphicsView implements View
 		centerText(announcements);
 	}
 	
-	/*
-	 * Centers text
-	 * @param pane the JTextPane to center text in
-	 */
 	private void centerText(JTextPane pane) {
 		StyledDocument text = pane.getStyledDocument();
 		SimpleAttributeSet center = new SimpleAttributeSet();
@@ -373,9 +402,7 @@ public class GraphicsView implements View
 	}
 
 	@Override
-	/**
-	 * Draws the menu panel
-	 */
+
 	public void drawMenu()
 	{
 		frame.setContentPane(menuPanel);
@@ -383,9 +410,7 @@ public class GraphicsView implements View
 	}
 
 	@Override
-	/**
-	 * Draws the end-screen card and sets the status to game over 
-	 */
+
 	public void drawGameOver()
 	{
 		statusText.setText("Game Over!");
@@ -394,22 +419,24 @@ public class GraphicsView implements View
 	}
 
 	@Override
-	/**
-	 * Draws the end-screen card and sets the status to win
-	 */
+
 	public void drawWinScreen()
 	{
 		statusText.setText("You win!");
 		frame.setContentPane(endPanel);
 		refreshFrame();
 	}
-	
-	/*
-	 * Redraws and resizes the JFrame 
-	 */
+
 	private void refreshFrame() {
 		frame.revalidate();
 		frame.pack();
 	}
 
+}
+
+	 
+	 */
+	
+	
+	
 }

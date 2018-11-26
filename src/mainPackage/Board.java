@@ -423,4 +423,8 @@ public class Board {
 	public Stack<String> getUndoneBoardStates(){
 		return undoneBoardStates;
 	}
+	
+	public int getTurn() {
+		return turn;
+	}
 }
