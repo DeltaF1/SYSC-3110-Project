@@ -7,13 +7,16 @@ Ehren:
 - Added undo/redo
 - Overhauled EntityFactory
 - Added *deepest lore* to UserManual.md
+
 Trevor:
 - Created and updated test cases
 - Created zomb art
+
 Aldous:
 - Added spawning system
 - refactored to MVC
 - made splash art
+
 Sam:
 - Added classes for new zombies and plants
 - Fixed OutOfBounds exception
