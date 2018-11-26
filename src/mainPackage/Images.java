@@ -14,6 +14,11 @@ public class Images {
 	public static final ImageIcon repeaterIcon = new ImageIcon("images/repeater.png"); 
 	public static final ImageIcon melonIcon = new ImageIcon("images/melon.png"); 
 	
+	/**
+	 * Returns icons depending on the EntityFactory entity name
+	 * @param entityType
+	 * @return
+	 */
 	public static ImageIcon getIcon(String entityType) {
 		switch(entityType) {
 		case "sunflower":

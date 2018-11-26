@@ -247,6 +247,7 @@ public class Controller {
 	public static void controllerInit(Board aBoard, GraphicsView aView) {
 		board = aBoard;
 		
+		// Add a test level
 		board.addSpawn(0, "basic");
 		board.addSpawn(0, "basic");
 		

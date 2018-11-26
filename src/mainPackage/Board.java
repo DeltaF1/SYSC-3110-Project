@@ -65,7 +65,7 @@ public class Board {
 	}
 	
 	/**
-	 * creates a new board from a 2d array of Tiles
+	 * creates a new board from a 2d array of Entities
 	 * @param tiles Tiles to make the board out of
 	 */
 	public Board(Entity[][] entities) {
@@ -187,6 +187,9 @@ public class Board {
 		updateSun(sunPoints);
 	}
 	
+	/**
+	 * clear the board
+	 */
 	public void wipe() {
 		for (int y = 0; y < HEIGHT; y++) {
 			for (int x = 0; x < WIDTH; x++) {
@@ -197,16 +200,29 @@ public class Board {
 		turn = 0;
 	}
 	
+	/**
+	 * Add a view to the list fo views that wish to be notified by this model
+	 * @param view
+	 */
 	public void registerView(View view) {
 		views.add(view);
 	}
 	
+	/**
+	 * Notifies the views to update the given board position
+	 * @param x
+	 * @param y
+	 */
 	private void updateEntity(int x, int y) {
 		for (View view : views) {
 			view.updateEntity(getEntity(x, y), x, y);
 		}
 	}
 	
+	/**
+	 * Notifies the views to update their sun total
+	 * @param sun
+	 */
 	private void updateSun(int sun) {
 		for (View view : views) {
 			view.updateSun(sun);
@@ -273,6 +289,10 @@ public class Board {
 	    }
 	}
 	
+	/**
+	 * Loads in gamestate from an xml string
+	 * @param xml
+	 */
 	public void setXML(String xml) {
 		try {
 			this.wipe();
@@ -337,40 +357,58 @@ public class Board {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 *  Move an entity from one location to another
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 */
 	public void moveEntity(int x1, int y1, int x2, int y2) {
 		Entity e = getEntity(x1,y1);
 		removeEntity(x1, y1);
 		placeEntity(x2,y2,e);
 	}
-
+	
+	/**
+	 * Update state at the end of a turn
+	 */
 	public void endTurn() {
 		spawnZombies();
 		boardStates.push(toXML());
+		
+		// Clears the redo stack, since this "timeline" is finalized with the ending of a turn
 		undoneBoardStates.removeAllElements();
 		turn++;
 		
 		//Check for win condition
-		System.out.println("numZombies = "+numZombies);
-		System.out.println("lastKey = " + spawns.lastKey());
 		if (numZombies == 0 && turn >= spawns.lastKey()) {
 			drawWinScreen();
 		}
 	}
 	
+	/**
+	 * Notfies the views to draw the win screen
+	 */
 	private void drawWinScreen()
 	{
 		for (View view : views) {
 			view.drawWinScreen();
 		}
 	}
-
+	
+	/**
+	 * Spawns zombies if there are any zombies to spawn on the current turn
+	 */
 	private void spawnZombies()
 	{
 		List<String> wave = spawns.get(turn);
 		if (wave != null) {
 			for (String zombieType : wave) {
 				boolean placed = false;
+				// Spawn zombies at random locations
+				// pick a new location until one is found that is not occupied
 				do {
 					int newPosY = ThreadLocalRandom.current().nextInt(0, HEIGHT);
 					placed = placeEntity(WIDTH-1,newPosY, EntityFactory.makeZombie(zombieType));
@@ -378,7 +416,11 @@ public class Board {
 			}
 		}
 	}
-
+	
+	/**
+	 * Undoes the current turn and reverts to the previous state
+	 * @return Whether the undo was successful or not
+	 */
 	public boolean undo() {
 		if (boardStates.size() > 1) { //can only undo if you have both the current state and some previous state in the stack
 			undoneBoardStates.push(boardStates.pop()); //put current state in undone stack
@@ -389,7 +431,11 @@ public class Board {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * Redoes an undone turn
+	 * @return Whether the redo happened or not
+	 */
 	public boolean redo() {
 		if (! undoneBoardStates.isEmpty()) {
 			String undoneState = undoneBoardStates.pop();
@@ -402,11 +448,19 @@ public class Board {
 		}
 	}
 	
-
+	/**
+	 * Sets the entire spawn list
+	 * @param spawns
+	 */
 	public void setSpawns(TreeMap<Integer, LinkedList<String>> spawns) {
 		this.spawns = spawns;
 	}
 	
+	/**
+	 * Add a zombie type to spawn at the given turn
+	 * @param wave The turn to spawn at
+	 * @param zombieType Which zombie type (Same names as in EntityFactory.Java)
+	 */
 	public void addSpawn(int wave, String zombieType) {
 		LinkedList<String> cur = spawns.get(wave);
 		if (cur == null) {
@@ -415,8 +469,9 @@ public class Board {
 		}
 		cur.add(zombieType);
 	}
-
-	public  Stack<String> getBoardStates(){
+	
+	// Debugging methods for testing
+	public Stack<String> getBoardStates(){
 		return boardStates;
 	}
 	
