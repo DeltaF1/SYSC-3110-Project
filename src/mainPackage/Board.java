@@ -339,10 +339,14 @@ public class Board {
 	}
 
 	public void endTurn() {
+		spawnZombies();
 		boardStates.push(toXML());
 		undoneBoardStates.removeAllElements();
-		
 		turn++;
+	}
+
+	private void spawnZombies()
+	{
 		List<String> wave = spawns.get(turn);
 		if (wave != null) {
 			for (String zombieType : wave) {
