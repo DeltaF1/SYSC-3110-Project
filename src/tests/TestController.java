@@ -183,7 +183,7 @@ public class TestController {
 		Controller.placePlant("sunflower", 0, 0);
 		Controller.endTurn();
 		
-		assertEquals(board.getBoardStates().size(),2);
+		assertEquals("There should be two stored board states at this time",board.getBoardStates().size(),2);
 		
 		
 		Entity zombie = null;
