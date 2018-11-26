@@ -18,19 +18,14 @@ public class Controller {
 	
 	private static Board board;
 	private static View view;
-	static LinkedList<Level> levels;
-	static int level;
-	static int levelZombiesLeft;
 	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
 	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when selling a plant
-	static int turn = 0;
 	
 	/*
 	 * TODO: call loadLevel first to go to PRELEVEL state and show the player which zombies will be in the level
 	 * stats the game
 	 */
 	public static void startGame() {
-		turn = 0;
 		setUpGame(board);
 		view.announce("Level start!");
 		view.drawGame();
@@ -109,11 +104,8 @@ public class Controller {
 	 * @param args extra arguments specified by player (currently unused)
 	 */
 	public static void endTurn() {
-
 			advancePlants();
 			advanceZombies();
-			spawnZombies();
-			turn++;
 			board.endTurn();
 	}
 	
@@ -178,7 +170,6 @@ public class Controller {
 							System.out.println("TEMP MSG: plant hit zombie at " + Integer.toString(bulletHit) + "," + Integer.toString(y) + " reducing it's health to " + Integer.toString(newHP));
 							if (newHP <= 0) {
 								board.removeEntity(bulletHit, y);
-								decreaseZombieCount(1);
 							} else {
 								shotZombie.setHp(newHP);
 							}
@@ -221,7 +212,6 @@ public class Controller {
 				}
 			}
 		} else { //zomb has reached end of map, game over
-			//dont drawGameOver() here because it will be erased
 			view.drawGameOver();
 		}
 	}
@@ -240,46 +230,6 @@ public class Controller {
 		}
 	}
 	
-	/**
-	 * Handle new zombies spawned this turn
-	 */
-	private static void spawnZombies() {
-		
-		if(levelZombiesLeft == 0){
-			//do nothing! No zombies left to spawn
-		}else{
-		
-			int numZombies = levels.get(level).getWave(turn);
-		
-			for (int i = 0; i < numZombies; i++) {
-				boolean placed = false;
-				do {
-					int newPosY = ThreadLocalRandom.current().nextInt(0, board.HEIGHT);
-					placed = board.placeEntity(board.WIDTH-1,newPosY, EntityFactory.makeZombie("basic"));
-				} while (placed == false);
-			}
-		}
-	}
-
-	/**
-	 * decreases the count of zombies left alive and takes appropriate action when no zombies are left
-	 * @param amnt int the amount to decrease the zombies alive count
-	 */
-	public static void decreaseZombieCount(int amnt) {
-		levelZombiesLeft -= amnt;
-		view.announce("TEMP: zombies left this level - " + Integer.toString(levelZombiesLeft));
-		if (levelZombiesLeft <= 0){
-			level += 1;
-			turn = 0;
-			if (level >= levels.size() ) {
-				view.announce("TEMP: the player beat all levels");
-				view.drawWinScreen();
-			} else {
-				levelZombiesLeft = levels.get(level).getTotalZombies();
-				view.announce("TEMP: the player beat level " + Integer.toString(level));
-			}
-		}
-	}
 	
 	/**
 	 * sets the board to be empty, sets money to the starting amount and sets up level data
@@ -291,9 +241,14 @@ public class Controller {
 		
 		//TOFIX
 		board.boardStates.push(board.toXML());
+
+	}
+	
+	public static void controllerInit(Board aBoard, GraphicsView aView) {
+		board = aBoard;
 		
-		board.addSpawn(1, "basic");
-		board.addSpawn(1, "basic");
+		board.addSpawn(0, "basic");
+		board.addSpawn(0, "basic");
 		
 		board.addSpawn(5, "boomer");
 		board.addSpawn(5, "boomer");
@@ -302,11 +257,7 @@ public class Controller {
 		board.addSpawn(10, "zoomer");
 		board.addSpawn(10, "doomer");
 		board.addSpawn(10, "doomer");
-		levelZombiesLeft = 0;
-	}
-	
-	public static void controllerInit(Board aBoard, GraphicsView aView) {
-		board = aBoard;
+		
 		view = aView;
 		view.drawMenu();
 		board.registerView(view);
@@ -315,19 +266,4 @@ public class Controller {
 	public static void main(String[] args) {
 		controllerInit(new Board(),new GraphicsView());
 	}
-	
-	
-	public static LinkedList<Level> getLevels()
-	{
-		return levels;
-		
-	}
-
-	public static int getTurn() {
-		return turn;
-	}
-
-
-
-
 }

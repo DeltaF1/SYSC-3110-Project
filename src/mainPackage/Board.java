@@ -46,6 +46,7 @@ public class Board {
 	private int sunPoints;
 	private LinkedList<View> views;
 	private int turn;
+	private int numZombies;
 	private TreeMap<Integer, LinkedList<String>> spawns;
 	public Stack<String> boardStates;
 	private Stack<String> undoneBoardStates;
@@ -111,6 +112,9 @@ public class Board {
 		checkCoords(x, y);
 		if (entities[y][x] == null) {
 			entities[y][x] = e;
+			if (e instanceof Zombie) {
+				numZombies++;
+			}
 			updateEntity(x, y);
 			return true;
 		}
@@ -124,6 +128,10 @@ public class Board {
 	 */
 	public void removeEntity(int x, int y) {
 		checkCoords(x, y);
+		Entity e = entities[y][x];
+		if (e instanceof Zombie) {
+			numZombies--;
+		}
 		entities[y][x] = null; 
 		updateEntity(x,y);
 	}
@@ -188,7 +196,7 @@ public class Board {
 		}
 		sunPoints = 0;
 		updateSun(sunPoints);
-		
+		turn = 0;
 	}
 	
 	public void registerView(View view) {
@@ -343,6 +351,20 @@ public class Board {
 		boardStates.push(toXML());
 		undoneBoardStates.removeAllElements();
 		turn++;
+		
+		//Check for win condition
+		System.out.println("numZombies = "+numZombies);
+		System.out.println("lastKey = " + spawns.lastKey());
+		if (numZombies == 0 && turn >= spawns.lastKey()) {
+			drawWinScreen();
+		}
+	}
+	
+	private void drawWinScreen()
+	{
+		for (View view : views) {
+			view.drawWinScreen();
+		}
 	}
 
 	private void spawnZombies()
@@ -363,6 +385,7 @@ public class Board {
 		if (boardStates.size() > 1) { //can only undo if you have both the current state and some previous state in the stack
 			undoneBoardStates.push(boardStates.pop()); //put current state in undone stack
 			setXML(boardStates.peek());
+			turn--;
 			return true;
 		} else {
 			return false;
@@ -374,6 +397,7 @@ public class Board {
 			String undoneState = undoneBoardStates.pop();
 			boardStates.push(undoneState);
 			setXML(undoneState);
+			turn++;
 			return true;
 		} else {
 			return false;
