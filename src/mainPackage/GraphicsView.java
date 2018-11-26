@@ -241,7 +241,7 @@ public class GraphicsView implements View
 			sunInfo.setContentType("text/html");
 			controlsAndInfoPanel.add(sunInfo);
 			
-			JButton endTurnButton = new JButton("End turn");
+			endTurnButton = new JButton("End turn");
 			endTurnButton.addActionListener(new ActionListener()
 			{
 				@Override
@@ -251,7 +251,7 @@ public class GraphicsView implements View
 				}
 			});
 			
-			JButton undoButton = new JButton("Undo turn");
+			undoButton = new JButton("Undo turn");
 			undoButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -259,7 +259,7 @@ public class GraphicsView implements View
 				}
 			});
 			
-			JButton redoButton = new JButton("Redo turn");
+			redoButton = new JButton("Redo turn");
 			redoButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
