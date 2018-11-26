@@ -196,9 +196,9 @@ public class TestController {
 			}
 		}
 		assertTrue("expected a zombie to spawn",zombieY != null);
-		board.endTurn();
+		Controller.endTurn();
 		assertEquals(board.getBoardStates().size(),3);
-		assertFalse("The zombie should have advanced forward" , board.getEntity(Board.WIDTH-1-1, zombieY.intValue()) == null);//should make work with different move speeds
+		assertFalse("The zombie should have advanced forward" , board.getEntity(Board.WIDTH-2, zombieY.intValue()) == null);//should make work with different move speeds
 		board.undo();
 		assertEquals(board.getBoardStates().size(),2);
 		assertEquals(board.getUndoneBoardStates().size(),1);
@@ -216,7 +216,7 @@ public class TestController {
 		board.redo();
 		assertEquals(board.getUndoneBoardStates().size(),0);
 		assertEquals(board.getBoardStates().size(),3);
-		assertFalse("The zombie should have advanced forward" , board.getEntity(Board.WIDTH-1, zombieY) == null);//should make work with different movement speeds
+		assertFalse("The zombie should have advanced forward" , board.getEntity(Board.WIDTH-2, zombieY) == null);//should make work with different movement speeds
 		assertFalse("The plant should continue to exist" , board.getEntity(0, 0)== null);
 		
 	}
