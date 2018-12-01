@@ -4,10 +4,6 @@ package mainPackage;
  * Check GitHub for authors
  */
 
-import java.util.LinkedList;
-import java.util.Stack;
-import java.util.concurrent.ThreadLocalRandom;
-
 import mainPackage.plants.Plant;
 import mainPackage.plants.Sunflower;
 import mainPackage.zombies.Zombie;
@@ -128,6 +124,18 @@ public class Controller {
 			view.announce("Redid turn");
 		} else {
 			view.announce("Nothing to redo!");
+		}
+	}
+	
+	/**
+	 * saves the game
+	 * @param destination the file path to save the game to
+	 */
+	public static void saveGame(String destination) {
+		if (board.toXMLFile(destination)) {
+			view.announce("Saved game successfully");
+		} else {
+			view.announce("There was an error saving the file!");
 		}
 	}
 	

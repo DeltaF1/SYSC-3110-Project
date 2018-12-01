@@ -83,7 +83,6 @@ public class GraphicsView implements View
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					// TODO Auto-generated method stub
 					if (selectedPlantButton != null) {
 						selectedPlantButton.setBorder(new LineBorder(Color.GRAY));
 					}
@@ -188,6 +187,33 @@ public class GraphicsView implements View
 		// Menu Bar setup
 			JMenuBar menuBar = new JMenuBar();
 			JMenu fileMenu = new JMenu("File");
+			
+			JMenuItem save = new JMenuItem("Save");
+			save.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JButton openButton = new JButton();
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setCurrentDirectory(new File("."));
+					fileChooser.showOpenDialog(openButton); //choose the file
+					File selectedFile = fileChooser.getSelectedFile();
+					if (selectedFile != null) { //if user chose a file instead of hitting "cancel"
+						Controller.saveGame(selectedFile.getAbsolutePath());
+					} else {
+						announce("Game save canceled");
+					}
+				}
+			});
+			
+			JMenuItem load = new JMenuItem("Load");
+			load.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.out.println("unimplemented");
+				}
+			});
+			
+			fileMenu.add(save);
 	
 			menuBar.add(fileMenu);
 			

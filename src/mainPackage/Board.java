@@ -1,8 +1,12 @@
 package mainPackage;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.LinkedList;
@@ -355,6 +359,22 @@ public class Board {
 			});
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * writes this board's current state to an xml file
+	 * @param destination to write the the board to
+	 */
+	public boolean toXMLFile(String destination) {
+		try {
+			BufferedWriter file = new BufferedWriter(new FileWriter(destination));
+			file.write(toXML());
+			file.close();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	
