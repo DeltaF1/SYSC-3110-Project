@@ -15,7 +15,6 @@ public class Controller {
 	private static Board board;
 	private static View view;
 	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
-	public static final float SELL_PERCENT = 0.8f;//percent of cost reclaimed when selling a plant
 	
 	/*
 	 * TODO: call loadLevel first to go to PRELEVEL state and show the player which zombies will be in the level
@@ -74,25 +73,6 @@ public class Controller {
 		} else {
 			view.announce("The entity on that tile isn't a plant or a zombie, who knows what it is.");
 		}
-	}
-	
-	/**
-	 * converts two strings to x y coordinates on the board
-	 * @param strx x coordinate as a String
-	 * @param stry y coordinate as a String
-	 * @return null if (strx, stry) is not a valid position on the board, otherwise two integer locations are returned in an int array
-	 */
-	private static int[] strCoordsToInt(String strx, String stry) {
-		int x, y;
-		try {
-			x = Integer.parseInt(strx);
-			y = Integer.parseInt(stry);
-			board.checkCoords(x, y);
-		} catch (IllegalArgumentException err) { //parseInt and checkCoords throw the same type of error
-			view.announce(String.format("invalid board coordinates: (x = %s, y = %s)", strx, stry));
-			return null;
-		}
-		return new int[] {x, y};
 	}
 	
 	/**
