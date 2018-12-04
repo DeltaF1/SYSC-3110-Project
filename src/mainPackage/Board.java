@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -15,12 +14,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -232,8 +225,6 @@ public class Board {
 	/**
 	 * converts this Board to xml
 	 * @return a String representing the current state of the Board in XML format
-	 * @throws ParserConfigurationException
-	 * @throws TransformerException 
 	 */
 	public String toXML() {
 		try {
@@ -276,13 +267,7 @@ public class Board {
 			rootElm.appendChild(widthElm);
 			rootElm.appendChild(heightElm);
 			xml.appendChild(rootElm);
-			StringWriter sw = new StringWriter();
-			TransformerFactory tf = TransformerFactory.newInstance();
-	        Transformer transformer = tf.newTransformer();
-	        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-	        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-	        transformer.transform(new DOMSource(xml), new StreamResult(sw));
-	        return sw.toString();
+			return StringUtils.XMLToString(xml);
 		} catch (Exception e) {
 			e.printStackTrace();
 	    	return null;

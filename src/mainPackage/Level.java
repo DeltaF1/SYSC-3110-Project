@@ -7,6 +7,10 @@ package mainPackage;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 public class Level {
 	private class Wave {
 		public int turn;
@@ -82,5 +86,38 @@ public class Level {
 	 */
 	public int getTotalZombies() {
 		return totalZombies;
+	}
+	
+	/**
+	 * converts this Level to XML
+	 * @return an XML string representing this Level
+	 */
+	public String toXML() {
+		try {
+			Document xml  = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+			Element rootElm = xml.createElement("level");
+			Element allWavesElm = xml.createElement("allWaves");
+			Element currentWaveElm = xml.createElement("currentWave");
+			Element totalZombieElm = xml.createElement("totalZombies");
+			for (Wave wave: waves) {
+				Element waveElm = xml.createElement("wave");
+				Element turnElm = xml.createElement("turn");
+				Element numZombiesElm = xml.createElement("numZombies");
+				turnElm.appendChild(xml.createTextNode(String.format("%d", wave.turn)));
+				numZombiesElm.appendChild(xml.createTextNode(String.format("%d", wave.numZombies)));
+				waveElm.appendChild(turnElm);
+				waveElm.appendChild(numZombiesElm);
+			}
+			currentWaveElm.appendChild(xml.createTextNode(String.format("%d", current)));
+			totalZombieElm.appendChild(xml.createTextNode(String.format("%d", totalZombies)));
+			rootElm.appendChild(allWavesElm);
+			rootElm.appendChild(currentWaveElm);
+			rootElm.appendChild(totalZombieElm);
+			xml.appendChild(rootElm);
+			return StringUtils.XMLToString(xml);
+		} catch (Exception e) {
+			e.printStackTrace();
+	    	return null;
+	    }
 	}
 }
