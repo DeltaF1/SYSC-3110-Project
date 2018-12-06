@@ -1,5 +1,7 @@
 package mainPackage;
 
+import java.util.LinkedList;
+
 public interface View {
 	
 	public void drawGame();
@@ -15,5 +17,7 @@ public interface View {
 	public void updateEntity(Entity entity, int x, int y);
 	
 	public void updateSun(int sun);
+
+	public void updateZombSettings(LinkedList<ZombieSpawnSettings> zombSettings);
 	
 }

@@ -483,4 +483,71 @@ public class Board {
 	public int getTurn() {
 		return turn;
 	}
+	
+	private LinkedList<ZombieSpawnSettings> editorZombSettings = new LinkedList<ZombieSpawnSettings>();
+	
+	/**
+	 * return the list of editor settings for the zombies to be spawned
+	 * @return LinkedList<ZombieSpawnSettings> the list of settings. each element is the settings for a different zombie
+	 */
+	public LinkedList<ZombieSpawnSettings> getEditorZombSettings(){
+		return editorZombSettings;
+	}
+	
+	/**
+	 * add a zombie to the editor list zombies to spawn
+	 * @param aZombSettings
+	 */
+	public void editorAddZombie( ZombieSpawnSettings aZombSettings  ) {
+		this.editorZombSettings.add(aZombSettings);
+		for (View view : views) {
+			view.updateZombSettings(editorZombSettings);
+		}
+	}
+	
+	/**
+	 * modify the settings for a zombie in the editor list
+	 * @param aZombSettings the new ZombieSpawnSettings for the selected zombie
+	 */
+	public void editorEditZombie(ZombieSpawnSettings aZombSettings) {
+		if ( editorZombSettings.size() > editorSelectedZombie) {
+			editorZombSettings.get(editorSelectedZombie).setName(aZombSettings.getName());
+			editorZombSettings.get(editorSelectedZombie).setSpawnTurn(aZombSettings.getSpawnTurn());
+			for (View view : views) {
+				view.updateZombSettings(editorZombSettings);
+			}
+		}
+	}
+	private int editorSelectedZombie = -1;
+	
+	/**
+	 * return the zombie selected in the editor
+	 * @return int the index of the selected zombie
+	 */
+	public int getEditorSelectedZombie() {
+		return editorSelectedZombie;
+	}
+	
+	/**
+	 * set the zombie that is selected in the editor
+	 * 
+	 * @param index the index of the zombie to be selected
+	 */
+	public void editorSelectZombie(int index) {
+		editorSelectedZombie = index;
+	}
+	
+	/**
+	 * remove the selected zombie in the editor
+	 */
+	public void editorRemoveZombie() {
+		if ( editorZombSettings.size() > editorSelectedZombie) {
+			editorZombSettings.remove(editorSelectedZombie);
+			for (View view : views) {
+				view.updateZombSettings(editorZombSettings);
+			}
+			editorSelectedZombie = -1;
+		}
+	}
+	
 }

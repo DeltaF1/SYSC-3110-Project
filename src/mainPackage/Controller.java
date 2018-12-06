@@ -4,6 +4,9 @@ package mainPackage;
  * Check GitHub for authors
  */
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import mainPackage.plants.Plant;
 import mainPackage.plants.Sunflower;
 import mainPackage.zombies.Zombie;
@@ -232,6 +235,42 @@ public class Controller {
 
 	}
 	
+	/**
+	 * tells the model to add a zombie with the ZombieSpawnSettings aZombieSettings
+	 * @param aZombSettings
+	 */
+	public static void editorAddZombie(ZombieSpawnSettings aZombSettings) {
+		board.editorAddZombie(aZombSettings);
+	}
+	
+	/**
+	 * tells the model to select the zombie at the given index
+	 * @param index
+	 */
+	public static void editorSelectZombie(int index) {
+		board.editorSelectZombie(index);
+	}
+	
+	/**
+	 * tells the model to remove the zombie at the currently selected index
+	 */
+	public static void editorRemoveZombie() {
+		board.editorRemoveZombie();
+	}
+	
+	/**
+	 * tells the model to modify the settings of the currently selected zombie
+	 * @param aZombSettings
+	 */
+	public static void editorEditZombie(ZombieSpawnSettings aZombSettings) {
+		board.editorEditZombie(aZombSettings);
+	}
+	
+	/**
+	 * The initialization for when the controller's main is run - also used in testing to be able to set a desired board and view
+	 * @param aBoard
+	 * @param aView
+	 */
 	public static void controllerInit(Board aBoard, GraphicsView aView) {
 		board = aBoard;
 		

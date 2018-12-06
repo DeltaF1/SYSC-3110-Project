@@ -10,10 +10,13 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -24,6 +27,9 @@ public class GraphicsView implements View
 	private JPanel menuPanel;
 	
 	private JPanel boardPanel;
+	
+	//private JPanel editorPanel;
+	
 	private BoardButton[][] boardButtons;
 	private JTextPane sunInfo;
 	private JTextPane announcements;
@@ -31,6 +37,10 @@ public class GraphicsView implements View
 	private JPanel endPanel;
 	private JLabel statusText;
 	private PlantButton selectedPlantButton;
+	
+
+	LinkedList<ZombieSpawnSettings> zombSettings = new LinkedList<ZombieSpawnSettings> ();
+
 	
 	/**
 	 * A button that represents a square on the board grid
@@ -129,6 +139,14 @@ public class GraphicsView implements View
 		return startGame;
 	}
 	
+	JButton openLevelEditor;
+	public JButton getOpenLevelEditorButton() {
+		return openLevelEditor;
+	}
+	
+	//JButton addZombie;
+	//JButton removeZombie;
+	
 	/**
 	 * used by tests to simulate clicking on a button
 	 * @param x
@@ -178,6 +196,27 @@ public class GraphicsView implements View
 	public JButton getWallnutButton() {
 		return wallnutButton;
 	}
+
+	
+	/// Editor Panel objects
+	
+    DefaultListModel<Object> zombieModel;
+    JList<Object> zombieList;// = new JList(zombieModel);
+    JScrollPane jScrollPane;// = new JScrollPane(zombieList);
+    JPanel editorPanel;// = new JPanel();
+	JButton addZombie;// = new JButton("add zombie");
+	JButton removeZombie; // = new JButton("remove zombie");
+	JButton editZombie;
+	JButton leaveEditor;
+
+    ///BUDDY INFO LABELS
+    JLabel jTypeLabel;// = new JLabel("Zombie Type:");
+    //editorPanel.add(jTypeLabel);
+    JLabel jSpawnTurnLabel;// = new JLabel("Spawn turn:");
+    //editorPanel.add(jSpawnTurnLabel);
+    
+	
+	
 	
 	
 	public GraphicsView()
@@ -222,7 +261,8 @@ public class GraphicsView implements View
 		// Main menu panel setup
 			menuPanel = new MenuPanel();
 			startGame = new JButton("Start Game");
-
+			openLevelEditor = new JButton("Open Level Editor");
+			
 			
 			startGame.addActionListener(new ActionListener()
 			{
@@ -236,7 +276,91 @@ public class GraphicsView implements View
 				}
 			});
 			
+			openLevelEditor.addActionListener(new ActionListener()
+			{
+				
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					drawLevelEditor();
+					refreshFrame();
+					//frame.setSize(new Dimension(960,650)); //pretty weird but if we don't resize then the size of the frame is all messed up... calling frame.pack() is supposed to fix this but for some reason it doesn't
+				}
+			});
+			
 			menuPanel.add(startGame);
+			menuPanel.add(openLevelEditor);
+		
+		//level editor setup
+		    zombieModel = new DefaultListModel<Object>();
+		    zombieList = new JList<Object>(zombieModel);
+		    jScrollPane = new JScrollPane(zombieList);
+		    zombieList.addListSelectionListener( new ListSelectionListener() {
+		        public void valueChanged(ListSelectionEvent listSelectionEvent) {
+		        	if(!zombieList.getValueIsAdjusting()) {
+		        		Controller.editorSelectZombie(zombieList.getSelectedIndex());
+		        	}
+		        }
+		    });
+		    editorPanel = new JPanel();
+		    editorPanel.add(jScrollPane );//, BorderLayout.WEST);
+		    editorPanel.setLayout(new BoxLayout(editorPanel, BoxLayout.PAGE_AXIS));
+			
+		    //jButtonNewBuddy.addActionListener(this);
+			addZombie = new JButton("add zombie");
+			addZombie.addActionListener( new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						String zombieType = JOptionPane.showInputDialog("Zombie type: "); //TODO: handle invalid inputs
+						int spawnTurn = Integer.parseInt(JOptionPane.showInputDialog("Spawn turn: "));
+						
+						Controller.editorAddZombie(new ZombieSpawnSettings(zombieType, spawnTurn));	
+					}
+				}
+			);
+						
+			removeZombie = new JButton("remove zombie");
+			removeZombie.addActionListener( new ActionListener()
+				{
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						Controller.editorRemoveZombie();	//selected
+					}
+				}
+			);
+			
+			editZombie = new JButton("edit zombie");
+			editZombie.addActionListener( new ActionListener()
+			{
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					String zombieType = JOptionPane.showInputDialog("Zombie type: "); //TODO: handle invalid inputs
+					int spawnTurn = Integer.parseInt(JOptionPane.showInputDialog("Spawn turn: "));
+					
+					Controller.editorEditZombie(new ZombieSpawnSettings(zombieType, spawnTurn));	
+				}
+			}
+		);
+			leaveEditor = new JButton("leave editor");
+			leaveEditor.addActionListener( new ActionListener()
+			{
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					drawMenu();
+				}
+			}
+		);
+
+			editorPanel.add(addZombie);
+			editorPanel.add(removeZombie);
+			editorPanel.add(editZombie);
+			editorPanel.add(leaveEditor);
+
 			
 		// Board panel setup
 			boardPanel = new JPanel();
@@ -364,6 +488,12 @@ public class GraphicsView implements View
 		}
 	}
 	
+	public void drawLevelEditor() {
+		if(frame.getContentPane() != editorPanel) {
+			frame.setContentPane(editorPanel);
+		}
+	}
+	
 	public void updateEntity(Entity entity, int x, int y) {
 		BoardButton button = boardButtons[y][x];
 		if (entity == null || entity.getIcon() == null) {
@@ -438,4 +568,11 @@ public class GraphicsView implements View
 		frame.pack();
 	}
 
+	public void updateZombSettings(LinkedList<ZombieSpawnSettings> zombSettings) {
+		zombieModel.removeAllElements();
+		for (ZombieSpawnSettings z: zombSettings) {
+			zombieModel.addElement(  z.getSpawnTurn() + " > " + z.getName() );
+		}
+	}
+	
 }
