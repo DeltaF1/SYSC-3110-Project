@@ -21,6 +21,11 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import mainPackage.zombies.BasicZombie;
+import mainPackage.zombies.Boomer;
+import mainPackage.zombies.Doomer;
+import mainPackage.zombies.Zoomer;
+
 public class GraphicsView implements View
 {
 	private JFrame frame;
@@ -216,8 +221,45 @@ public class GraphicsView implements View
     //editorPanel.add(jSpawnTurnLabel);
     
 	
+	/**
+	 * returns whether or not a ZombieSpawnSettings object contains valid data
+	 * @param aZombSetting
+	 * @return whether or not the ZombieSpawnSettings object contains valid data
+	 */
+	public boolean verifyZombieSettings(ZombieSpawnSettings aZombSetting) {
+
+		if (aZombSetting != null && aZombSetting.getSpawnTurn() >= 0 && 
+				(aZombSetting.getName().toLowerCase().equals( "basic") ||
+				aZombSetting.getName().toLowerCase().equals( "boomer") ||
+				aZombSetting.getName().toLowerCase().equals(  "doomer") ||
+				aZombSetting.getName().toLowerCase().equals( "zoomer") )) {
+			return true;
+		}
+		return false;
+	}
 	
-	
+	/**
+	 * creates a ZombieSpawnSettings object using user input
+	 * @return the ZombieSpawnSettings object created
+	 */
+	public ZombieSpawnSettings getZombSettings() {
+		ZombieSpawnSettings zombSettings = null;
+		boolean firstLoop = true;
+		while (! verifyZombieSettings(zombSettings)){
+			if (!firstLoop) {
+				JOptionPane.showMessageDialog(null, "Invalid input! Zombie Type should be 'basic','boomer','doomer' or 'zoomer'. Spawn Turn should be greater than -1.");
+			}
+			String zombieType = JOptionPane.showInputDialog("Zombie type: "); //TODO: handle invalid inputs
+			try {
+				int spawnTurn = Integer.parseInt(JOptionPane.showInputDialog("Spawn turn: "));
+				zombSettings = new ZombieSpawnSettings(zombieType,spawnTurn);
+			} catch( NumberFormatException e) {
+				zombSettings = null;
+			}
+			firstLoop = false;
+		}
+		return zombSettings;
+	}
 	
 	public GraphicsView()
 	{
@@ -313,10 +355,8 @@ public class GraphicsView implements View
 					@Override
 					public void actionPerformed(ActionEvent e)
 					{
-						String zombieType = JOptionPane.showInputDialog("Zombie type: "); //TODO: handle invalid inputs
-						int spawnTurn = Integer.parseInt(JOptionPane.showInputDialog("Spawn turn: "));
-						
-						Controller.editorAddZombie(new ZombieSpawnSettings(zombieType, spawnTurn));	
+
+						Controller.editorAddZombie( getZombSettings() );	
 					}
 				}
 			);
@@ -338,10 +378,8 @@ public class GraphicsView implements View
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					String zombieType = JOptionPane.showInputDialog("Zombie type: "); //TODO: handle invalid inputs
-					int spawnTurn = Integer.parseInt(JOptionPane.showInputDialog("Spawn turn: "));
 					
-					Controller.editorEditZombie(new ZombieSpawnSettings(zombieType, spawnTurn));	
+					Controller.editorEditZombie( getZombSettings() );	
 				}
 			}
 		);
