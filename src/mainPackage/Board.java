@@ -494,12 +494,33 @@ public class Board {
 		return editorZombSettings;
 	}
 	
+	public LinkedList<ZombieSpawnSettings> sortZombSettings( LinkedList<ZombieSpawnSettings> unsorted ){
+		unsorted = new LinkedList<ZombieSpawnSettings>(unsorted); //make a copy
+		int size = unsorted.size();
+		LinkedList<ZombieSpawnSettings> sorted = new LinkedList<ZombieSpawnSettings>();
+		ZombieSpawnSettings selected = null;
+		
+		for(int i = 0; i < size; i++) {
+			for (ZombieSpawnSettings curr : unsorted) {
+				if (selected == null || selected.getSpawnTurn() > curr.getSpawnTurn() || (selected.getSpawnTurn() == curr.getSpawnTurn() && selected.getName().compareTo( curr.getName()  ) > 0 )) {
+					selected = curr;
+				}
+			}
+			sorted.add(selected);
+			unsorted.remove(selected);
+			selected = null;
+		}
+		
+		return sorted;
+	}
+	
 	/**
 	 * add a zombie to the editor list zombies to spawn
 	 * @param aZombSettings
 	 */
 	public void editorAddZombie( ZombieSpawnSettings aZombSettings  ) {
-		this.editorZombSettings.add(aZombSettings);
+		editorZombSettings.add(aZombSettings);
+		editorZombSettings = sortZombSettings(editorZombSettings);
 		for (View view : views) {
 			view.updateZombSettings(editorZombSettings);
 		}
@@ -513,6 +534,7 @@ public class Board {
 		if ( editorZombSettings.size() > editorSelectedZombie) {
 			editorZombSettings.get(editorSelectedZombie).setName(aZombSettings.getName());
 			editorZombSettings.get(editorSelectedZombie).setSpawnTurn(aZombSettings.getSpawnTurn());
+			editorZombSettings = sortZombSettings(editorZombSettings);
 			for (View view : views) {
 				view.updateZombSettings(editorZombSettings);
 			}
@@ -543,6 +565,7 @@ public class Board {
 	public void editorRemoveZombie() {
 		if ( editorZombSettings.size() > editorSelectedZombie) {
 			editorZombSettings.remove(editorSelectedZombie);
+			editorZombSettings = sortZombSettings(editorZombSettings);
 			for (View view : views) {
 				view.updateZombSettings(editorZombSettings);
 			}
