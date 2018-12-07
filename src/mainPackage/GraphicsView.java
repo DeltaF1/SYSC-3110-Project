@@ -120,7 +120,11 @@ public class GraphicsView implements View
 		}
 	}
 	
-	
+	/**
+	 * sort a linked list of ZombieSpawnSettings by spawnTurn then alphabetical order of name
+	 * @param unsorted list
+	 * @return sorted list
+	 */
 	public LinkedList<ZombieSpawnSettings> sortZombSettings( LinkedList<ZombieSpawnSettings> unsorted ){
 		unsorted = new LinkedList<ZombieSpawnSettings>(unsorted); //make a copy
 		int size = unsorted.size();
@@ -362,7 +366,6 @@ public class GraphicsView implements View
 		    zombieList.addListSelectionListener( new ListSelectionListener() {
 		        public void valueChanged(ListSelectionEvent listSelectionEvent) {
 		        	if(!zombieList.getValueIsAdjusting()) {
-		        		System.out.println( zombieList.getSelectedIndex());
 		        		int selectedIndex = zombieList.getSelectedIndex();
 		        		if (selectedIndex != -1) {
 		        			Controller.editorSelectZombie(  editorZombList.get( selectedIndex )  );
@@ -554,6 +557,9 @@ public class GraphicsView implements View
 		}
 	}
 	
+	/**
+	 * Draws the pane for the level editor
+	 */
 	public void drawLevelEditor() {
 		if(frame.getContentPane() != editorPanel) {
 			frame.setContentPane(editorPanel);
@@ -634,6 +640,9 @@ public class GraphicsView implements View
 		frame.pack();
 	}
 
+	/**
+	 * updates the list of zombies that are in the editor spawn list
+	 */
 	LinkedList< ZombieSpawnSettings > editorZombList;
 	@Override
 	public void updateZombSettings(TreeMap<Integer, LinkedList<String>> spawns) {
