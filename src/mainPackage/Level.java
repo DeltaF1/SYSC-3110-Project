@@ -139,6 +139,10 @@ public class Level {
 	    }
 	}
 	
+	/**
+	 * set the data the board contains to match an xml string
+	 * @param xml
+	 */
 	public void setXML(String xml) {
 		try {
 			SAXParser sax = SAXParserFactory.newInstance().newSAXParser();
@@ -177,6 +181,10 @@ public class Level {
 		
 	}
 	
+	/** 
+	 * saves the xml data representing this level to disk
+	 * @param fname the filename to save the data under
+	 */
 	public void writeToDisk(String fname) {
 		// TODO Auto-generated method stub
 		BufferedWriter out;

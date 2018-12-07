@@ -440,8 +440,6 @@ public class GraphicsView implements View
 							Controller.writeEditorFileToDisk( "levels//"+levelName + ".xml");
 						}
 					}
-						
-						
 				}
 			});
 
