@@ -296,6 +296,7 @@ public class Controller {
 		board.registerView(view);
 		
 		editorLevel =  new EditableLevel(view);
+		editorLevel.setXML("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><level><allWaves><wave><turn>1</turn><zombieTypes><zombieType>basic</zombieType><zombieType>boomer</zombieType><zombieType>doomer</zombieType></zombieTypes></wave><wave><turn>2</turn><zombieTypes><zombieType>zoomer</zombieType></zombieTypes></wave><wave><turn>3</turn><zombieTypes><zombieType>basic</zombieType></zombieTypes></wave></allWaves><currentWave>0</currentWave></level>\r\n");
 	}
 	
 	public static void main(String[] args) {
