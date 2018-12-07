@@ -243,6 +243,7 @@ public class Controller {
 	 */
 	public static void editorAddZombie(ZombieSpawnSettings aZombSettings) {
 		editorLevel.addSpawn(  aZombSettings.getSpawnTurn(), aZombSettings.getName() );
+		System.out.println(editorLevel.toXML());
 	}
 	
 	/**
