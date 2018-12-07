@@ -20,7 +20,7 @@ public class ZombieSpawnSettings {
 		spawnTurn = aTurn;
 	}
 	
-	ZombieSpawnSettings(String name, int spawnTurn){
+	public ZombieSpawnSettings(String name, int spawnTurn){
 		this.name = name;
 		this.spawnTurn = spawnTurn;
 	}
