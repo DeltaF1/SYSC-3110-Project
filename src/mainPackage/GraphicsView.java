@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -117,6 +118,27 @@ public class GraphicsView implements View
 		String getPlantType() {
 			return plantType;
 		}
+	}
+	
+	
+	public LinkedList<ZombieSpawnSettings> sortZombSettings( LinkedList<ZombieSpawnSettings> unsorted ){
+		unsorted = new LinkedList<ZombieSpawnSettings>(unsorted); //make a copy
+		int size = unsorted.size();
+		LinkedList<ZombieSpawnSettings> sorted = new LinkedList<ZombieSpawnSettings>();
+		ZombieSpawnSettings selected = null;
+		
+		for(int i = 0; i < size; i++) {
+			for (ZombieSpawnSettings curr : unsorted) {
+				if (selected == null || selected.getSpawnTurn() > curr.getSpawnTurn() || (selected.getSpawnTurn() == curr.getSpawnTurn() && selected.getName().compareTo( curr.getName()  ) > 0 )) {
+					selected = curr;
+				}
+			}
+			sorted.add(selected);
+			unsorted.remove(selected);
+			selected = null;
+		}
+		
+		return sorted;
 	}
 	
 	private class MenuPanel extends JPanel {
@@ -340,7 +362,13 @@ public class GraphicsView implements View
 		    zombieList.addListSelectionListener( new ListSelectionListener() {
 		        public void valueChanged(ListSelectionEvent listSelectionEvent) {
 		        	if(!zombieList.getValueIsAdjusting()) {
-		        		Controller.editorSelectZombie(zombieList.getSelectedIndex());
+		        		System.out.println( zombieList.getSelectedIndex());
+		        		int selectedIndex = zombieList.getSelectedIndex();
+		        		if (selectedIndex != -1) {
+		        			Controller.editorSelectZombie(  editorZombList.get( selectedIndex )  );
+		        		}else {
+		        			Controller.editorSelectZombie(  null );
+		        		}
 		        	}
 		        }
 		    });
@@ -355,8 +383,8 @@ public class GraphicsView implements View
 					@Override
 					public void actionPerformed(ActionEvent e)
 					{
-
-						Controller.editorAddZombie( getZombSettings() );	
+						ZombieSpawnSettings inpSettings = getZombSettings();
+						Controller.editorAddZombie( inpSettings );	
 					}
 				}
 			);
@@ -606,11 +634,35 @@ public class GraphicsView implements View
 		frame.pack();
 	}
 
+	LinkedList< ZombieSpawnSettings > editorZombList;
+	@Override
+	public void updateZombSettings(TreeMap<Integer, LinkedList<String>> spawns) {
+		editorZombList = new LinkedList<ZombieSpawnSettings>();
+		for (int wave : spawns.keySet()) {
+			for (String zombieType : spawns.get(wave)) {
+				editorZombList.add( new ZombieSpawnSettings( zombieType, wave  ) );
+			}			
+		}
+		editorZombList = sortZombSettings( editorZombList );
+		
+		zombieModel.removeAllElements();
+		for (ZombieSpawnSettings z : editorZombList) {
+			zombieModel.addElement(  z.getSpawnTurn() + " > " + z.getName() );
+		}
+		
+	}
+
+	/*@Override
 	public void updateZombSettings(LinkedList<ZombieSpawnSettings> zombSettings) {
+		// TODO Auto-generated method stub
+		
+	}*/
+	
+	/*public void updateZombSettings(LinkedList<ZombieSpawnSettings> zombSettings) {
 		zombieModel.removeAllElements();
 		for (ZombieSpawnSettings z: zombSettings) {
 			zombieModel.addElement(  z.getSpawnTurn() + " > " + z.getName() );
 		}
-	}
+	}*/
 	
 }

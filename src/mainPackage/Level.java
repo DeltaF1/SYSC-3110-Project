@@ -1,123 +1,42 @@
 package mainPackage;
+
+import java.util.LinkedList;
+import java.util.TreeMap;
+
 /**
  * a class that represents a level
  * Check GitHub for authors
  */
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 public class Level {
-	private class Wave {
-		public int turn;
-		public int numZombies;		
-		/**
-		 * creates a new wave
-		 * @param turn turn number for wave
-		 * @param numZombies number of zombies in this wave
-		 */
-		public Wave(int turn, int numZombies) {
-			this.turn = turn;
-			this.numZombies = numZombies;
+
+	TreeMap<Integer, LinkedList<String>> spawns = new TreeMap<Integer, LinkedList<String>>();
+	
+	public void addSpawn(int wave, String zombieType) {
+		LinkedList<String> zombieTypes = spawns.get(wave);
+		if (zombieTypes == null) {
+			zombieTypes = new LinkedList<String> ();
 		}
-	}
-	//the "turn" variable represents the turn relative to the start of the level
-	//levelStartTurnOffset is the actual Controller turn number this level started on
-	//This was need to make getWave work with multiple levels
-	//public int levelStartTurnOffset = 0;
-	
-	private LinkedList<Wave> waves;
-	private Wave current;
-	private Iterator<Wave> iterator;
-	private int totalZombies = 0;
-	
-	/**
-	 * creates a new Level with 0 waves
-	 */
-	public Level() {
-		waves = new LinkedList<Wave>();
+		zombieTypes.add(zombieType);
+		setSpawn(wave,zombieTypes);
 	}
 	
-	/**
-	 * adds a wave to the level
-	 * @param turn the turn number
-	 * @param numZombies the number of zombies on this turn
-	 */
-	public void addWave(int turn, int numZombies) {
-		waves.add(new Wave(turn, numZombies));
-		totalZombies += numZombies;
+	public void setSpawn(int wave, LinkedList<String> zombieTypes) {
+		spawns.put( wave, zombieTypes );
 	}
 	
-	/**
-	 * gets the number of zombies that are spawned on a certain turn
-	 * @param turn specified turn
-	 * @return an integer number of zombies
-	 */
-	public int getWave(int turn) {
-		if (iterator == null) {//initialize iterator if starting level
-			iterator = waves.iterator();
-			//levelStartTurnOffset = turn;
-		}
-		
-		if (current == null && iterator.hasNext()) {//start wave 1 if starting game
-			current = iterator.next(); 
-		}
-		
-		if (current != null) {
-			if (turn == current.turn ) { //+ levelStartTurnOffsets
-				int numZombies = current.numZombies;
-				current = null;
-				return numZombies;
-			} else {
-				// It's not time to spawn more zombies
-				return 0;
+	public void removeSpawn(int wave, String zombieType) {
+		LinkedList<String> zombieTypes = spawns.get(wave);
+		for (int i = 0 ; i < zombieTypes.size(); i++) {
+			if( zombieTypes.get(i) == zombieType  ) {
+				zombieTypes.remove(i);
 			}
-		} else {
-			return -1;
 		}
+		setSpawn(wave,zombieTypes);
 	}
 	
-	/**
-	 * get the total zombies that need to be spawned this round;
-	 */
-	public int getTotalZombies() {
-		return totalZombies;
+	public LinkedList<String> getSpawn(int wave) {
+		return spawns.get(wave);
 	}
 	
-	/**
-	 * converts this Level to XML
-	 * @return an XML string representing this Level
-	 */
-	public String toXML() {
-		try {
-			Document xml  = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-			Element rootElm = xml.createElement("level");
-			Element allWavesElm = xml.createElement("allWaves");
-			Element currentWaveElm = xml.createElement("currentWave");
-			Element totalZombieElm = xml.createElement("totalZombies");
-			for (Wave wave: waves) {
-				Element waveElm = xml.createElement("wave");
-				Element turnElm = xml.createElement("turn");
-				Element numZombiesElm = xml.createElement("numZombies");
-				turnElm.appendChild(xml.createTextNode(String.format("%d", wave.turn)));
-				numZombiesElm.appendChild(xml.createTextNode(String.format("%d", wave.numZombies)));
-				waveElm.appendChild(turnElm);
-				waveElm.appendChild(numZombiesElm);
-			}
-			currentWaveElm.appendChild(xml.createTextNode(String.format("%d", current)));
-			totalZombieElm.appendChild(xml.createTextNode(String.format("%d", totalZombies)));
-			rootElm.appendChild(allWavesElm);
-			rootElm.appendChild(currentWaveElm);
-			rootElm.appendChild(totalZombieElm);
-			xml.appendChild(rootElm);
-			return StringUtils.XMLToString(xml);
-		} catch (Exception e) {
-			e.printStackTrace();
-	    	return null;
-	    }
-	}
 }

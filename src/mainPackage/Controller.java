@@ -235,27 +235,29 @@ public class Controller {
 
 	}
 	
+	
+	static EditableLevel editorLevel;
 	/**
 	 * tells the model to add a zombie with the ZombieSpawnSettings aZombieSettings
 	 * @param aZombSettings
 	 */
 	public static void editorAddZombie(ZombieSpawnSettings aZombSettings) {
-		board.editorAddZombie(aZombSettings);
+		editorLevel.addSpawn(  aZombSettings.getSpawnTurn(), aZombSettings.getName() );
 	}
 	
 	/**
 	 * tells the model to select the zombie at the given index
 	 * @param index
 	 */
-	public static void editorSelectZombie(int index) {
-		board.editorSelectZombie(index);
+	public static void editorSelectZombie(ZombieSpawnSettings sel) {
+		editorLevel.setSelected(sel);
 	}
 	
 	/**
 	 * tells the model to remove the zombie at the currently selected index
 	 */
 	public static void editorRemoveZombie() {
-		board.editorRemoveZombie();
+		editorLevel.removeSpawn();
 	}
 	
 	/**
@@ -263,7 +265,9 @@ public class Controller {
 	 * @param aZombSettings
 	 */
 	public static void editorEditZombie(ZombieSpawnSettings aZombSettings) {
-		board.editorEditZombie(aZombSettings);
+		editorLevel.removeSpawn();
+		editorLevel.addSpawn(aZombSettings.getSpawnTurn(), aZombSettings.getName());
+		//board.editorEditZombie(aZombSettings);
 	}
 	
 	/**
@@ -289,6 +293,8 @@ public class Controller {
 		view = aView;
 		view.drawMenu();
 		board.registerView(view);
+		
+		editorLevel =  new EditableLevel(view);
 	}
 	
 	public static void main(String[] args) {

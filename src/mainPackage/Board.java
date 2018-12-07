@@ -494,43 +494,23 @@ public class Board {
 		return editorZombSettings;
 	}
 	
-	public LinkedList<ZombieSpawnSettings> sortZombSettings( LinkedList<ZombieSpawnSettings> unsorted ){
-		unsorted = new LinkedList<ZombieSpawnSettings>(unsorted); //make a copy
-		int size = unsorted.size();
-		LinkedList<ZombieSpawnSettings> sorted = new LinkedList<ZombieSpawnSettings>();
-		ZombieSpawnSettings selected = null;
-		
-		for(int i = 0; i < size; i++) {
-			for (ZombieSpawnSettings curr : unsorted) {
-				if (selected == null || selected.getSpawnTurn() > curr.getSpawnTurn() || (selected.getSpawnTurn() == curr.getSpawnTurn() && selected.getName().compareTo( curr.getName()  ) > 0 )) {
-					selected = curr;
-				}
-			}
-			sorted.add(selected);
-			unsorted.remove(selected);
-			selected = null;
-		}
-		
-		return sorted;
-	}
-	
 	/**
 	 * add a zombie to the editor list zombies to spawn
 	 * @param aZombSettings
 	 */
-	public void editorAddZombie( ZombieSpawnSettings aZombSettings  ) {
+	/*public void editorAddZombie( ZombieSpawnSettings aZombSettings  ) {
 		editorZombSettings.add(aZombSettings);
 		editorZombSettings = sortZombSettings(editorZombSettings);
 		for (View view : views) {
 			view.updateZombSettings(editorZombSettings);
 		}
-	}
+	}*/
 	
 	/**
 	 * modify the settings for a zombie in the editor list
 	 * @param aZombSettings the new ZombieSpawnSettings for the selected zombie
 	 */
-	public void editorEditZombie(ZombieSpawnSettings aZombSettings) {
+	/*public void editorEditZombie(ZombieSpawnSettings aZombSettings) {
 		if ( editorZombSettings.size() > editorSelectedZombie) {
 			editorZombSettings.get(editorSelectedZombie).setName(aZombSettings.getName());
 			editorZombSettings.get(editorSelectedZombie).setSpawnTurn(aZombSettings.getSpawnTurn());
@@ -541,28 +521,28 @@ public class Board {
 		}
 	}
 	private int editorSelectedZombie = -1;
-	
+	*/
 	/**
 	 * return the zombie selected in the editor
 	 * @return int the index of the selected zombie
 	 */
-	public int getEditorSelectedZombie() {
+	/*public int getEditorSelectedZombie() {
 		return editorSelectedZombie;
-	}
+	}*/
 	
 	/**
 	 * set the zombie that is selected in the editor
 	 * 
 	 * @param index the index of the zombie to be selected
 	 */
-	public void editorSelectZombie(int index) {
+	/*public void editorSelectZombie(int index) {
 		editorSelectedZombie = index;
-	}
+	}*/
 	
 	/**
 	 * remove the selected zombie in the editor
 	 */
-	public void editorRemoveZombie() {
+	/*public void editorRemoveZombie() {
 		if ( editorZombSettings.size() > editorSelectedZombie) {
 			editorZombSettings.remove(editorSelectedZombie);
 			editorZombSettings = sortZombSettings(editorZombSettings);
@@ -571,6 +551,6 @@ public class Board {
 			}
 			editorSelectedZombie = -1;
 		}
-	}
+	}*/
 	
 }

@@ -1,6 +1,7 @@
 package mainPackage;
 
 import java.util.LinkedList;
+import java.util.TreeMap;
 
 public interface View {
 	
@@ -18,6 +19,7 @@ public interface View {
 	
 	public void updateSun(int sun);
 
-	public void updateZombSettings(LinkedList<ZombieSpawnSettings> zombSettings);
+	public void updateZombSettings(TreeMap<Integer, LinkedList<String>> spawns);
+	//public void updateZombSettings(LinkedList<ZombieSpawnSettings> zombSettings);
 	
 }
