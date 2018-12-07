@@ -72,3 +72,21 @@ Clicking on a tile retrieves information about the entity at the specified locat
 
 Pressing the `undo` button turns back time to the beginning of the last turn. Pressing the `redo` button will bring you forwards in time, essentially undoing an undo.    
 **warning:** Real Gamers do not ever use this feature because it is overpowered and game breaking. If you use this feature you are not a real Gamer
+
+## **Level Editor**
+
+(don't even bother reading this one because we're doing everything kind of last minute and I'm too lazy to put in jokes)
+
+Pressing the `Open Level Editor` button on the main menu opens the level editor. Inside the level editor you can create and save your own levels. Below is an explanation of what each button does
+
+#### add zombie
+Clicking this button will add a zombie to the level. You must specify a valid zombie name ("basic", "boomer", "zoomer" or "doomer") and the turn number that the zombie will spawn on.
+
+#### remove zombie
+Clicking this button will remove the currently selected zombie from the editor
+
+#### edit zombie
+Clicking this button allows you to edit the currently selected zombie
+
+#### leave editor
+Clicking this button brings you back to the home screen

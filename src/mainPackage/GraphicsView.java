@@ -238,8 +238,10 @@ public class GraphicsView implements View
 	JButton addZombie;// = new JButton("add zombie");
 	JButton removeZombie; // = new JButton("remove zombie");
 	JButton editZombie;
+	JButton saveLevel;
 	JButton leaveEditor;
-
+	
+	
     ///BUDDY INFO LABELS
     JLabel jTypeLabel;// = new JLabel("Zombie Type:");
     //editorPanel.add(jTypeLabel);
@@ -350,6 +352,8 @@ public class GraphicsView implements View
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
+					Controller.resetEditorLevel();
+					zombieModel.removeAllElements();
 					drawLevelEditor();
 					refreshFrame();
 					//frame.setSize(new Dimension(960,650)); //pretty weird but if we don't resize then the size of the frame is all messed up... calling frame.pack() is supposed to fix this but for some reason it doesn't
@@ -414,6 +418,35 @@ public class GraphicsView implements View
 				}
 			}
 		);
+			
+			saveLevel = new JButton("save level");
+			saveLevel.addActionListener( new ActionListener()
+			{
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					String levelName = "default";
+					boolean notSaved = true;
+				
+					while ( notSaved || levelName.equals("default") ) {
+						
+						levelName = JOptionPane.showInputDialog("level name: ");
+						
+						if (levelName == null || levelName == "" || levelName == "default" || levelName == "default.xml") {
+							JOptionPane.showMessageDialog(null, "you must enter a level name that is not empty or 'default'!");
+						}else {
+							notSaved = false;
+							if (levelName.endsWith(".xml")){
+								levelName = levelName.substring(0, levelName.length() - 4);
+							}
+							Controller.writeEditorFileToDisk( "levels//"+levelName + ".xml");
+						}
+					}
+				}
+			});
+
+			
+			
 			leaveEditor = new JButton("leave editor");
 			leaveEditor.addActionListener( new ActionListener()
 			{
@@ -429,7 +462,7 @@ public class GraphicsView implements View
 			editorPanel.add(removeZombie);
 			editorPanel.add(editZombie);
 			editorPanel.add(leaveEditor);
-
+			editorPanel.add(saveLevel);
 			
 		// Board panel setup
 			boardPanel = new JPanel();
@@ -656,7 +689,7 @@ public class GraphicsView implements View
 		
 		zombieModel.removeAllElements();
 		for (ZombieSpawnSettings z : editorZombList) {
-			zombieModel.addElement(  z.getSpawnTurn() + " → " + z.getName() );
+			zombieModel.addElement(  z.getSpawnTurn() + " -> " + z.getName() );
 		}
 		
 	}
