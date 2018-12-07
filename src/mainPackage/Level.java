@@ -1,5 +1,6 @@
 package mainPackage;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -178,15 +179,11 @@ public class Level {
 	
 	public void writeToDisk(String fname) {
 		// TODO Auto-generated method stub
+		BufferedWriter out;
 		try {
-			//PrintWriter out = new PrintWriter(fname, "UTF-8");
-			File file = new File(fname);
-			FileWriter out = new FileWriter(file);
+			out = new BufferedWriter(new FileWriter( fname));
 			out.write(toXML());
 			out.close();
-		} catch (FileNotFoundException | UnsupportedEncodingException e) {
-			// TODO alert view of failed write
-			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
