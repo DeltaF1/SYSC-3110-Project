@@ -47,12 +47,9 @@ public class Level {
 	 */
 	public void removeSpawn(int wave, String zombieType) {
 		LinkedList<String> zombieTypes = spawns.get(wave);
-		for (int i = 0 ; i < zombieTypes.size(); i++) {
-			if( zombieTypes.get(i) == zombieType  ) {
-				zombieTypes.remove(i);
-			}
+		if (zombieTypes != null) {
+			zombieTypes.remove(zombieType);
 		}
-		setSpawn(wave,zombieTypes);
 	}
 	
 	public int getTotalZombies() {
