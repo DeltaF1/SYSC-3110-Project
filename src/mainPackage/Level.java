@@ -1,13 +1,9 @@
 package mainPackage;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
@@ -22,10 +18,6 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import mainPackage.plants.Plant;
-import mainPackage.zombies.Zombie;
-
 import org.xml.sax.Attributes;
 
 /**
@@ -43,12 +35,14 @@ public class Level {
 	 * @param zombieType the type of zombie
 	 */
 	public void addSpawn(int wave, String zombieType) {
-		LinkedList<String> zombieTypes = spawns.get(wave);
-		if (zombieTypes == null) {
-			zombieTypes = new LinkedList<String> ();
+		if (wave >= 0) {
+			LinkedList<String> zombieTypes = spawns.get(wave);
+			if (zombieTypes == null) {
+				zombieTypes = new LinkedList<String> ();
+			}
+			zombieTypes.add(zombieType);
+			setSpawn(wave,zombieTypes);
 		}
-		zombieTypes.add(zombieType);
-		setSpawn(wave,zombieTypes);
 	}
 	
 	/**
