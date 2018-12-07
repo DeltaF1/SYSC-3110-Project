@@ -60,6 +60,8 @@ public class EditableLevel extends Level{
 			view.updateZombSettings( spawns );
 		}
 	}
+
+
 	
 
 }
