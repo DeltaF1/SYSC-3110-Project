@@ -302,4 +302,10 @@ public class Controller {
 	public static void main(String[] args) {
 		controllerInit(new Board(),new GraphicsView());
 	}
+
+	public static void writeEditorFileToDisk(String fname) {
+		// TODO Auto-generated method stub
+		
+		editorLevel.writeToDisk(fname);
+	}
 }

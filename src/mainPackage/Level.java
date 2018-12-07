@@ -1,7 +1,12 @@
 package mainPackage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
@@ -166,6 +171,25 @@ public class Level {
 
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			//e.printStackTrace();
+		}
+		
+		
+	}
+	
+	public void writeToDisk(String fname) {
+		// TODO Auto-generated method stub
+		try {
+			//PrintWriter out = new PrintWriter(fname, "UTF-8");
+			File file = new File(fname);
+			FileWriter out = new FileWriter(file);
+			out.write(toXML());
+			out.close();
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			// TODO alert view of failed write
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		
