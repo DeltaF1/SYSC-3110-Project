@@ -656,7 +656,7 @@ public class GraphicsView implements View
 		
 		zombieModel.removeAllElements();
 		for (ZombieSpawnSettings z : editorZombList) {
-			zombieModel.addElement(  z.getSpawnTurn() + " → " + z.getName() );
+			zombieModel.addElement(  z.getSpawnTurn() + " -> " + z.getName() );
 		}
 		
 	}
