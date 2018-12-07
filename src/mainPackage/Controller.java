@@ -271,6 +271,16 @@ public class Controller {
 		//board.editorEditZombie(aZombSettings);
 	}
 	
+	public static void writeEditorFileToDisk(String fname) {
+		// TODO Auto-generated method stub
+		
+		editorLevel.writeToDisk(fname);
+	}
+	
+	public static void resetEditorLevel() {
+		editorLevel = new EditableLevel(view);
+	}
+	
 	/**
 	 * The initialization for when the controller's main is run - also used in testing to be able to set a desired board and view
 	 * @param aBoard
@@ -296,16 +306,12 @@ public class Controller {
 		board.registerView(view);
 		
 		editorLevel =  new EditableLevel(view);
-		editorLevel.setXML("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><level><allWaves><wave><turn>1</turn><zombieTypes><zombieType>basic</zombieType><zombieType>boomer</zombieType><zombieType>doomer</zombieType></zombieTypes></wave><wave><turn>2</turn><zombieTypes><zombieType>zoomer</zombieType></zombieTypes></wave><wave><turn>3</turn><zombieTypes><zombieType>basic</zombieType></zombieTypes></wave></allWaves><currentWave>0</currentWave></level>\r\n");
+		//editorLevel.setXML("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><level><allWaves><wave><turn>1</turn><zombieTypes><zombieType>basic</zombieType><zombieType>boomer</zombieType><zombieType>doomer</zombieType></zombieTypes></wave><wave><turn>2</turn><zombieTypes><zombieType>zoomer</zombieType></zombieTypes></wave><wave><turn>3</turn><zombieTypes><zombieType>basic</zombieType></zombieTypes></wave></allWaves><currentWave>0</currentWave></level>\r\n");
 	}
 	
 	public static void main(String[] args) {
 		controllerInit(new Board(),new GraphicsView());
 	}
 
-	public static void writeEditorFileToDisk(String fname) {
-		// TODO Auto-generated method stub
-		
-		editorLevel.writeToDisk(fname);
-	}
+
 }

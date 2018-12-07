@@ -352,6 +352,8 @@ public class GraphicsView implements View
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
+					Controller.resetEditorLevel();
+					zombieModel.removeAllElements();
 					drawLevelEditor();
 					refreshFrame();
 					//frame.setSize(new Dimension(960,650)); //pretty weird but if we don't resize then the size of the frame is all messed up... calling frame.pack() is supposed to fix this but for some reason it doesn't
