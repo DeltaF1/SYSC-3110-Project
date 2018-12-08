@@ -10,6 +10,7 @@ Ehren:
 Trevor:
 - Added numerous test cases
 - Created Level and EditableLevel
+- Created level editor GUI
 - Added sequence diagrams
 
 Aldous:
