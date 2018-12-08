@@ -90,3 +90,9 @@ Clicking this button allows you to edit the currently selected zombie
 
 #### leave editor
 Clicking this button brings you back to the home screen
+
+## **Saving and Loading**
+
+To save a game, simply click the `file` button on the menu up above the game board and click `save`. A menu will come up and you can choose to save your game to any folder on your computer 
+
+On the main menu you can click the `Load Game` button to load a saved game from anywhere on your computer. You can also load a game using the same file menu that you use to save the game. 

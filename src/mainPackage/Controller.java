@@ -40,6 +40,10 @@ public class Controller {
 		view.drawGame();
 	}
 	
+	/**
+	 * loads a saved game
+	 * @param savePath the path to load the saved game from
+	 */
 	public static void loadGame(String savePath) {
 		try {
 			String xml = new String(Files.readAllBytes(Paths.get(savePath)));
