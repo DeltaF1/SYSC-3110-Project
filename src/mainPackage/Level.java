@@ -82,15 +82,6 @@ public class Level {
 	public LinkedList<String> getSpawn(int wave) {
 		return spawns.get(wave);
 	}
-	
-	private int current = 0;
-	public void setCurrent(int num) {
-		current = num;
-	}
-	
-	public int getCurrent() {
-		return current;
-	}
 
 	/**
 	 * converts this Level to XML
@@ -117,7 +108,7 @@ public class Level {
 				waveElm.appendChild(zombTypesElm);
 				allWavesElm.appendChild(waveElm);
 			}
-			currentWaveElm.appendChild(xml.createTextNode(String.format("%d", current)));
+			//currentWaveElm.appendChild(xml.createTextNode(String.format("%d", current)));
 			//totalZombieElm.appendChild(xml.createTextNode(String.format("%d", getTotalZombies())));
 			rootElm.appendChild(allWavesElm);
 			rootElm.appendChild(currentWaveElm);
@@ -131,7 +122,7 @@ public class Level {
 	}
 	
 	/**
-	 * set the data the board contains to match an xml string
+	 * set the data the level contains to match an xml string
 	 * @param xml
 	 */
 	public void setXML(String xml) {
@@ -161,17 +152,15 @@ public class Level {
 					case "zombieType":
 						addSpawn(currentTurn, data);
 						break;
-					case "currentWave":
-						setCurrent(Integer.valueOf(data));
+					//case "currentWave":
+						//setCurrent(Integer.valueOf(data));
 					}
 				}
 			});
 
 		} catch (ParserConfigurationException | SAXException | IOException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
-		
-		
 	}
 	
 	/** 
@@ -186,11 +175,8 @@ public class Level {
 			out.write(toXML());
 			out.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 	}
 
 	public int lastWave()

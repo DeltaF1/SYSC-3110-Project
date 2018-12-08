@@ -65,8 +65,6 @@ public class EditableLevel extends Level{
 	}
 
 
-
-
 	/** 
 	 * saves the xml data representing this level to disk
 	 * @param fname the filename to save the data under
