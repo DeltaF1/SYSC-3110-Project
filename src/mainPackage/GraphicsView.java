@@ -22,11 +22,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import mainPackage.zombies.BasicZombie;
-import mainPackage.zombies.Boomer;
-import mainPackage.zombies.Doomer;
-import mainPackage.zombies.Zoomer;
-
 public class GraphicsView implements View
 {
 	private JFrame frame;
@@ -177,6 +172,11 @@ public class GraphicsView implements View
 		return openLevelEditor;
 	}
 	
+	JButton loadSave;
+	public JButton getLoadSaveButton() {
+		return loadSave;
+	}
+	
 	//JButton addZombie;
 	//JButton removeZombie;
 	
@@ -304,11 +304,7 @@ public class GraphicsView implements View
 			save.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JButton openButton = new JButton();
-					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.setCurrentDirectory(new File("."));
-					fileChooser.showOpenDialog(openButton); //choose the file
-					File selectedFile = fileChooser.getSelectedFile();
+					File selectedFile = selectFile();
 					if (selectedFile != null) { //if user chose a file instead of hitting "cancel"
 						Controller.saveGame(selectedFile.getAbsolutePath());
 					} else {
@@ -316,16 +312,23 @@ public class GraphicsView implements View
 					}
 				}
 			});
-			
-			JMenuItem load = new JMenuItem("Load");
-			load.addActionListener(new ActionListener() {
+			 
+			ActionListener loadActionListener = new ActionListener() { //assigned to variable so I can use it for 2 buttons
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("unimplemented");
+					File selectedFile = selectFile();
+					if (selectedFile != null) {
+						Controller.loadGame(selectedFile.getAbsolutePath());
+					} else {
+						announce("Game load canceled");
+					}
 				}
-			});
+			};
+			JMenuItem load = new JMenuItem("Load");
+			load.addActionListener(loadActionListener);
 			
 			fileMenu.add(save);
+			fileMenu.add(load);
 	
 			menuBar.add(fileMenu);
 			
@@ -335,7 +338,7 @@ public class GraphicsView implements View
 			menuPanel = new MenuPanel();
 			startGame = new JButton("Start Game");
 			openLevelEditor = new JButton("Open Level Editor");
-			
+			loadSave = new JButton("Load game");
 			
 			startGame.addActionListener(new ActionListener()
 			{
@@ -364,8 +367,11 @@ public class GraphicsView implements View
 				}
 			});
 			
+			loadSave.addActionListener(loadActionListener);
+			
 			menuPanel.add(startGame);
 			menuPanel.add(openLevelEditor);
+			menuPanel.add(loadSave);
 		
 		//level editor setup
 		    zombieModel = new DefaultListModel<Object>();
@@ -743,6 +749,14 @@ public class GraphicsView implements View
 	public void sendFailedLevelWriteAlert(String errMsg) {
 
 		JOptionPane.showMessageDialog(null,errMsg);
+	}
+	
+	private File selectFile() {
+		JButton openButton = new JButton();
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File("."));
+		fileChooser.showOpenDialog(openButton); //choose the file
+		return fileChooser.getSelectedFile();
 	}
 
 	/*@Override

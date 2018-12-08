@@ -54,6 +54,16 @@ public class Controller {
 		view.drawGame();
 	}
 	
+	public static void loadGame(String savePath) {
+		try {
+			String xml = new String(Files.readAllBytes(Paths.get(savePath)));
+			board.setXML(xml);
+			view.drawGame();
+		} catch (Exception e) {
+			view.announce("Couldn't load save!");
+		}
+	}
+	
 	/**
 	 * places a plant
 	 * @param args user specified arguments (plant name and coordinates)
