@@ -161,6 +161,8 @@ public class Level {
 					case "zombieType":
 						addSpawn(currentTurn, data);
 						break;
+					case "currentWave":
+						setCurrent(Integer.valueOf(data));
 					}
 				}
 			});
