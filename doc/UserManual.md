@@ -2,7 +2,7 @@
 
 **Core features**
 ------
-When you start the game you will be greeted with a splash screen. Press the `Start Game` button to start the game.  
+When you start the game you will be greeted with a splash screen. Press the `Start Game` button to select a level. Once you've browsed our large variety of levels you can click your favorite one to start the game.  
 
 Once the game begins you will have 150 sun points. If you don't plant a sunflower using these points you will almost certainly lose.  
 To plant a sunflower simply click the sunflower picture at the bottom of the screen, and then click on anywhere in the grid to place it.
@@ -90,6 +90,9 @@ Clicking this button allows you to edit the currently selected zombie
 
 #### leave editor
 Clicking this button brings you back to the home screen
+
+#### save level
+Clicking this button will prompt you to name the level. Once you name the level it will be saved. To play your new level simply go to the home screen, press `Start Game` and click on your level.
 
 ## **Saving and Loading**
 
