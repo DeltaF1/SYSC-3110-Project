@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.TreeMap;
 
 import javax.swing.*;
 
@@ -273,6 +275,27 @@ public class ASCIIView implements View {
 	public void updateSun(int sun) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	public void updateZombSettings(LinkedList<ZombieSpawnSettings> zombSettings)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateZombSettings(TreeMap<Integer, LinkedList<String>> spawns)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ListModel getLevelListModel()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

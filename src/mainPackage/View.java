@@ -3,6 +3,8 @@ package mainPackage;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
+import javax.swing.ListModel;
+
 public interface View {
 	
 	public void drawGame();
@@ -21,5 +23,4 @@ public interface View {
 
 	public void updateZombSettings(TreeMap<Integer, LinkedList<String>> spawns);
 	//public void updateZombSettings(LinkedList<ZombieSpawnSettings> zombSettings);
-	
 }

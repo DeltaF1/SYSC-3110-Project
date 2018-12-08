@@ -31,6 +31,8 @@ public class GraphicsView implements View
 {
 	private JFrame frame;
 	private JPanel menuPanel;
+	private JPanel levelSelectPanel;
+	private JList levelList;
 	
 	private JPanel boardPanel;
 	
@@ -247,6 +249,7 @@ public class GraphicsView implements View
     //editorPanel.add(jTypeLabel);
     JLabel jSpawnTurnLabel;// = new JLabel("Spawn turn:");
     //editorPanel.add(jSpawnTurnLabel);
+
     
 	
 	/**
@@ -340,8 +343,9 @@ public class GraphicsView implements View
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					Controller.startGame();
-					refreshFrame();
+					Controller.refreshLevels();
+					drawLevelSelect();
+				
 					//frame.setSize(new Dimension(960,650)); //pretty weird but if we don't resize then the size of the frame is all messed up... calling frame.pack() is supposed to fix this but for some reason it doesn't
 				}
 			});
@@ -561,12 +565,52 @@ public class GraphicsView implements View
 			endPanel.add(statusText);
 			endPanel.add(mainMenuButton);
 			
+		// Level select panel setup
+			levelSelectPanel = new JPanel();
+			
+			levelList = new JList();
+			levelList.setModel(Controller.levelListModel);
+			
+			JButton refreshButton = new JButton("Refresh directory");
+			refreshButton.addActionListener(new ActionListener()
+			{
+				
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					Controller.refreshLevels();
+					refreshFrame();
+				}
+			});
+			
+			ListSelectionListener levelListListener = new ListSelectionListener()
+			{
+				@Override
+				public void valueChanged(ListSelectionEvent e)
+				{
+					if (!e.getValueIsAdjusting()) {
+						Controller.startGame((String) levelList.getSelectedValue());
+					}
+				}
+			};
+			levelList.addListSelectionListener(levelListListener);
+			
+			levelSelectPanel.add(levelList);
+			levelSelectPanel.add(refreshButton);
+			
 		frame.setContentPane(menuPanel);
 		frame.setMinimumSize(new Dimension(300, 300));
 		frame.pack();
 		frame.setVisible(true);
 	}
 	
+	
+	protected void drawLevelSelect()
+	{
+		frame.setContentPane(levelSelectPanel);
+		refreshFrame();
+	}
+
 	/**
 	 * Handles click events from the board. If a plant is selected to plant, attempt to plant it via the controller
 	 */
@@ -587,6 +631,7 @@ public class GraphicsView implements View
 	{
 		if (frame.getContentPane() != boardPanel) {
 			frame.setContentPane(boardPanel);
+			refreshFrame();
 		}
 	}
 	

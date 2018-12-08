@@ -4,8 +4,12 @@ package mainPackage;
  * Check GitHub for authors
  */
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 import mainPackage.plants.Plant;
 import mainPackage.plants.Sunflower;
@@ -18,12 +22,12 @@ public class Controller {
 	private static Board board;
 	private static View view;
 	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
-	
+	public static DefaultListModel levelListModel;
 	/*
 	 * TODO: call loadLevel first to go to PRELEVEL state and show the player which zombies will be in the level
 	 * stats the game
 	 */
-	public static void startGame() {
+	public static void startGame(String level) {
 		setUpGame(board);
 		view.announce("Level start!");
 		view.drawGame();
@@ -235,7 +239,6 @@ public class Controller {
 
 	}
 	
-	
 	static EditableLevel editorLevel;
 	/**
 	 * tells the model to add a zombie with the ZombieSpawnSettings aZombieSettings
@@ -285,6 +288,16 @@ public class Controller {
 		return editorLevel;
 	}
 	
+	public static void refreshLevels() {
+		levelListModel.clear();
+		File levelDir = new File("levels");
+		for (File level : levelDir.listFiles()) {
+			if (level.isFile()) {
+				levelListModel.addElement(level.getPath());
+			}
+		}
+	}
+	
 	/**
 	 * The initialization for when the controller's main is run - also used in testing to be able to set a desired board and view
 	 * @param aBoard
@@ -314,6 +327,8 @@ public class Controller {
 	}
 	
 	public static void main(String[] args) {
+		levelListModel = new DefaultListModel<String>();
+		
 		controllerInit(new Board(),new GraphicsView());
 	}
 
