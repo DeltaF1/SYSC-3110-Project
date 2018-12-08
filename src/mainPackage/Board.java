@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -40,6 +42,7 @@ public class Board {
 	private LinkedList<View> views;
 	private int turn;
 	private int numZombies;
+	private String levelName;
 	private Level level;
 	public Stack<String> boardStates;
 	private Stack<String> undoneBoardStates;
@@ -232,6 +235,7 @@ public class Board {
 			Element allTilesElm = xml.createElement("tiles");
 			Element sunElm = xml.createElement("sunPoints");
 			Element turnElm = xml.createElement("turn");
+			Element levelElm = xml.createElement("level");
 			Element widthElm = xml.createElement("WIDTH");
 			Element heightElm = xml.createElement("HEIGHT");
 			for (Entity[] row: entities) {
@@ -263,9 +267,11 @@ public class Board {
 			widthElm.appendChild(xml.createTextNode(String.format("%d", WIDTH)));
 			heightElm.appendChild(xml.createTextNode(String.format("%d", HEIGHT)));
 			turnElm.appendChild(xml.createTextNode(String.format("%d", turn)));
+			levelElm.appendChild(xml.createTextNode(levelName));
 			rootElm.appendChild(allTilesElm);
 			rootElm.appendChild(sunElm);
 			rootElm.appendChild(turnElm);
+			rootElm.appendChild(levelElm);
 			rootElm.appendChild(widthElm);
 			rootElm.appendChild(heightElm);
 			xml.appendChild(rootElm);
@@ -339,6 +345,9 @@ public class Board {
 						break;
 					case "turn":
 						turn = Integer.valueOf(data);
+						break;
+					case "level":
+						setLevel(data);
 						break;
 					}
 				}
@@ -468,7 +477,25 @@ public class Board {
 		return turn;
 	}
 	
-	public void setLevel(Level level) {
-		this.level = level;
+	private static Level loadLevel(String filename) {
+		try
+		{
+			System.out.println("loading file: "+filename);
+			String xml = new String(Files.readAllBytes(Paths.get(filename)));
+			Level level = new Level();
+			level.setXML(xml);
+			return level;
+			
+		} catch (IOException e)
+		{
+			return null;
+		}
+	}
+	
+	public void setLevel(String filename) {
+		if (!filename.equals(levelName)) {
+			levelName = filename;
+			level = loadLevel(filename);
+		}
 	}
 }
