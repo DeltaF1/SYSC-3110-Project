@@ -7,6 +7,7 @@ Ehren:
 - Added save state loading/saving
 - Added sequence diagrams
 - Updated manual
+- Completed level testing
 
 Trevor:
 - Added numerous test cases
