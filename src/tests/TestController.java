@@ -204,22 +204,24 @@ public class TestController {
 		assertEquals(4,board.getBoardStates().size());
 		assertFalse("The zombie should have advanced forward" , board.getEntity(Board.WIDTH-2, zombieY.intValue()) == null);//should make work with different move speeds
 		board.undo();
-		assertEquals(board.getBoardStates().size(),3);
-		assertEquals(board.getUndoneBoardStates().size(),1);
+		assertEquals(3,board.getBoardStates().size());
+		assertEquals(1,board.getUndoneBoardStates().size());
 		assertTrue("The zombie didn't get moved to it's previous position", board.getEntity(Board.WIDTH-1, zombieY) != null);
 		board.undo();
-		assertEquals(board.getUndoneBoardStates().size(),2);
-		assertEquals(board.getBoardStates().size(),2);
+		assertEquals(2,board.getUndoneBoardStates().size());
+		assertEquals(2,board.getBoardStates().size());
 		assertEquals("The zombie should now have been undone from existance" , board.getEntity(Board.WIDTH-1, zombieY), null);
+		board.undo();
 		assertEquals("The plant should now have been undone from existance" , board.getEntity(0, 0), null);
 		board.redo();
-		assertEquals(board.getUndoneBoardStates().size(),1);
-		assertEquals(board.getBoardStates().size(),3);
+		assertEquals(2,board.getUndoneBoardStates().size());
+		assertEquals(2,board.getBoardStates().size());
+		board.redo();
 		assertFalse("The zombie should be placed back at its original position" , board.getEntity(Board.WIDTH-1, zombieY) == null);
 		assertFalse("The plant should be placed back at its original positon" , board.getEntity(0, 0)== null);
 		board.redo();
-		assertEquals(board.getUndoneBoardStates().size(),0);
-		assertEquals(board.getBoardStates().size(),4);
+		assertEquals(0,board.getUndoneBoardStates().size());
+		assertEquals(4,board.getBoardStates().size());
 		assertFalse("The zombie should have advanced forward" , board.getEntity(Board.WIDTH-2, zombieY) == null);//should make work with different movement speeds
 		assertFalse("The plant should continue to exist" , board.getEntity(0, 0)== null);
 		
