@@ -30,3 +30,6 @@ hs_err_pid*
 
 #Ehren's garbage design decisions document that he doesn't want to delete
 EHREN'S_DesignDecisions.md
+
+#Test file output by one of the tests that I'm too lazy to delete
+testLevelExport.xml
