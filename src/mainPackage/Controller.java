@@ -32,6 +32,7 @@ public class Controller {
 	private static Level loadLevel(String filename) {
 		try
 		{
+			System.out.println("loading file: "+filename);
 			String xml = new String(Files.readAllBytes(Paths.get(filename)));
 			Level level = new Level();
 			level.setXML(xml);

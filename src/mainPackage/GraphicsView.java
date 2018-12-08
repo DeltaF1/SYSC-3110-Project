@@ -588,7 +588,7 @@ public class GraphicsView implements View
 				@Override
 				public void valueChanged(ListSelectionEvent e)
 				{
-					if (!e.getValueIsAdjusting()) {
+					if (levelList.getSelectedValue() != null && !e.getValueIsAdjusting()) {
 						Controller.startGame((String) levelList.getSelectedValue());
 					}
 				}
