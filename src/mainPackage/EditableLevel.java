@@ -1,5 +1,8 @@
 package mainPackage;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 
 public class EditableLevel extends Level{
@@ -62,6 +65,26 @@ public class EditableLevel extends Level{
 	}
 
 
-	
+
+
+	/** 
+	 * saves the xml data representing this level to disk
+	 * @param fname the filename to save the data under
+	 */
+	public void writeToDisk(String fname) {
+		// TODO Auto-generated method stub
+		BufferedWriter out;
+		try {
+			out = new BufferedWriter(new FileWriter( fname));
+			out.write(toXML());
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			for (View view:views) {
+				view.sendFailedLevelWriteAlert( "The file failed to write! you probably entered an invalid file name or maybe don't have proper permission for the file. Detailed error message:\n\n"  + e.getMessage() );
+			}
+			//e.printStackTrace();
+		}
+	}
 
 }
