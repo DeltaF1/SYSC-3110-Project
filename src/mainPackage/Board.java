@@ -231,6 +231,7 @@ public class Board {
 			Element rootElm = xml.createElement("board");
 			Element allTilesElm = xml.createElement("tiles");
 			Element sunElm = xml.createElement("sunPoints");
+			Element turnElm = xml.createElement("turn");
 			Element widthElm = xml.createElement("WIDTH");
 			Element heightElm = xml.createElement("HEIGHT");
 			for (Entity[] row: entities) {
@@ -261,6 +262,7 @@ public class Board {
 			sunElm.appendChild(xml.createTextNode(String.format("%d", sunPoints)));
 			widthElm.appendChild(xml.createTextNode(String.format("%d", WIDTH)));
 			heightElm.appendChild(xml.createTextNode(String.format("%d", HEIGHT)));
+			turnElm.appendChild(xml.createTextNode(String.format("%d", turn)));
 			rootElm.appendChild(allTilesElm);
 			rootElm.appendChild(sunElm);
 			rootElm.appendChild(widthElm);
@@ -333,6 +335,9 @@ public class Board {
 						Zombie newZombie = EntityFactory.makeZombie(data);
 						newZombie.setHp(currentHp);
 						placeEntity(currentColumn, currentRow, newZombie);
+						break;
+					case "turn":
+						turn = Integer.valueOf(data);
 						break;
 					}
 				}
@@ -425,7 +430,6 @@ public class Board {
 		if (boardStates.size() > 1) { //can only undo if you have both the current state and some previous state in the stack
 			undoneBoardStates.push(boardStates.pop()); //put current state in undone stack
 			setXML(boardStates.peek());
-			turn--;
 			return true;
 		} else {
 			return false;
@@ -441,7 +445,6 @@ public class Board {
 			String undoneState = undoneBoardStates.pop();
 			boardStates.push(undoneState);
 			setXML(undoneState);
-			turn++;
 			return true;
 		} else {
 			return false;
