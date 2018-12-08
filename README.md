@@ -6,17 +6,21 @@ GitHub URL:https://github.com/DeltaF1/SYSC-3110-Project
 Ehren:
 - Added save state loading/saving
 - Added sequence diagrams
+- Updated manual
 
 Trevor:
 - Added numerous test cases
 - Created Level and EditableLevel
 - Created level editor GUI
 - Added sequence diagrams
+- Added new design desisions
 
 Aldous:
 - Integrated the Level system into the existing board spawning system
 - Fixed undo/redo with serialization
 - Added level selection screen
+- Added class diagrams
+- Fixed up test conflicts
 
 Sam:
 - Was unresponive for the duration of Milestone 4
