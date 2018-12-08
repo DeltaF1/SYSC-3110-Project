@@ -26,7 +26,7 @@ import org.xml.sax.Attributes;
  */
 
 public class Level {
-
+	// A map from wave numbers to lists of zombie types
 	TreeMap<Integer, LinkedList<String>> spawns = new TreeMap<Integer, LinkedList<String>>();
 	
 	/**
@@ -66,6 +66,10 @@ public class Level {
 		}
 	}
 	
+	/**
+	 * Get the total number of zombies
+	 * @return The total number of zombies in the level
+	 */
 	public int getTotalZombies() {
 		int amnt = 0;
 		for (int wave: spawns.keySet()) {
@@ -178,7 +182,11 @@ public class Level {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Gets the turn number of the last wave of zombies
+	 * @return The last wave that zombies are spawned on
+	 */
 	public int lastWave()
 	{
 		return spawns.lastKey();

@@ -34,16 +34,22 @@ import mainPackage.zombies.Zombie;
  */
 
 public class Board {
-	
+	// The actual game board
 	private Entity[][] entities;
 	public static final int WIDTH = 20;
 	public static final int HEIGHT = 10;
 	private int sunPoints;
+	
+	// A list of views to update when data changes
 	private LinkedList<View> views;
 	private int turn;
 	private int numZombies;
+	
+	// Stores the zombies to spawn at each turn
 	private String levelName;
 	private Level level;
+	
+	// Undo/redo stacksw
 	public Stack<String> boardStates;
 	private Stack<String> undoneBoardStates;
 	
@@ -477,6 +483,11 @@ public class Board {
 		return turn;
 	}
 	
+	/**
+	 * Loads a level from disk
+	 * @param filename The level to load
+	 * @return A Level object with spawn information
+	 */
 	private static Level loadLevel(String filename) {
 		try
 		{
@@ -491,14 +502,21 @@ public class Board {
 			return null;
 		}
 	}
-	
+
+	/**
+	 * Sets the current level for the game. If required, loads the level data from disk
+	 * @param filename The path of the level to load
+	 */
 	public void setLevel(String filename) {
 		if (!filename.equals(levelName)) {
 			levelName = filename;
 			level = loadLevel(filename);
 		}
 	}
-
+	
+	/**
+	 * Resets the undo/redo state of the board
+	 */
 	public void resetUndo()
 	{
 		boardStates.clear();

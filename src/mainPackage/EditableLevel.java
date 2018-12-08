@@ -5,6 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 
+/**
+ * A superclass of Level that notifies a level editor view of updates to its contents
+ * @author Trevor
+ *
+ */
 public class EditableLevel extends Level{
 	
 	private LinkedList<View> views;
