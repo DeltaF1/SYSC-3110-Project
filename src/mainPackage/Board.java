@@ -389,7 +389,7 @@ public class Board {
 		turn++;
 		
 		//Check for win condition
-		if (numZombies == 0 && turn >= level.lastWave()) {
+		if (numZombies == 0 && turn > level.lastWave()) {
 			drawWinScreen();
 		}
 	}
