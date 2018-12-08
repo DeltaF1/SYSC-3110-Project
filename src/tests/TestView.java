@@ -31,24 +31,24 @@ public class TestView {
 		Controller.controllerInit(board, graphicsView);
 	}
 	
-	/**
-	 * ensure starting a game works as expected
-	 */
-	@Test
-	public void testStartGame() {
-		graphicsView.getStartGameButton().doClick();
-		assertEquals()
-	}
+//	/**
+//	 * ensure starting a game works as expected
+//	 */
+//	@Test
+//	public void testStartGame() {
+//		graphicsView.getStartGameButton().doClick();
+//		assertEquals();
+//	}
 	
 	/**
 	 * ensure placing plants works as expected
 	 */
 	@Test
 	public void testPlacePlant() {
-		graphicsView.getStartGameButton().doClick();
+		Controller.startGame("levels/default.xml");
 		board.addSun( - Controller.START_SUN );
 		
-		assertEquals(board.getSun(),0);
+		assertEquals(0,board.getSun());
 		board.addSun( 50 );
 
 		graphicsView.getWallnutButton().doClick();
@@ -88,7 +88,7 @@ public class TestView {
 	 */
 	@Test
 	public void testEndUndoAndRedoTurn() {
-		graphicsView.getStartGameButton().doClick();
+		Controller.startGame("levels/default.xml");
 		graphicsView.getEndTurnButton().doClick();
 		assertEquals("ensure that the game was advanced a turn by clicking end turn",
 				board.getTurn(),1);

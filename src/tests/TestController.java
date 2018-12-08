@@ -145,7 +145,7 @@ public class TestController {
 		Controller.placePlant("sunflower", 0, 0);
 		Controller.endTurn();
 		Controller.endTurn();
-		assertEquals(board.getSun(),100  );
+		assertEquals(100,board.getSun());
 		Integer zombieY = null;
 		Entity zombie = null;
 		for (int y = 0; y < Board.HEIGHT; y++) {
