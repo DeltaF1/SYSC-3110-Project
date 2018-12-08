@@ -4,30 +4,37 @@ GitHub URL:https://github.com/DeltaF1/SYSC-3110-Project
 
 ## Authors
 Ehren:
-- Added undo/redo
-- Overhauled EntityFactory
-- Added *deepest lore* to UserManual.md
+- Added save state loading/saving
+- Added sequence diagrams
 
 Trevor:
-- Created and updated test cases
-- Created zomb art
+- Added numerous test cases
+- Created Level and EditableLevel
+- Created level editor GUI
+- Added sequence diagrams
 
 Aldous:
-- Added spawning system
-- refactored to MVC
-- made splash art
+- Integrated the Level system into the existing board spawning system
+- Fixed undo/redo with serialization
+- Added level selection screen
 
 Sam:
-- Added classes for new zombies and plants
-- Fixed OutOfBounds exception
+- Was unresponive for the duration of Milestone 4
 
 ## Known issues
 
 Known issues can be found at https://github.com/DeltaF1/SYSC-3110-Project/issues
 
-- Zombie waves sometimes double spawn when using undo/redo
+- Turns are offset by 1
+- Tests are wonky
+- Saving in main menu creates corupt save file
 
 ## Changes
+
+### Milestone 4
+- Added a level system to make zombie spawning unique per level
+- Added a level loading screen
+- Added game saving/loading
 
 ### Milestone 3
 - Implemented XML serilazation, and used this capability to implement undo/redo

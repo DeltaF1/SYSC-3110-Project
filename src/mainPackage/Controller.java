@@ -27,7 +27,7 @@ public class Controller {
 	private static Board board;
 	private static View view;
 	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
-	public static DefaultListModel levelListModel;
+	public static DefaultListModel levelListModel = new DefaultListModel<String>();
 	
 	/*
 	 * TODO: call loadLevel first to go to PRELEVEL state and show the player which zombies will be in the level
@@ -48,6 +48,7 @@ public class Controller {
 		try {
 			String xml = new String(Files.readAllBytes(Paths.get(savePath)));
 			board.setXML(xml);
+			board.resetUndo();
 			view.drawGame();
 		} catch (Exception e) {
 			view.announce("Couldn't load save!");
@@ -255,9 +256,7 @@ public class Controller {
 		board.wipe();
 		board.addSun(150);
 		
-		//TOFIX
-		board.boardStates.push(board.toXML());
-
+		board.resetUndo();
 	}
 	
 	static EditableLevel editorLevel;
@@ -336,8 +335,6 @@ public class Controller {
 	}
 	
 	public static void main(String[] args) {
-		levelListModel = new DefaultListModel<String>();
-		
 		controllerInit(new Board(),new GraphicsView());
 	}
 
