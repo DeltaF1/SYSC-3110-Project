@@ -101,23 +101,6 @@ public class TestLevel {
 		assertEquals("there should be no zombs in wave -1", level.getSpawn(-1), null);
 	}
 	
-	/**
-	 * test the thing to make sure it does the thing
-	 */
-	@Test
-	public void testSetCurrent() {
-		level.setCurrent(696969);
-		assertEquals("current should be a really really funny number", level.getCurrent(), 696969);
-	}
-	
-	/**
-	 * test get current to make sure it works 
-	 */
-	@Test
-	public void testGetCurrent() {
-		level.setCurrent(69696969);
-		assertEquals("getCurrent should return the actual pinnacle of comedy", level.getCurrent(), 69696969);
-	}
 	
 	/**
 	 * test setXML and set XML
@@ -131,10 +114,8 @@ public class TestLevel {
 		zombs.add("zoomer");
 		zombs.add("boomer");
 		level.setSpawn(5, zombs);
-		level.setCurrent(0xDEADBEEF);
 		Level newLevel = new Level();
 		newLevel.setXML(level.toXML());
-		assertEquals("level created from XML should have same current as original level", level.getCurrent(), newLevel.getCurrent());
 		assertEquals("level created from XML should have same zombies as original level", level.getSpawn(5), newLevel.getSpawn(5));
 		assertEquals("level created from XML should have same zombies as original level", level.getSpawn(10), newLevel.getSpawn(10));
 	}

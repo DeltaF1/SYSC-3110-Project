@@ -29,27 +29,13 @@ public class Controller {
 	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
 	public static DefaultListModel levelListModel;
 	
-	private static Level loadLevel(String filename) {
-		try
-		{
-			String xml = new String(Files.readAllBytes(Paths.get(filename)));
-			Level level = new Level();
-			level.setXML(xml);
-			return level;
-			
-		} catch (IOException e)
-		{
-			return null;
-		}
-	}
-	
 	/*
 	 * TODO: call loadLevel first to go to PRELEVEL state and show the player which zombies will be in the level
 	 * stats the game
 	 */
 	public static void startGame(String level) {
+		board.setLevel(level);
 		setUpGame(board);
-		board.setLevel(loadLevel(level));
 		view.announce("Level start!");
 		view.drawGame();
 	}
@@ -258,7 +244,7 @@ public class Controller {
 	
 	
 	/**
-	 * sets the board to be empty, sets money to the starting amount and sets up level data
+	 * sets the board to be empty, sets sun to the starting amount and sets up level data
 	 * @param board Board the board the game takes place on
 	 */
 	public static void setUpGame(Board board) {
