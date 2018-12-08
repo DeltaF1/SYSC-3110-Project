@@ -92,7 +92,7 @@ Clicking this button allows you to edit the currently selected zombie
 Clicking this button brings you back to the home screen
 
 #### save level
-Clicking this button will prompt you to name the level. Once you name the level it will be saved. To play your new level simply go to the home screen, press `Start Game` and click on your level.
+Clicking this button will prompt you to name the level. Once you name the level it will be saved. To play your new level go to the home screen, press `Start Game` and click on your level.
 
 ## **Saving and Loading**
 
