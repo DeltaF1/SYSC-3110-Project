@@ -39,9 +39,9 @@ public class Level {
 			LinkedList<String> zombieTypes = spawns.get(wave);
 			if (zombieTypes == null) {
 				zombieTypes = new LinkedList<String> ();
+				setSpawn(wave,zombieTypes);
 			}
 			zombieTypes.add(zombieType);
-			setSpawn(wave,zombieTypes);
 		}
 	}
 	
@@ -191,5 +191,10 @@ public class Level {
 		}
 		
 		
+	}
+
+	public int lastWave()
+	{
+		return spawns.lastKey();
 	}
 }

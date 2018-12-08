@@ -292,10 +292,9 @@ public class ASCIIView implements View {
 	}
 
 	@Override
-	public ListModel getLevelListModel()
+	public void sendFailedLevelWriteAlert(String errMsg)
 	{
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
-
 }

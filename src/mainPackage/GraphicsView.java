@@ -741,10 +741,8 @@ public class GraphicsView implements View
 
 	@Override
 	public void sendFailedLevelWriteAlert(String errMsg) {
-		// TODO Auto-generated method stub
+
 		JOptionPane.showMessageDialog(null,errMsg);
-		
-		
 	}
 
 	/*@Override

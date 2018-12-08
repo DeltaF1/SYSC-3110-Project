@@ -5,6 +5,11 @@ package mainPackage;
  */
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -23,12 +28,28 @@ public class Controller {
 	private static View view;
 	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
 	public static DefaultListModel levelListModel;
+	
+	private static Level loadLevel(String filename) {
+		try
+		{
+			String xml = new String(Files.readAllBytes(Paths.get(filename)));
+			Level level = new Level();
+			level.setXML(xml);
+			return level;
+			
+		} catch (IOException e)
+		{
+			return null;
+		}
+	}
+	
 	/*
 	 * TODO: call loadLevel first to go to PRELEVEL state and show the player which zombies will be in the level
 	 * stats the game
 	 */
 	public static void startGame(String level) {
 		setUpGame(board);
+		board.setLevel(loadLevel(level));
 		view.announce("Level start!");
 		view.drawGame();
 	}
@@ -305,18 +326,6 @@ public class Controller {
 	 */
 	public static void controllerInit(Board aBoard, GraphicsView aView) {
 		board = aBoard;
-		
-		// Add a test level
-		board.addSpawn(0, "basic");
-		board.addSpawn(0, "basic");
-		
-		board.addSpawn(5, "boomer");
-		board.addSpawn(5, "boomer");
-		board.addSpawn(5, "basic");
-		
-		board.addSpawn(10, "zoomer");
-		board.addSpawn(10, "doomer");
-		board.addSpawn(10, "doomer");
 		
 		view = aView;
 		view.drawMenu();

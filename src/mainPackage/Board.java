@@ -40,7 +40,7 @@ public class Board {
 	private LinkedList<View> views;
 	private int turn;
 	private int numZombies;
-	private TreeMap<Integer, LinkedList<String>> spawns;
+	private Level level;
 	public Stack<String> boardStates;
 	private Stack<String> undoneBoardStates;
 	
@@ -51,7 +51,6 @@ public class Board {
 		entities = new Entity[HEIGHT][WIDTH];
 		turn = 0;
 		views = new LinkedList<View>();
-		spawns = new TreeMap<Integer, LinkedList<String>>();
 		boardStates = new Stack<String>();
 		undoneBoardStates = new Stack<String>();
 		sunPoints = 0;
@@ -384,7 +383,7 @@ public class Board {
 		turn++;
 		
 		//Check for win condition
-		if (numZombies == 0 && turn >= spawns.lastKey()) {
+		if (numZombies == 0 && turn >= level.lastWave()) {
 			drawWinScreen();
 		}
 	}
@@ -404,7 +403,7 @@ public class Board {
 	 */
 	private void spawnZombies()
 	{
-		List<String> wave = spawns.get(turn);
+		List<String> wave = level.getSpawn(turn);
 		if (wave != null) {
 			for (String zombieType : wave) {
 				boolean placed = false;
@@ -449,27 +448,6 @@ public class Board {
 		}
 	}
 	
-	/**
-	 * Sets the entire spawn list
-	 * @param spawns
-	 */
-	public void setSpawns(TreeMap<Integer, LinkedList<String>> spawns) {
-		this.spawns = spawns;
-	}
-	
-	/**
-	 * Add a zombie type to spawn at the given turn
-	 * @param wave The turn to spawn at
-	 * @param zombieType Which zombie type (Same names as in EntityFactory.Java)
-	 */
-	public void addSpawn(int wave, String zombieType) {
-		LinkedList<String> cur = spawns.get(wave);
-		if (cur == null) {
-			cur = new LinkedList<String>();
-			spawns.put(wave, cur);
-		}
-		cur.add(zombieType);
-	}
 	
 	// Debugging methods for testing
 	public Stack<String> getBoardStates(){
@@ -484,73 +462,7 @@ public class Board {
 		return turn;
 	}
 	
-	private LinkedList<ZombieSpawnSettings> editorZombSettings = new LinkedList<ZombieSpawnSettings>();
-	
-	/**
-	 * return the list of editor settings for the zombies to be spawned
-	 * @return LinkedList<ZombieSpawnSettings> the list of settings. each element is the settings for a different zombie
-	 */
-	public LinkedList<ZombieSpawnSettings> getEditorZombSettings(){
-		return editorZombSettings;
+	public void setLevel(Level level) {
+		this.level = level;
 	}
-	
-	/**
-	 * add a zombie to the editor list zombies to spawn
-	 * @param aZombSettings
-	 */
-	/*public void editorAddZombie( ZombieSpawnSettings aZombSettings  ) {
-		editorZombSettings.add(aZombSettings);
-		editorZombSettings = sortZombSettings(editorZombSettings);
-		for (View view : views) {
-			view.updateZombSettings(editorZombSettings);
-		}
-	}*/
-	
-	/**
-	 * modify the settings for a zombie in the editor list
-	 * @param aZombSettings the new ZombieSpawnSettings for the selected zombie
-	 */
-	/*public void editorEditZombie(ZombieSpawnSettings aZombSettings) {
-		if ( editorZombSettings.size() > editorSelectedZombie) {
-			editorZombSettings.get(editorSelectedZombie).setName(aZombSettings.getName());
-			editorZombSettings.get(editorSelectedZombie).setSpawnTurn(aZombSettings.getSpawnTurn());
-			editorZombSettings = sortZombSettings(editorZombSettings);
-			for (View view : views) {
-				view.updateZombSettings(editorZombSettings);
-			}
-		}
-	}
-	private int editorSelectedZombie = -1;
-	*/
-	/**
-	 * return the zombie selected in the editor
-	 * @return int the index of the selected zombie
-	 */
-	/*public int getEditorSelectedZombie() {
-		return editorSelectedZombie;
-	}*/
-	
-	/**
-	 * set the zombie that is selected in the editor
-	 * 
-	 * @param index the index of the zombie to be selected
-	 */
-	/*public void editorSelectZombie(int index) {
-		editorSelectedZombie = index;
-	}*/
-	
-	/**
-	 * remove the selected zombie in the editor
-	 */
-	/*public void editorRemoveZombie() {
-		if ( editorZombSettings.size() > editorSelectedZombie) {
-			editorZombSettings.remove(editorSelectedZombie);
-			editorZombSettings = sortZombSettings(editorZombSettings);
-			for (View view : views) {
-				view.updateZombSettings(editorZombSettings);
-			}
-			editorSelectedZombie = -1;
-		}
-	}*/
-	
 }
