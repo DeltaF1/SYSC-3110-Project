@@ -265,6 +265,7 @@ public class Board {
 			turnElm.appendChild(xml.createTextNode(String.format("%d", turn)));
 			rootElm.appendChild(allTilesElm);
 			rootElm.appendChild(sunElm);
+			rootElm.appendChild(turnElm);
 			rootElm.appendChild(widthElm);
 			rootElm.appendChild(heightElm);
 			xml.appendChild(rootElm);
@@ -430,6 +431,7 @@ public class Board {
 		if (boardStates.size() > 1) { //can only undo if you have both the current state and some previous state in the stack
 			undoneBoardStates.push(boardStates.pop()); //put current state in undone stack
 			setXML(boardStates.peek());
+			System.out.println(turn);
 			return true;
 		} else {
 			return false;
@@ -445,6 +447,7 @@ public class Board {
 			String undoneState = undoneBoardStates.pop();
 			boardStates.push(undoneState);
 			setXML(undoneState);
+			System.out.println(turn);
 			return true;
 		} else {
 			return false;
