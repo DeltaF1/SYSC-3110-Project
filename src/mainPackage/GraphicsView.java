@@ -280,7 +280,7 @@ public class GraphicsView implements View
 			if (!firstLoop) {
 				JOptionPane.showMessageDialog(null, "Invalid input! Zombie Type should be 'basic','boomer','doomer' or 'zoomer'. Spawn Turn should be greater than -1.");
 			}
-			String zombieType = JOptionPane.showInputDialog("Zombie type: "); //TODO: handle invalid inputs
+			String zombieType = JOptionPane.showInputDialog("Zombie type: ");
 			try {
 				int spawnTurn = Integer.parseInt(JOptionPane.showInputDialog("Spawn turn: "));
 				zombSettings = new ZombieSpawnSettings(zombieType,spawnTurn);
@@ -758,18 +758,4 @@ public class GraphicsView implements View
 		fileChooser.showOpenDialog(openButton); //choose the file
 		return fileChooser.getSelectedFile();
 	}
-
-	/*@Override
-	public void updateZombSettings(LinkedList<ZombieSpawnSettings> zombSettings) {
-		// TODO Auto-generated method stub
-		
-	}*/
-	
-	/*public void updateZombSettings(LinkedList<ZombieSpawnSettings> zombSettings) {
-		zombieModel.removeAllElements();
-		for (ZombieSpawnSettings z: zombSettings) {
-			zombieModel.addElement(  z.getSpawnTurn() + " > " + z.getName() );
-		}
-	}*/
-	
 }

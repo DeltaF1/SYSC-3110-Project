@@ -27,7 +27,7 @@ public class Controller {
 	private static Board board;
 	private static View view;
 	public static final int PLACE_AREA_WIDTH = 5; //width of area that a player can place plants
-	public static DefaultListModel levelListModel = new DefaultListModel<String>();
+	public static DefaultListModel<String> levelListModel = new DefaultListModel<String>();
 	
 	/**
 	 * Loads the specified level and starts a new game
@@ -255,7 +255,6 @@ public class Controller {
 	public static void setUpGame(Board board) {
 		board.wipe();
 		board.addSun(150);
-		
 		board.resetUndo();
 	}
 	
@@ -291,7 +290,6 @@ public class Controller {
 	public static void editorEditZombie(ZombieSpawnSettings aZombSettings) {
 		editorLevel.removeSpawn();
 		editorLevel.addSpawn(aZombSettings.getSpawnTurn(), aZombSettings.getName());
-		//board.editorEditZombie(aZombSettings);
 	}
 	
 	public static void writeEditorFileToDisk(String fname) {	
@@ -324,15 +322,13 @@ public class Controller {
 	 * @param aBoard
 	 * @param aView
 	 */
-	public static void controllerInit(Board aBoard, GraphicsView aView) {
-		board = aBoard;
-		
-		view = aView;
+	public static void controllerInit(Board board, GraphicsView view) {
+		Controller.board = board;
+		Controller.view = view;
 		view.drawMenu();
 		board.registerView(view);
 		
 		editorLevel =  new EditableLevel(view);
-		//editorLevel.setXML("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><level><allWaves><wave><turn>1</turn><zombieTypes><zombieType>basic</zombieType><zombieType>boomer</zombieType><zombieType>doomer</zombieType></zombieTypes></wave><wave><turn>2</turn><zombieTypes><zombieType>zoomer</zombieType></zombieTypes></wave><wave><turn>3</turn><zombieTypes><zombieType>basic</zombieType></zombieTypes></wave></allWaves><currentWave>0</currentWave></level>\r\n");
 	}
 	
 	public static void main(String[] args) {

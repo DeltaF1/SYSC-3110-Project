@@ -235,6 +235,11 @@ public class ASCIIView implements View {
 		eventLog.setCaretPosition(eventLog.getText().length());
 	}
 
+	/*
+	 * NOTE: The following methods are not implemented fully either because they do not apply to a textview
+	 * or because we were not required to maintain our old view type as we added new features to GraphicsView 
+	 */
+	
 	/**
 	 * Draws the start menu
 	 */

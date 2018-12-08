@@ -49,7 +49,7 @@ public class Board {
 	private String levelName;
 	private Level level;
 	
-	// Undo/redo stacksw
+	// Undo/redo stacks
 	public Stack<String> boardStates;
 	private Stack<String> undoneBoardStates;
 	

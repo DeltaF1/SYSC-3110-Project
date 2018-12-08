@@ -97,7 +97,6 @@ public class Level {
 			Element rootElm = xml.createElement("level");
 			Element allWavesElm = xml.createElement("allWaves");
 			Element currentWaveElm = xml.createElement("currentWave");
-			//Element totalZombieElm = xml.createElement("totalZombies");
 			for (int wave: spawns.keySet()) {
 				Element waveElm = xml.createElement("wave");
 				Element zombTypesElm = xml.createElement("zombieTypes");
@@ -112,11 +111,7 @@ public class Level {
 				waveElm.appendChild(zombTypesElm);
 				allWavesElm.appendChild(waveElm);
 			}
-			//currentWaveElm.appendChild(xml.createTextNode(String.format("%d", current)));
-			//totalZombieElm.appendChild(xml.createTextNode(String.format("%d", getTotalZombies())));
 			rootElm.appendChild(allWavesElm);
-			rootElm.appendChild(currentWaveElm);
-			//rootElm.appendChild(totalZombieElm);
 			xml.appendChild(rootElm);
 			return StringUtils.XMLToString(xml);
 		} catch (Exception e) {
@@ -156,8 +151,6 @@ public class Level {
 					case "zombieType":
 						addSpawn(currentTurn, data);
 						break;
-					//case "currentWave":
-						//setCurrent(Integer.valueOf(data));
 					}
 				}
 			});
@@ -172,7 +165,6 @@ public class Level {
 	 * @param fname the filename to save the data under
 	 */
 	public void writeToDisk(String fname) {
-		// TODO Auto-generated method stub
 		BufferedWriter out;
 		try {
 			out = new BufferedWriter(new FileWriter( fname));
