@@ -19,7 +19,8 @@ Aldous:
 - Integrated the Level system into the existing board spawning system
 - Fixed undo/redo with serialization
 - Added level selection screen
-- Added sequence diagrams
+- Added class diagrams
+- Fixed up test conflicts
 
 Sam:
 - Was unresponive for the duration of Milestone 4
