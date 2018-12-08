@@ -44,6 +44,7 @@ public class Controller {
 		try {
 			String xml = new String(Files.readAllBytes(Paths.get(savePath)));
 			board.setXML(xml);
+			board.resetUndo();
 			view.drawGame();
 		} catch (Exception e) {
 			view.announce("Couldn't load save!");
@@ -251,9 +252,7 @@ public class Controller {
 		board.wipe();
 		board.addSun(150);
 		
-		//TOFIX
-		board.boardStates.push(board.toXML());
-
+		board.resetUndo();
 	}
 	
 	static EditableLevel editorLevel;

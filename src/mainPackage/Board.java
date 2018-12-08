@@ -498,4 +498,12 @@ public class Board {
 			level = loadLevel(filename);
 		}
 	}
+
+	public void resetUndo()
+	{
+		boardStates.clear();
+		undoneBoardStates.clear();
+		
+		boardStates.push(toXML());
+	}
 }
