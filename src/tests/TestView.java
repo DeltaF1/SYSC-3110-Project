@@ -37,23 +37,7 @@ public class TestView {
 	@Test
 	public void testStartGame() {
 		graphicsView.getStartGameButton().doClick();
-		assertEquals( board.getTurn(), 0);
-		for (int y = 0; y < Board.HEIGHT; y++) {
-			for (int x = 0; x < Board.WIDTH; x++) {
-				assertEquals("tile occupant was not removed at "  + Integer.toString(x) + "," + Integer.toString(y),
-						board.getEntity(x, y), null);
-			}
-		}
-		
-		assertEquals("sunPoints were not set to the starting amount",board.getSun(),Controller.START_SUN);
-		
-/*		sunflowerButton = new PlantButton("sunflower");
-		PlantButton projButton = new PlantButton("proj");
-		PlantButton repeaterButton = new PlantButton("repeater");
-		PlantButton melonButton = new PlantButton("melon");
-		PlantButton wallnutButton*/
-		
-		
+		assertEquals()
 	}
 	
 	/**
