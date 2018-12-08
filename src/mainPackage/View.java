@@ -22,4 +22,6 @@ public interface View {
 	public void updateZombSettings(TreeMap<Integer, LinkedList<String>> spawns);
 	//public void updateZombSettings(LinkedList<ZombieSpawnSettings> zombSettings);
 	
+	public void sendFailedLevelWriteAlert(String errMsg);
+	
 }
