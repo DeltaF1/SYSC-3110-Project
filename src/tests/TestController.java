@@ -223,6 +223,9 @@ public class TestController {
 		
 	}
 	
+	/**
+	 * ensures that adding a zombie to a level from other objects works correctly.
+	 */
 	@Test
 	public void testEditorAddZombie() {
 		assertEquals("editor level should start empty", Controller.getEditorLevel().getTotalZombies(), 0  );
@@ -245,6 +248,10 @@ public class TestController {
 		
 	}
 	
+	
+	/**
+	 * ensures that editing a level from another object works correctly
+	 */
 	@Test
 	public void testEditorSelectZombie() {
 		ZombieSpawnSettings zombSetting = new ZombieSpawnSettings("basic",1);
@@ -256,6 +263,9 @@ public class TestController {
 		assertEquals("The selected zombie should be the zombie set to be selected",Controller.getEditorLevel().getSelected(),zombSetting);
 	}
 	
+	/**
+	 * ensures that removing a zombie from a level from another object works correcly
+	 */
 	@Test
 	public void testEditorRemoveZombie() {
 		Controller.editorAddZombie(new ZombieSpawnSettings( "basic",1 ));
@@ -295,6 +305,9 @@ public class TestController {
 		//board.editorEditZombie(aZombSettings);
 	}
 	
+	/**
+	 * ensures that reseting the editor level works correcly
+	 */
 	@Test
 	public void testResetEditorLevel() {
 		EditableLevel oldLevel = Controller.getEditorLevel();

@@ -9,6 +9,7 @@ import org.junit.Test;
 import mainPackage.Board;
 import mainPackage.Controller;
 import mainPackage.GraphicsView;
+import mainPackage.ZombieSpawnSettings;
 import mainPackage.plants.Melonpult;
 import mainPackage.plants.Repeater;
 import mainPackage.plants.Sunflower;
@@ -120,4 +121,19 @@ public class TestView {
 		assertEquals("The stored undone board states should now descrease from a redo",board.getUndoneBoardStates().size(),0);
 	}
 	
+	/**
+	 * ensures that the function for preventing incorrect zombie settings from being entered in the view works correctly
+	 */
+	@Test
+	public void testVerifyZombieSettings() {
+		//If a test fails it is returning false when it should be a valid input or true when it is an invalid input
+		assertEquals(graphicsView.verifyZombieSettings(new ZombieSpawnSettings("doomer",0)),true  );
+		assertEquals(graphicsView.verifyZombieSettings(new ZombieSpawnSettings("Doomer",0)),true  );
+		assertEquals(graphicsView.verifyZombieSettings(new ZombieSpawnSettings("boomer",0)),true  );
+		assertEquals(graphicsView.verifyZombieSettings(new ZombieSpawnSettings("zoomer",0)),true  );
+		assertEquals(graphicsView.verifyZombieSettings(new ZombieSpawnSettings("basic",0)),true  );
+		assertEquals(graphicsView.verifyZombieSettings(new ZombieSpawnSettings("invalid name",0)),false  );
+		assertEquals(graphicsView.verifyZombieSettings(new ZombieSpawnSettings("doomer",-1)),false  );
+		assertEquals(graphicsView.verifyZombieSettings(new ZombieSpawnSettings("invalid name",-1)),false  );
+	}
 }
