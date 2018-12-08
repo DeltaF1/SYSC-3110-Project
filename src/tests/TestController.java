@@ -15,11 +15,13 @@ import org.junit.Test;
 
 import mainPackage.Board;
 import mainPackage.Controller;
+import mainPackage.EditableLevel;
 import mainPackage.Entity;
 import mainPackage.EntityFactory;
 import mainPackage.GraphicsView;
 import mainPackage.Level;
 import mainPackage.View;
+import mainPackage.ZombieSpawnSettings;
 import mainPackage.plants.Melonpult;
 import mainPackage.plants.Plant;
 import mainPackage.plants.ProjectilePlant;
@@ -220,5 +222,87 @@ public class TestController {
 		assertFalse("The plant should continue to exist" , board.getEntity(0, 0)== null);
 		
 	}
+	
+	@Test
+	public void testEditorAddZombie() {
+		assertEquals("editor level should start empty", Controller.getEditorLevel().getTotalZombies(), 0  );
+		Controller.editorAddZombie(new ZombieSpawnSettings( "basic",1 ));
+		assertEquals("total zombies should be 1 after add", Controller.getEditorLevel().getTotalZombies(), 1  );
+		assertEquals("the wave 1 should have one zombie to spawn", Controller.getEditorLevel().getSpawn(1).size(), 1  );
+		assertTrue("the type of the zombie to spawn should be basic", Controller.getEditorLevel().getSpawn(1).get(0).equals("basic") == true  );
+		
+		Controller.editorAddZombie(new ZombieSpawnSettings( "zoomer",1 ));
+		assertEquals("the amount of zombie should have increased by 1", Controller.getEditorLevel().getTotalZombies(), 2  );
+		assertEquals("the zombies to spawn in wave 1 should have increased by 1", Controller.getEditorLevel().getSpawn(1).size(), 2  );
+		assertTrue("the first zombie in wave 1 should be basic still", Controller.getEditorLevel().getSpawn(1).get(0).equals("basic") == true  );
+		assertTrue("the second zombie in wave 2 should be zoomer", Controller.getEditorLevel().getSpawn(1).get(1).equals("zoomer") == true  );
+		
+		Controller.editorAddZombie(new ZombieSpawnSettings( "doomer",2 ));
+		assertEquals("the total amount of zombies should have increased by 1", Controller.getEditorLevel().getTotalZombies(), 3  );
+		assertEquals("the amount of zombies to spawn in wave 1 should still be 2", Controller.getEditorLevel().getSpawn(1).size(), 2  );
+		assertEquals("the amount of zombies to spawn in wave 2 should now be 1", Controller.getEditorLevel().getSpawn(2).size(), 1  );
+		assertTrue("the zombie to spawn in wave 2 should be a doomer", Controller.getEditorLevel().getSpawn(2).get(0).equals("doomer") == true  );
+		
+	}
+	
+	@Test
+	public void testEditorSelectZombie() {
+		ZombieSpawnSettings zombSetting = new ZombieSpawnSettings("basic",1);
+		
+		Controller.editorAddZombie( zombSetting );
+		
+		Controller.editorSelectZombie(zombSetting);
+		
+		assertEquals("The selected zombie should be the zombie set to be selected",Controller.getEditorLevel().getSelected(),zombSetting);
+	}
+	
+	@Test
+	public void testEditorRemoveZombie() {
+		Controller.editorAddZombie(new ZombieSpawnSettings( "basic",1 ));
+		Controller.editorAddZombie(new ZombieSpawnSettings( "zoomer",1 ));
+		Controller.editorAddZombie(new ZombieSpawnSettings( "doomer",2 ));
+		assertEquals( Controller.getEditorLevel().getTotalZombies(),3 );
+		assertEquals( Controller.getEditorLevel().getSpawn(1).size(),2 );
+		assertEquals( Controller.getEditorLevel().getSpawn(2).size(),1 );
+		Controller.editorSelectZombie( new ZombieSpawnSettings( "basic",1 ) );
+		Controller.editorRemoveZombie( );
+		assertEquals( Controller.getEditorLevel().getSpawn(1).size(),1 );
+		
+		Controller.editorSelectZombie( new ZombieSpawnSettings( "doomer",2 ) );
+		Controller.editorRemoveZombie( );
+		assertEquals( Controller.getEditorLevel().getSpawn(2).size(),0 );
+		
+		Controller.editorSelectZombie( new ZombieSpawnSettings( "zoomer",1 ) );
+		Controller.editorRemoveZombie( );
+		assertEquals( Controller.getEditorLevel().getSpawn(1).size(),0 );
+		
+	}
+	
+	/**
+	 * tells the model to modify the settings of the currently selected zombie
+	 * @param aZombSettings
+	 */
+	@Test
+	public void testEditorEditZombie() {
+		Controller.editorAddZombie(new ZombieSpawnSettings( "basic",1 ));
+		Controller.editorAddZombie(new ZombieSpawnSettings( "zoomer",1 ));
+		Controller.editorAddZombie(new ZombieSpawnSettings( "doomer",2 ));
+		Controller.editorSelectZombie( new ZombieSpawnSettings( "basic",1 ) );
+		Controller.editorEditZombie( new ZombieSpawnSettings( "boomer",3 ) );
+		assertEquals(Controller.getEditorLevel().getSpawn(1).size(),1  );
+		assertEquals(Controller.getEditorLevel().getSpawn(3).size(),1  );
+		//editorLevel.addSpawn(aZombSettings.getSpawnTurn(), aZombSettings.getName());
+		//board.editorEditZombie(aZombSettings);
+	}
+	
+	@Test
+	public void testResetEditorLevel() {
+		EditableLevel oldLevel = Controller.getEditorLevel();
+		Controller.resetEditorLevel();
+		assertTrue(oldLevel != Controller.getEditorLevel());
+		assertEquals(Controller.getEditorLevel().getTotalZombies(),0);
+
+	}
+	 
 		
 }

@@ -281,6 +281,10 @@ public class Controller {
 		editorLevel = new EditableLevel(view);
 	}
 	
+	public static EditableLevel getEditorLevel() {
+		return editorLevel;
+	}
+	
 	/**
 	 * The initialization for when the controller's main is run - also used in testing to be able to set a desired board and view
 	 * @param aBoard
